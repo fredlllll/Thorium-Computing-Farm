@@ -7,12 +7,12 @@ namespace Thorium_Client
     {
         public void Ping()
         {
-            
+            //dummy function to execute ping
         }
 
         public void Shutdown()
         {
-            throw new NotImplementedException();
+            ClientUtil.ShutdownSystem();
         }
     }
 }

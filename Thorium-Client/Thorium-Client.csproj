@@ -34,11 +34,15 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Runtime.Remoting" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ClientUtil.cs" />
     <Compile Include="Instance.cs" />
+    <Compile Include="JobExecutionInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ThoriumClient.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

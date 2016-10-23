@@ -6,9 +6,7 @@ using System.Threading.Tasks;
 
 namespace Thorium_Shared
 {
-    public interface IInstance
+    public interface IThoriumServerInterfaceForConfigurator
     {
-        void Ping();
-        //void Shutdown();
     }
 }

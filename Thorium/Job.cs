@@ -16,8 +16,8 @@ namespace Thorium_Server
         public string Name { get; set; }
         public List<FrameBounds> Frames { get; } = new List<FrameBounds>();
         public BackendConfig Config { get; set; }
-        public ConcurrentDictionary<string, SubJob> unfinishedSubJobs = new ConcurrentDictionary<string, SubJob>();
-        public ConcurrentBag<SubJob> finishedJobs = new ConcurrentBag<SubJob>();
+        ConcurrentDictionary<string, SubJob> unfinishedSubJobs = new ConcurrentDictionary<string, SubJob>();
+        ConcurrentBag<SubJob> finishedJobs = new ConcurrentBag<SubJob>();
 
         public Job(ThoriumServer server) {
             this.server = server;
@@ -38,7 +38,7 @@ namespace Thorium_Server
                 finishedJobs.Add(job);
             }
             //check if job is finished
-            if(false)
+            if(false)//TODO: create condition to 
             {
                 Job j;
                 if(server.Jobs.TryRemove(ID, out j))

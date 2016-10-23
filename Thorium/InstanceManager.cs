@@ -32,17 +32,18 @@ namespace Thorium_Server
             return count;
         }
 
-        public void RegisterInstance(IInstance instance)
+        public bool RegisterInstance(IInstance instance)
         {
             InstanceRequest req = null;
             if(requests.TryDequeue(out req))
             {
                 req.Satisfy();
                 instances[instance] = 0;
+                return true;
             }
             else
             {//if too many instances we just shut down this one again
-                instance.Shutdown();
+                return false;
             }
         }
 

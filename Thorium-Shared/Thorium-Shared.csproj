@@ -39,11 +39,15 @@
     <Compile Include="Codolith.Util\ScheduledObject.cs" />
     <Compile Include="Codolith.Util\SchedulerThreadSafe.cs" />
     <Compile Include="Config.cs" />
+    <Compile Include="Constants.cs" />
     <Compile Include="FrameBounds.cs" />
     <Compile Include="IInstance.cs" />
-    <Compile Include="IThoriumClientServerInterface.cs" />
-    <Compile Include="IThoriumConfiguratorServerInterface.cs" />
+    <Compile Include="IThoriumServerInterfaceForClient.cs" />
+    <Compile Include="IThoriumStorageInterfaceForClient.cs" />
+    <Compile Include="IThoriumServerInterfaceForConfigurator.cs" />
+    <Compile Include="IThoriumStorageInterfaceForServer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RequiredFileInfo.cs" />
     <Compile Include="Resolution.cs" />
     <Compile Include="SubJob.cs" />
   </ItemGroup>

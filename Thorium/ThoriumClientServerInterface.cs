@@ -8,7 +8,7 @@ using Thorium_Shared;
 
 namespace Thorium_Server
 {
-    public class ThoriumClientServerInterface : MarshalByRefObject, IThoriumClientServerInterface
+    public class ThoriumClientServerInterface : MarshalByRefObject, IThoriumServerInterfaceForClient
     {
         ThoriumServer server;
 
@@ -22,9 +22,9 @@ namespace Thorium_Server
             this.server = server;
         }
 
-        public void RegisterInstance(IInstance instance)
+        public bool RegisterInstance(IInstance instance)
         {
-            server.InstanceManager.RegisterInstance(instance);
+            return server.InstanceManager.RegisterInstance(instance);
         }
 
         public void UnregisterInstance(IInstance instance)

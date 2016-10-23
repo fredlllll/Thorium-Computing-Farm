@@ -3,14 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Thorium_Shared;
 
 namespace Thorium_Client
 {
-    public class Program
+    public class JobExecutionInfo
     {
-        static void Main(string[] args)
+        public JobExecutionInfo(SubJob sj)
         {
-            var client = new ThoriumClient();
+            
+        }
+
+        public void Execute()
+        {
+
         }
     }
 }

@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace Thorium_Shared
 {
-    public interface IThoriumConfiguratorServerInterface
+    public class RequiredFileInfo
     {
+        string ID { get; }
+        int Size { get; }
+        string Extension { get; }
     }
 }

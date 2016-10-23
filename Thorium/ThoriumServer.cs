@@ -25,7 +25,7 @@ namespace Thorium_Server
             serverInterface = new ThoriumClientServerInterface(this);
             tcpChannel = new TcpServerChannel(instanceServerPort);
             ChannelServices.RegisterChannel(tcpChannel, true);
-            RemotingServices.Marshal(serverInterface, "ThoriumServer");
+            RemotingServices.Marshal(serverInterface, Constants.THORIUM_SERVER_INTERFACE_FOR_CLIENT);
         }
 
         public SubJob GetSubJob()
