@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Thorium-Server", "Thorium\Thorium-Server.csproj", "{1440817D-1468-46DB-B086-E3049A3ADB92}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Thorium-Client", "Thorium-Client\Thorium-Client.csproj", "{736545C5-DBBC-45F2-818B-6F2E79251D46}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Thorium-Storage-Slave", "Thorium-Storage-Slave\Thorium-Storage-Slave.csproj", "{D471C77B-C05D-40C2-9969-D8974C374B17}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Thorium-Shared", "Thorium-Shared\Thorium-Shared.csproj", "{FE33D9C9-43CA-4EC3-AB9F-154611627BFF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1440817D-1468-46DB-B086-E3049A3ADB92}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1440817D-1468-46DB-B086-E3049A3ADB92}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1440817D-1468-46DB-B086-E3049A3ADB92}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1440817D-1468-46DB-B086-E3049A3ADB92}.Release|Any CPU.Build.0 = Release|Any CPU
+		{736545C5-DBBC-45F2-818B-6F2E79251D46}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{736545C5-DBBC-45F2-818B-6F2E79251D46}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{736545C5-DBBC-45F2-818B-6F2E79251D46}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{736545C5-DBBC-45F2-818B-6F2E79251D46}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D471C77B-C05D-40C2-9969-D8974C374B17}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D471C77B-C05D-40C2-9969-D8974C374B17}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D471C77B-C05D-40C2-9969-D8974C374B17}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D471C77B-C05D-40C2-9969-D8974C374B17}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE33D9C9-43CA-4EC3-AB9F-154611627BFF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE33D9C9-43CA-4EC3-AB9F-154611627BFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE33D9C9-43CA-4EC3-AB9F-154611627BFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE33D9C9-43CA-4EC3-AB9F-154611627BFF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
