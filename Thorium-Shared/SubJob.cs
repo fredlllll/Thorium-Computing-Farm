@@ -8,5 +8,13 @@ namespace Thorium_Shared
 {
     public class SubJob : MarshalByRefObject
     {
+        public string JobID { get; }
+        public string ID { get; }
+
+        public SubJob(string parentJobID)
+        {
+            JobID = parentJobID;
+            //TODO: set ID
+        }
     }
 }

@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace Thorium_Shared
 {
-    public interface IThoriumServerInterface
+    public interface IThoriumClientServerInterface
     {
         void RegisterInstance(IInstance instance);
         void UnregisterInstance(IInstance instance);
 
-        SubJob GetJob();
+        SubJob GetSubJob();
     }
 }

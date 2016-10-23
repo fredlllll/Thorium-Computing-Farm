@@ -15,5 +15,10 @@ namespace Thorium_Server.BackendConfigs
         public Resolution Resolution { get; set; }
         public List<string> Layers { get; } = new List<string>();
         public BlenderRenderConfig Config { get; set; }
+
+        public override void PopulateSubJob(SubJob sj)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
