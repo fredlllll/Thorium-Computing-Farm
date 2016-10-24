@@ -37,7 +37,6 @@
     <Reference Include="System.Runtime.Remoting" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ClientUtil.cs" />
     <Compile Include="Instance.cs" />
     <Compile Include="JobExecutionInfo.cs" />
     <Compile Include="Program.cs" />

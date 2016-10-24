@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Thorium_Client
+namespace Thorium_Shared
 {
-    public static class ClientUtil
+    public static class Util
     {
         public static void ShutdownSystem()
         {

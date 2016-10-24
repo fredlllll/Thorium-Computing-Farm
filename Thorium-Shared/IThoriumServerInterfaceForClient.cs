@@ -13,5 +13,7 @@ namespace Thorium_Shared
 
         SubJob GetSubJob();
         void FinishSubJob(SubJob sj);
+
+        string GetRandomStorageServerAddress();
     }
 }

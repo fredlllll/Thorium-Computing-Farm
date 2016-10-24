@@ -20,7 +20,7 @@ namespace Thorium_Client
         {
             tcpChannel = new TcpClientChannel();
             ChannelServices.RegisterChannel(tcpChannel, true);
-            serverInterface = (IThoriumServerInterfaceForClient)Activator.GetObject(typeof(IThoriumServerInterfaceForClient), "tcp://127.0.0.1/"+ Constants.THORIUM_SERVER_INTERFACE_FOR_CLIENT);
+            serverInterface = (IThoriumServerInterfaceForClient)Activator.GetObject(typeof(IThoriumServerInterfaceForClient), "tcp://127.0.0.1/" + Constants.THORIUM_SERVER_INTERFACE_FOR_CLIENT);
             instance = new Instance();
             if(serverInterface.RegisterInstance(instance))
             {
@@ -28,7 +28,7 @@ namespace Thorium_Client
             }
             else
             {
-                ClientUtil.ShutdownSystem();
+                Util.ShutdownSystem();
             }
         }
 
@@ -69,7 +69,7 @@ namespace Thorium_Client
                 //TODO: log
             }
             serverInterface.UnregisterInstance(instance);
-            ClientUtil.ShutdownSystem();
+            Util.ShutdownSystem();
         }
     }
 }

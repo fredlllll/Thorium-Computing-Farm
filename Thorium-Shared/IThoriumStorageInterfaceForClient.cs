@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace Thorium_Shared
 {
-    interface IThoriumStorageInterfaceForClient
+    public interface IThoriumStorageInterfaceForClient
     {
+        byte[] GetFile(string JobID, string ID);
+        void StoreResult(string JobID, string SubJobID);
     }
 }

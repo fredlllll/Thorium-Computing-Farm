@@ -40,5 +40,10 @@ namespace Thorium_Server
         public void FinishSubJob(SubJob sj) {
             server.Jobs[sj.JobID].FinishSubJob(sj);
         }
+
+        public string GetRandomStorageServerAddress()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

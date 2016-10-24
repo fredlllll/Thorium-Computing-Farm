@@ -31,6 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Codolith.Util\IScheduler.cs" />
@@ -39,9 +40,11 @@
     <Compile Include="Codolith.Util\ScheduledObject.cs" />
     <Compile Include="Codolith.Util\SchedulerThreadSafe.cs" />
     <Compile Include="Config.cs" />
+    <Compile Include="ConsoleMenu.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="FrameBounds.cs" />
     <Compile Include="IInstance.cs" />
+    <Compile Include="IThoriumServerInterfaceForStorage.cs" />
     <Compile Include="IThoriumServerInterfaceForClient.cs" />
     <Compile Include="IThoriumStorageInterfaceForClient.cs" />
     <Compile Include="IThoriumServerInterfaceForConfigurator.cs" />
@@ -50,6 +53,7 @@
     <Compile Include="RequiredFileInfo.cs" />
     <Compile Include="Resolution.cs" />
     <Compile Include="SubJob.cs" />
+    <Compile Include="Util.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

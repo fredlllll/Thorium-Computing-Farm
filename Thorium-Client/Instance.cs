@@ -12,7 +12,7 @@ namespace Thorium_Client
 
         public void Shutdown()
         {
-            ClientUtil.ShutdownSystem();
+            Util.ShutdownSystem();
         }
     }
 }
