@@ -14,22 +14,32 @@ namespace Thorium_Client
     {
         TcpClientChannel tcpChannel;
         IThoriumServerInterfaceForClient serverInterface;
-        Instance instance;
+        ThoriumClientInterfaceForServer instance;
         Thread runner;
         public ThoriumClient()
         {
             tcpChannel = new TcpClientChannel();
             ChannelServices.RegisterChannel(tcpChannel, true);
             serverInterface = (IThoriumServerInterfaceForClient)Activator.GetObject(typeof(IThoriumServerInterfaceForClient), "tcp://127.0.0.1/" + Constants.THORIUM_SERVER_INTERFACE_FOR_CLIENT);
-            instance = new Instance();
-            if(serverInterface.RegisterInstance(instance))
+            instance = new ThoriumClientInterfaceForServer();
+            if(serverInterface.RegisterClient(instance))
             {
                 runner = new Thread(Run);
             }
             else
             {
+                Shutdown();
                 Util.ShutdownSystem();
             }
+        }
+
+        public void Shutdown()
+        {
+            serverInterface.UnregisterClient(instance);
+            serverInterface = null;
+            runner.Interrupt();
+            ChannelServices.UnregisterChannel(tcpChannel);
+            
         }
 
         void Run()
@@ -41,12 +51,13 @@ namespace Thorium_Client
                 //{
                 while(true)
                 {
-                    var job = serverInterface.GetSubJob();
+                    var job = serverInterface?.GetJobPart(instance);
                     if(job != null)
                     {
-                        var je = new JobExecutionInfo(job);
-                        je.Execute();
-                        serverInterface.FinishSubJob(job);
+                        var je = new JobExecutionInfo();
+                        job.PopulateJobExecutionInfo(je);
+                        je.Run();
+                        serverInterface?.FinishJobPart(job);
                         lastTimeJobCompleted = DateTime.UtcNow;
                     }
                     else
@@ -64,12 +75,17 @@ namespace Thorium_Client
 
                 }*/
             }
+            catch(ThreadInterruptedException)
+            {
+
+            }
             catch(Exception ex)
             {
                 //TODO: log
+                serverInterface?.UnregisterClient(instance);
+                Util.ShutdownSystem();
             }
-            serverInterface.UnregisterInstance(instance);
-            Util.ShutdownSystem();
+            
         }
     }
 }

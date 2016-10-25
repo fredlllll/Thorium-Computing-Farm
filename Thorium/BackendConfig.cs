@@ -9,6 +9,6 @@ namespace Thorium_Server
 {
     public abstract class BackendConfig
     {
-        public abstract void PopulateSubJob(SubJob sj);
+        public abstract JobPart[] GetAllJobs(Job job);
     }
 }

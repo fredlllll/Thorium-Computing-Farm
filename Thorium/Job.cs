@@ -9,42 +9,87 @@ using Thorium_Shared;
 
 namespace Thorium_Server
 {
-    public abstract class Job
+    public class Job
     {
-        public string ID { get; set; }
         public ThoriumServer server;
+
+        public string ID { get; set; }
         public string Name { get; set; }
         public List<FrameBounds> Frames { get; } = new List<FrameBounds>();
+
         public BackendConfig Config { get; set; }
-        ConcurrentDictionary<string, SubJob> unfinishedSubJobs = new ConcurrentDictionary<string, SubJob>();
-        ConcurrentBag<SubJob> finishedJobs = new ConcurrentBag<SubJob>();
 
-        public Job(ThoriumServer server) {
+        public int TotalJobPartsCount
+        {
+            get { return Jobs.Count; }
+        }
+        public int FinishedJobsCount
+        {
+            get { return FinishedJobs.Count; }
+        }
+        public int ProcessingJobsCount
+        {
+            get { return ProcessingJobs.Count; }
+        }
+        ConcurrentDictionary<string, JobPart> Jobs { get; } = new ConcurrentDictionary<string, JobPart>();
+        ConcurrentBag<JobPart> NotStartedJobs { get; } = new ConcurrentBag<JobPart>();
+        ConcurrentDictionary<string, JobPart> ProcessingJobs { get; } = new ConcurrentDictionary<string, JobPart>();
+        ConcurrentDictionary<string, JobPart> FinishedJobs { get; } = new ConcurrentDictionary<string, JobPart>();
+
+        public Job(ThoriumServer server)
+        {
             this.server = server;
+            ID = Util.GetRandomID();
         }
 
-        public SubJob GetSubJob()
+        public void InitializeJobs()
         {
-            SubJob sj = new SubJob(ID);
-            Config.PopulateSubJob(sj);
-            unfinishedSubJobs[sj.ID] = sj;
-            return sj;
-        }
-
-        public void FinishSubJob(SubJob job)
-        {
-            if(unfinishedSubJobs.TryRemove(job.ID, out job))
+            foreach(var j in Config.GetAllJobs(this))
             {
-                finishedJobs.Add(job);
+                Jobs[j.ID] = j;
             }
-            //check if job is finished
-            if(false)//TODO: create condition to 
+        }
+
+        public void Reset()
+        {
+            FinishedJobs.Clear();
+
+            JobPart tmp;
+            while(NotStartedJobs.TryTake(out tmp))
+            { }
+
+            foreach(var kv in ProcessingJobs)
             {
-                Job j;
-                if(server.Jobs.TryRemove(ID, out j))
-                {
-                    server.FinishedJobs.Enqueue(j);
-                }
+                server.ClientManager.GetClient(kv.Value.ProcessingClientID).AbortJobPart(kv.Value.ID);
+            }
+
+            foreach(var kv in Jobs)
+            {
+                kv.Value.State = JobPartState.NotStarted;
+                kv.Value.ProcessingClientID = null;
+                NotStartedJobs.Add(kv.Value);
+            }
+
+        }
+
+        public JobPart GetNextFreeSubJob(IThoriumClientInterfaceForServer client)
+        {
+            JobPart j;
+            if(NotStartedJobs.TryTake(out j))
+            {
+                j.State = JobPartState.Processing;
+                j.ProcessingClientID = client.ID;
+                ProcessingJobs[j.ID] = j;
+            }
+            return null;
+        }
+
+        public void FinishSubJob(JobPart job)
+        {
+            if(ProcessingJobs.TryRemove(job.ID, out job))
+            {
+                job.State = JobPartState.Finished;
+                FinishedJobs[job.ID] = job;
             }
         }
     }

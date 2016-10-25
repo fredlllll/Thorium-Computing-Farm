@@ -16,7 +16,7 @@ namespace Thorium_Server
         TcpServerChannel tcpChannel;
         ThoriumClientServerInterface serverInterface;
 
-        public InstanceManager InstanceManager { get; } = new InstanceManager();
+        public ClientManager ClientManager { get; } = new ClientManager();
         public ConcurrentQueue<Job> FinishedJobs { get; } = new ConcurrentQueue<Job>();
         public ConcurrentDictionary<string, Job> Jobs { get; } = new ConcurrentDictionary<string, Job>();
 
@@ -28,11 +28,11 @@ namespace Thorium_Server
             RemotingServices.Marshal(serverInterface, Constants.THORIUM_SERVER_INTERFACE_FOR_CLIENT);
         }
 
-        public SubJob GetSubJob()
+        public JobPart GetSubJob(IThoriumClientInterfaceForServer client)
         {
             foreach(var kv in Jobs)
             {
-                SubJob sj = kv.Value.GetSubJob();
+                JobPart sj = kv.Value.GetNextFreeSubJob(client);
                 if(sj != null)
                 {
                     return sj;

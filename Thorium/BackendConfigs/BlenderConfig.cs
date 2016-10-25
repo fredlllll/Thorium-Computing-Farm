@@ -13,12 +13,32 @@ namespace Thorium_Server.BackendConfigs
         public int TilesX { get; set; }
         public int TilesY { get; set; }
         public Resolution Resolution { get; set; }
-        public List<string> Layers { get; } = new List<string>();
+        public string[] Layers { get; set; }
+        public string FilePath { get; set; }
         public BlenderRenderConfig Config { get; set; }
 
-        public override void PopulateSubJob(SubJob sj)
+        public override JobPart[] GetAllJobs(Job job)
         {
-            throw new NotImplementedException();
+            List<JobPart> jobs = new List<JobPart>();
+
+
+            foreach(var fb in job.Frames)
+            {
+                for(int y = 0; y < TilesY; y++)
+                {
+                    for(int x = 0; x < TilesX; x++)
+                    {
+                        BlenderJobPart jp = new BlenderJobPart(job.ID);
+                        jp.TileX = x;
+                        jp.TileY = y;
+                        jp.Resolution = Resolution;
+                        jp.Layers = Layers;
+                        jp.FilePath = FilePath;
+                    }
+                }
+            }
+
+            return jobs.ToArray();
         }
     }
 }

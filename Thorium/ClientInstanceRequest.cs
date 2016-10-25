@@ -8,12 +8,12 @@ using Thorium_Shared;
 
 namespace Thorium_Server
 {
-    public class InstanceRequest
+    public class ClientInstanceRequest
     {
-        InstanceManager manager;
+        ClientManager manager;
         ScheduledObject schedObj;
 
-        public InstanceRequest(InstanceManager manager)
+        public ClientInstanceRequest(ClientManager manager)
         {
             this.manager = manager;
             schedObj = SchedulerThreadSafe.Instance.Schedule(this.Timeout, 120f, null);

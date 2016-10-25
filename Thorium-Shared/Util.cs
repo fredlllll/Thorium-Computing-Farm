@@ -26,5 +26,11 @@ namespace Thorium_Shared
                     break;
             }
         }
+
+        public static string GetRandomID()
+        {
+            Guid guid = new Guid();
+            return guid.ToString();
+        }
     }
 }

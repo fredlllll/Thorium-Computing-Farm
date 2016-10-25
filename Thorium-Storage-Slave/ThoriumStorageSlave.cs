@@ -13,7 +13,7 @@ namespace Thorium_Storage_Slave
     {
         TcpClientChannel tcpChannel;
         IThoriumServerInterfaceForStorage serverInterface;
-        IThoriumStorageInterfaceForServer storageInterface;
+        IThoriumStorageInterfaceForServer storageInterface = new ThoriumStorageInterfaceForServer();
 
         public ThoriumStorageSlave()
         {

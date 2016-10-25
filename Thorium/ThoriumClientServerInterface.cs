@@ -22,22 +22,22 @@ namespace Thorium_Server
             this.server = server;
         }
 
-        public bool RegisterInstance(IInstance instance)
+        public bool RegisterClient(IThoriumClientInterfaceForServer client)
         {
-            return server.InstanceManager.RegisterInstance(instance);
+            return server.ClientManager.RegisterClient(client);
         }
 
-        public void UnregisterInstance(IInstance instance)
+        public void UnregisterClient(IThoriumClientInterfaceForServer client)
         {
-            server.InstanceManager.UnregisterInstance(instance);
+            server.ClientManager.UnregisterClient(client);
         }
 
-        public SubJob GetSubJob()
+        public JobPart GetJobPart(IThoriumClientInterfaceForServer client)
         {
-            return server.GetSubJob();
+            return server.GetSubJob(client);
         }
 
-        public void FinishSubJob(SubJob sj) {
+        public void FinishJobPart(JobPart sj) {
             server.Jobs[sj.JobID].FinishSubJob(sj);
         }
 

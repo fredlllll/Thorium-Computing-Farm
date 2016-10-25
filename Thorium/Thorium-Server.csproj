@@ -39,11 +39,12 @@
   <ItemGroup>
     <Compile Include="BackendConfig.cs" />
     <Compile Include="BackendConfigs\BlenderConfig.cs" />
+    <Compile Include="BackendConfigs\Blender\BlenderJobPart.cs" />
     <Compile Include="BackendConfigs\Blender\BlenderRenderConfig.cs" />
     <Compile Include="BackendConfigs\Blender\CyclesConfig.cs" />
     <Compile Include="BackendConfigs\Blender\NativeConfig.cs" />
-    <Compile Include="InstanceManager.cs" />
-    <Compile Include="InstanceRequest.cs" />
+    <Compile Include="ClientManager.cs" />
+    <Compile Include="ClientInstanceRequest.cs" />
     <Compile Include="Job.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

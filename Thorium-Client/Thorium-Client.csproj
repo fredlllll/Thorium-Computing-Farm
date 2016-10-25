@@ -37,7 +37,7 @@
     <Reference Include="System.Runtime.Remoting" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Instance.cs" />
+    <Compile Include="ThoriumClientInterfaceForServer.cs" />
     <Compile Include="JobExecutionInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

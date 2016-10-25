@@ -8,12 +8,12 @@ namespace Thorium_Shared
 {
     public interface IThoriumServerInterfaceForClient
     {
-        bool RegisterInstance(IInstance instance);
-        void UnregisterInstance(IInstance instance);
+        bool RegisterClient(IThoriumClientInterfaceForServer instance);
+        void UnregisterClient(IThoriumClientInterfaceForServer instance);
 
-        SubJob GetSubJob();
-        void FinishSubJob(SubJob sj);
+        JobPart GetJobPart(IThoriumClientInterfaceForServer instance);
+        void FinishJobPart(JobPart sj);
 
-        string GetRandomStorageServerAddress();
+        //string GetRandomStorageServerAddress();
     }
 }
