@@ -11,6 +11,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Thorium-Storage-Slave", "Th
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Thorium-Shared", "Thorium-Shared\Thorium-Shared.csproj", "{FE33D9C9-43CA-4EC3-AB9F-154611627BFF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AwsConsoleApp1", "AwsConsoleApp1\AwsConsoleApp1.csproj", "{2ECCA326-DA2E-4B3E-8152-459FF716B7FC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Thorium-Monitor", "Thorium-Monitor\Thorium-Monitor.csproj", "{1701A4EB-99F8-4D7D-B471-A738AD83C83B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +37,14 @@ Global
 		{FE33D9C9-43CA-4EC3-AB9F-154611627BFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FE33D9C9-43CA-4EC3-AB9F-154611627BFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FE33D9C9-43CA-4EC3-AB9F-154611627BFF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2ECCA326-DA2E-4B3E-8152-459FF716B7FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2ECCA326-DA2E-4B3E-8152-459FF716B7FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2ECCA326-DA2E-4B3E-8152-459FF716B7FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2ECCA326-DA2E-4B3E-8152-459FF716B7FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1701A4EB-99F8-4D7D-B471-A738AD83C83B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1701A4EB-99F8-4D7D-B471-A738AD83C83B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1701A4EB-99F8-4D7D-B471-A738AD83C83B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1701A4EB-99F8-4D7D-B471-A738AD83C83B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
