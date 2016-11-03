@@ -52,6 +52,9 @@
     <Compile Include="IThoriumStorageInterfaceForClient.cs" />
     <Compile Include="IThoriumServerInterfaceForConfigurator.cs" />
     <Compile Include="IThoriumStorageInterfaceForServer.cs" />
+    <Compile Include="MachineManager\IMachineManager.cs" />
+    <Compile Include="MachineManager\IMachinePool.cs" />
+    <Compile Include="MachineManager\IMachineType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RequiredFileInfo.cs" />
     <Compile Include="Resolution.cs" />
