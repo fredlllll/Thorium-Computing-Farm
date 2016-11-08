@@ -18,9 +18,15 @@ namespace Thorium_Shared
             methods[name] = callback;
         }
 
+        public void Stop()
+        {
+            running = false;
+        }
+
+        bool running = true;
         public void Run()
         {
-            bool running = true;
+            running = true;
             while(running)
             {
                 string line = Console.ReadLine().Trim();

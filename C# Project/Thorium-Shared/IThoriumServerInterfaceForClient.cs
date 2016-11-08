@@ -11,8 +11,8 @@ namespace Thorium_Shared
         bool RegisterClient(IThoriumClientInterfaceForServer instance);
         void UnregisterClient(IThoriumClientInterfaceForServer instance);
 
-        JobPart GetJobPart(IThoriumClientInterfaceForServer instance);
-        void FinishJobPart(JobPart sj);
+        Task GetJobPart(IThoriumClientInterfaceForServer instance);
+        void FinishJobPart(Task sj);
 
         //string GetRandomStorageServerAddress();
     }

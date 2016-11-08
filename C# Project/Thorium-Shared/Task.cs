@@ -6,21 +6,21 @@ using System.Threading.Tasks;
 
 namespace Thorium_Shared
 {
-    public enum JobPartState
+    public enum TaskState
     {
         NotStarted,
         Processing,
         Finished
     }
 
-    public abstract class JobPart : MarshalByRefObject
+    public abstract class Task : MarshalByRefObject
     {
         public string JobID { get; }
         public string ID { get; }
         public string ProcessingClientID { get; set; }
-        public JobPartState State { get; set; }
+        public TaskState State { get; set; }
 
-        public JobPart(string parentJobID)
+        public Task(string parentJobID)
         {
             JobID = parentJobID;
             ID = Util.GetRandomID();

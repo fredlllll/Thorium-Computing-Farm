@@ -3,58 +3,73 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 using Thorium_Shared;
 
 namespace Thorium_Server
 {
     public class ClientManager
     {
-        public int MaxClients { get; set; }
-        int ClientCount
+        public int ClientCount
         {
             get
             {
-                return requests.Count + clients.Count;
+                return clients.Count;
             }
         }
-        ConcurrentQueue<ClientInstanceRequest> requests = new ConcurrentQueue<ClientInstanceRequest>();
+        Thread pingThread;
         ConcurrentDictionary<string, IThoriumClientInterfaceForServer> clients = new ConcurrentDictionary<string, IThoriumClientInterfaceForServer>();
+
+        public ClientManager()
+        {
+            pingThread = new Thread(PingRun);
+            pingThread.Start();
+        }
 
         public IThoriumClientInterfaceForServer GetClient(string id)
         {
             return clients[id];
         }
 
-        public int RequestClientInstances(int count)
+        public void RegisterClient(IThoriumClientInterfaceForServer client)
         {
-            count = Math.Min(count, MaxClients - ClientCount);//cant request more than allowed
-            for(int i = 0; i < count; i++)
-            {
-                ClientInstanceRequest req = new ClientInstanceRequest(this);
-                requests.Enqueue(req);
-            }
-            return count;
-        }
-
-        public bool RegisterClient(IThoriumClientInterfaceForServer client)
-        {
-            ClientInstanceRequest req = null;
-            if(requests.TryDequeue(out req))
-            {
-                req.Satisfy();
-                clients[client.ID] = client;
-                return true;
-            }
-            else
-            {//if too many instances we just shut down this one again
-                return false;
-            }
+            clients[client.ID] = client;
+            Console.WriteLine("Client Registered: " + client.ID);
         }
 
         public void UnregisterClient(IThoriumClientInterfaceForServer client)
         {
+            UnregisterClient(client, null);
+        }
+
+        void UnregisterClient(IThoriumClientInterfaceForServer client, string reason)
+        {
             clients.TryRemove(client.ID, out client);
+            Console.WriteLine("Client Unregistered: " + client.ID + (reason == null ? "" : " Reason: " + reason));
+        }
+
+        void PingRun()
+        {
+            bool running = true;
+            while(running)
+            {
+                foreach(var kv in clients)
+                {
+                    try
+                    {
+                        kv.Value.Ping();
+                    }
+                    catch(ThreadInterruptedException)
+                    {
+                        running = false;
+                        break;
+                    }
+                    catch(Exception ex)//is it socketexception? TODO
+                    {
+                        UnregisterClient(kv.Value, "Client Died!");
+                    }
+                }
+            }
         }
     }
 }

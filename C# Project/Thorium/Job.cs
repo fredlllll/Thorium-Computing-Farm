@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using Thorium_Shared;
 
 namespace Thorium_Server
@@ -31,10 +30,10 @@ namespace Thorium_Server
         {
             get { return ProcessingJobs.Count; }
         }
-        ConcurrentDictionary<string, JobPart> Jobs { get; } = new ConcurrentDictionary<string, JobPart>();
-        ConcurrentBag<JobPart> NotStartedJobs { get; } = new ConcurrentBag<JobPart>();
-        ConcurrentDictionary<string, JobPart> ProcessingJobs { get; } = new ConcurrentDictionary<string, JobPart>();
-        ConcurrentDictionary<string, JobPart> FinishedJobs { get; } = new ConcurrentDictionary<string, JobPart>();
+        ConcurrentDictionary<string, Thorium_Shared.Task> Jobs { get; } = new ConcurrentDictionary<string, Thorium_Shared.Task>();
+        ConcurrentBag<Thorium_Shared.Task> NotStartedJobs { get; } = new ConcurrentBag<Thorium_Shared.Task>();
+        ConcurrentDictionary<string, Thorium_Shared.Task> ProcessingJobs { get; } = new ConcurrentDictionary<string, Thorium_Shared.Task>();
+        ConcurrentDictionary<string, Thorium_Shared.Task> FinishedJobs { get; } = new ConcurrentDictionary<string, Thorium_Shared.Task>();
 
         public Job(ThoriumServer server)
         {
@@ -54,7 +53,7 @@ namespace Thorium_Server
         {
             FinishedJobs.Clear();
 
-            JobPart tmp;
+            Thorium_Shared.Task tmp;
             while(NotStartedJobs.TryTake(out tmp))
             { }
 
@@ -65,30 +64,30 @@ namespace Thorium_Server
 
             foreach(var kv in Jobs)
             {
-                kv.Value.State = JobPartState.NotStarted;
+                kv.Value.State = TaskState.NotStarted;
                 kv.Value.ProcessingClientID = null;
                 NotStartedJobs.Add(kv.Value);
             }
 
         }
 
-        public JobPart GetNextFreeSubJob(IThoriumClientInterfaceForServer client)
+        public Task GetNextFreeSubJob(IThoriumClientInterfaceForServer client)
         {
-            JobPart j;
+            Thorium_Shared.Task j;
             if(NotStartedJobs.TryTake(out j))
             {
-                j.State = JobPartState.Processing;
+                j.State = TaskState.Processing;
                 j.ProcessingClientID = client.ID;
                 ProcessingJobs[j.ID] = j;
             }
             return null;
         }
 
-        public void FinishSubJob(JobPart job)
+        public void FinishSubJob(Thorium_Shared.Task job)
         {
             if(ProcessingJobs.TryRemove(job.ID, out job))
             {
-                job.State = JobPartState.Finished;
+                job.State = TaskState.Finished;
                 FinishedJobs[job.ID] = job;
             }
         }

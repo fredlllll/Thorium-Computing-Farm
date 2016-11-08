@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.Remoting;
 using System.Runtime.Remoting.Channels;
@@ -13,32 +14,37 @@ namespace Thorium_Server
 {
     public class ThoriumServer
     {
+        const string configFileName = "serverconfig.xml";
+
+        Config config;
         TcpServerChannel tcpChannel;
         ThoriumClientServerInterface serverInterface;
 
         public ClientManager ClientManager { get; } = new ClientManager();
-        public ConcurrentQueue<Job> FinishedJobs { get; } = new ConcurrentQueue<Job>();
-        public ConcurrentDictionary<string, Job> Jobs { get; } = new ConcurrentDictionary<string, Job>();
+        public TaskManager TaskManager { get; } = new TaskManager();
+        public JobManager JobManager { get; }
 
-        public ThoriumServer(int instanceServerPort = 8100)
+        public ThoriumServer()
         {
-            serverInterface = new ThoriumClientServerInterface(this);
+            JobManager = new JobManager(TaskManager);
+
+            config = new Config(new FileInfo(configFileName));
+            serverInterface = new ThoriumClientServerInterface(this);//does this belong here or in start?
+        }
+
+        public void Start()
+        {
+            int instanceServerPort = config.GetInt("instanceServerPort");
+
             tcpChannel = new TcpServerChannel(instanceServerPort);
             ChannelServices.RegisterChannel(tcpChannel, true);
             RemotingServices.Marshal(serverInterface, Constants.THORIUM_SERVER_INTERFACE_FOR_CLIENT);
         }
 
-        public JobPart GetSubJob(IThoriumClientInterfaceForServer client)
+        public void Stop()
         {
-            foreach(var kv in Jobs)
-            {
-                JobPart sj = kv.Value.GetNextFreeSubJob(client);
-                if(sj != null)
-                {
-                    return sj;
-                }
-            }
-            return null;
+            RemotingServices.Disconnect(serverInterface);
+            ChannelServices.UnregisterChannel(tcpChannel);
         }
     }
 }

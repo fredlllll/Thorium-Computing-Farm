@@ -7,7 +7,7 @@ using Thorium_Shared;
 
 namespace Thorium_Server.BackendConfigs.Blender
 {
-    public class BlenderJobPart : JobPart
+    public class BlenderJobPart : Thorium_Shared.Task
     {
         public int TileX { get; set; }
         public int TileY { get; set; }

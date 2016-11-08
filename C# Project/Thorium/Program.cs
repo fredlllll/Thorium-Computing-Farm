@@ -9,13 +9,23 @@ namespace Thorium_Server
 {
     class Program
     {
+        static ThoriumServer server;
+        static ConsoleMenu menu;
         static void Main(string[] args)
         {
-            ConsoleMenu menu = new ConsoleMenu();
+            server = new ThoriumServer();
+            server.Start();
 
-            var server = new ThoriumServer();
-
+            menu = new ConsoleMenu();
+            menu.AddMethod("stop", Stop);
             menu.Run();
+        }
+
+        static void Stop(string[] args)
+        {
+            //lets exit the show
+            server.Stop();
+            menu.Stop();
         }
     }
 }

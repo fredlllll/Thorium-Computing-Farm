@@ -9,6 +9,6 @@ namespace Thorium_Server
 {
     public abstract class BackendConfig
     {
-        public abstract JobPart[] GetAllJobs(Job job);
+        public abstract Thorium_Shared.Task[] GetAllJobs(Job job);
     }
 }

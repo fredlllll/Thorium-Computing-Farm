@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Text;
-using System.Threading.Tasks;
 using Thorium_Shared;
 
 namespace Thorium_Server
@@ -32,18 +31,13 @@ namespace Thorium_Server
             server.ClientManager.UnregisterClient(client);
         }
 
-        public JobPart GetJobPart(IThoriumClientInterfaceForServer client)
+        public Task GetJobPart(IThoriumClientInterfaceForServer client)
         {
-            return server.GetSubJob(client);
+            return server.TaskManager.GetTask(client);
         }
 
-        public void FinishJobPart(JobPart sj) {
-            server.Jobs[sj.JobID].FinishSubJob(sj);
-        }
-
-        public string GetRandomStorageServerAddress()
-        {
-            throw new NotImplementedException();
+        public void FinishJobPart(Task task) {
+            server.TaskManager.TurnInTask(task);
         }
     }
 }
