@@ -7,7 +7,7 @@ using Thorium_Shared;
 
 namespace Thorium_Server.BackendConfigs.Blender
 {
-    public class BlenderJobPart : Thorium_Shared.Task
+    /*public class BlenderJobPart : Thorium_Shared.Task
     {
         public int TileX { get; set; }
         public int TileY { get; set; }
@@ -19,9 +19,9 @@ namespace Thorium_Server.BackendConfigs.Blender
         {
         }
 
-        public override void PopulateJobExecutionInfo(IJobPartExecutionInfo part)
+        public override void PopulateJobExecutionInfo(ITaskExecutionInfo part)
         {
             //TODO: set the 3 actions to render
         }
-    }
+    }*/
 }

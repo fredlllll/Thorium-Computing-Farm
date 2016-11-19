@@ -85,6 +85,7 @@ namespace Thorium_Shared
                 {
                     Console.WriteLine("Method " + parts[0] + " not found");
                 }
+                Console.WriteLine();
             }
         }
     }

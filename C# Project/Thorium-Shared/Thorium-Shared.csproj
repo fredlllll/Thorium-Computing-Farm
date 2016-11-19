@@ -31,6 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
@@ -40,6 +41,11 @@
     <Compile Include="BackendConfigs\Blender\BlenderRenderConfig.cs" />
     <Compile Include="BackendConfigs\Blender\CyclesConfig.cs" />
     <Compile Include="BackendConfigs\Blender\NativeConfig.cs" />
+    <Compile Include="Blender\BlenderEngineConfig.cs" />
+    <Compile Include="Blender\BlenderExecutionInfo.cs" />
+    <Compile Include="Blender\BlenderJob.cs" />
+    <Compile Include="Blender\BlenderRenderEngine.cs" />
+    <Compile Include="Blender\BlenderTask.cs" />
     <Compile Include="ClientInstanceRequest.cs" />
     <Compile Include="Codolith.Util\IScheduler.cs" />
     <Compile Include="Codolith.Util\IScheduleType.cs" />
@@ -53,20 +59,28 @@
     <Compile Include="ExecutionActions\RunExecutableAction.cs" />
     <Compile Include="FrameBounds.cs" />
     <Compile Include="IThoriumClientInterfaceForServer.cs" />
-    <Compile Include="IJobPartExecutionInfo.cs" />
+    <Compile Include="ITaskExecutionInfo.cs" />
     <Compile Include="IThoriumServerInterfaceForStorage.cs" />
     <Compile Include="IThoriumServerInterfaceForClient.cs" />
     <Compile Include="IThoriumStorageInterfaceForClient.cs" />
     <Compile Include="IThoriumServerInterfaceForConfigurator.cs" />
     <Compile Include="IThoriumStorageInterfaceForServer.cs" />
+    <Compile Include="Job.cs" />
+    <Compile Include="Layer.cs" />
     <Compile Include="MachineManager\IMachineManager.cs" />
     <Compile Include="MachineManager\IMachinePool.cs" />
     <Compile Include="MachineManager\IMachineType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RequiredFileInfo.cs" />
     <Compile Include="Resolution.cs" />
+    <Compile Include="SharedData.cs" />
     <Compile Include="Task.cs" />
     <Compile Include="Util.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Blender\BlenderConfigExample.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -10,8 +11,8 @@ namespace Thorium_Shared
 {
     public class Config
     {
-        System.Collections.Specialized.StringDictionary dict = new System.Collections.Specialized.StringDictionary();
-            
+        StringDictionary dict = new StringDictionary();
+
         public Config(FileInfo file)
         {
             XmlDocument doc = new XmlDocument();
@@ -24,14 +25,34 @@ namespace Thorium_Shared
             }
         }
 
+        public Config()
+        {
+
+        }
+
         public string GetString(string name)
         {
             return dict[name];
         }
 
+        public bool GetBool(string name)
+        {
+            return bool.Parse(dict[name]);
+        }
+
         public int GetInt(string name)
         {
             return int.Parse(dict[name]);
+        }
+
+        public float GetFloat(string name)
+        {
+            return float.Parse(dict[name]);
+        }
+
+        public double GetDouble(string name)
+        {
+            return double.Parse(dict[name]);
         }
 
         public string this[string name]
@@ -40,6 +61,15 @@ namespace Thorium_Shared
             {
                 return dict[name];
             }
+            set
+            {
+                dict[name] = value;
+            }
+        }
+
+        public void Set<T>(string name, T obj)
+        {
+            dict[name] = obj.ToString();
         }
     }
 }

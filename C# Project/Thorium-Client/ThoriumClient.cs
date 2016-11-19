@@ -22,7 +22,10 @@ namespace Thorium_Client
             ChannelServices.RegisterChannel(tcpChannel, true);
             serverInterface = (IThoriumServerInterfaceForClient)Activator.GetObject(typeof(IThoriumServerInterfaceForClient), "tcp://127.0.0.1/" + Constants.THORIUM_SERVER_INTERFACE_FOR_CLIENT);
             instance = new ThoriumClientInterfaceForServer();
-            if(serverInterface.RegisterClient(instance))
+
+            serverInterface.RegisterClient(instance);
+            runner = new Thread(Run);
+            /*if(serverInterface.RegisterClient(instance))
             {
                 runner = new Thread(Run);
             }
@@ -30,7 +33,7 @@ namespace Thorium_Client
             {
                 Shutdown();
                 Util.ShutdownSystem();
-            }
+            }*/
         }
 
         public void Shutdown()
@@ -39,7 +42,7 @@ namespace Thorium_Client
             serverInterface = null;
             runner.Interrupt();
             ChannelServices.UnregisterChannel(tcpChannel);
-            
+
         }
 
         void Run()
@@ -47,17 +50,22 @@ namespace Thorium_Client
             DateTime lastTimeJobCompleted = DateTime.UtcNow;
             try
             {
-                //try
-                //{
                 while(true)
                 {
-                    var job = serverInterface?.GetJobPart(instance);
-                    if(job != null)
+                    var task = serverInterface?.GetTask(instance);
+                    if(task != null)
                     {
-                        var je = new JobExecutionInfo();
-                        job.PopulateJobExecutionInfo(je);
-                        je.Run();
-                        serverInterface?.FinishJobPart(job);
+                        var execInfo = task.GetExecutionInfo();
+                        try
+                        {
+                            execInfo.Setup();
+                            execInfo.Run();
+                            serverInterface?.TurnInTask(task,execInfo.GetResultZip());
+                        }
+                        catch(Exception execEx)
+                        {
+                            serverInterface.ReturnUnfinishedTask(task, execEx.ToString());
+                        }
                         lastTimeJobCompleted = DateTime.UtcNow;
                     }
                     else
@@ -69,15 +77,10 @@ namespace Thorium_Client
                         Thread.Sleep(5000);
                     }
                 }
-                /*}
-                catch(ThreadInterruptedException)
-                {
-
-                }*/
             }
             catch(ThreadInterruptedException)
             {
-
+                //bye bye
             }
             catch(Exception ex)
             {
@@ -85,7 +88,7 @@ namespace Thorium_Client
                 serverInterface?.UnregisterClient(instance);
                 Util.ShutdownSystem();
             }
-            
+
         }
     }
 }

@@ -8,7 +8,7 @@ using Thorium_Shared;
 
 namespace Thorium_Server
 {
-    public class ClientInstanceRequest
+    /*public class ClientInstanceRequest
     {
         ClientManager manager;
         ScheduledObject schedObj;
@@ -34,5 +34,5 @@ namespace Thorium_Server
         {
             SchedulerThreadSafe.Instance.Unschedule(schedObj);
         }
-    }
+    }*/
 }

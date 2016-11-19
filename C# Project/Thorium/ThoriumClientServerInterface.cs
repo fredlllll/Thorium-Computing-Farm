@@ -21,9 +21,9 @@ namespace Thorium_Server
             this.server = server;
         }
 
-        public bool RegisterClient(IThoriumClientInterfaceForServer client)
+        public void RegisterClient(IThoriumClientInterfaceForServer client)
         {
-            return server.ClientManager.RegisterClient(client);
+            server.ClientManager.RegisterClient(client);
         }
 
         public void UnregisterClient(IThoriumClientInterfaceForServer client)
@@ -31,12 +31,19 @@ namespace Thorium_Server
             server.ClientManager.UnregisterClient(client);
         }
 
-        public Task GetJobPart(IThoriumClientInterfaceForServer client)
+        public Task GetTask(IThoriumClientInterfaceForServer client)
         {
             return server.TaskManager.GetTask(client);
         }
 
-        public void FinishJobPart(Task task) {
+        public void ReturnUnfinishedTask(Task task, string reason)
+        {
+            Console.WriteLine("unfinished Task returned: " + reason);
+            server.TaskManager.ReturnUnfinishedTask(task);
+        }
+
+        public void TurnInTask(Task task, byte[] resultZip)//TODO:ouch, gotta find something better than this
+        {
             server.TaskManager.TurnInTask(task);
         }
     }

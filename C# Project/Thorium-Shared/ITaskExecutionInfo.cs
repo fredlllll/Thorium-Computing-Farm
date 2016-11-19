@@ -7,10 +7,10 @@ using Thorium_Shared.ExecutionActions;
 
 namespace Thorium_Shared
 {
-    public interface IJobPartExecutionInfo
+    public interface ITaskExecutionInfo
     {
-        IExecutionAction SetupAction { get; set; }
-        IExecutionAction RunAction { get; set; }
-        IExecutionAction TeardownAction { get; set; }
+        void Setup();
+        void Run();
+        byte[] GetResultZip();
     }
 }

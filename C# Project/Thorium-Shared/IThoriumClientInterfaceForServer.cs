@@ -9,8 +9,10 @@ namespace Thorium_Shared
     public interface IThoriumClientInterfaceForServer
     {
         string ID { get; }
+        string currentTaskID { get; set; }
+
         void Ping();
-        void AbortJobPart(string ID);
+        void AbortTask(string ID);
         //void Shutdown();
     }
 }

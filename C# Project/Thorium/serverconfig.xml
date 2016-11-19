@@ -1,4 +1,5 @@
 ﻿<?xml version="1.0" standalone="yes" ?>
 <config>
   <option name="instanceServerPort">8100</option>
+  <option name="tmpFolder">temp</option>
 </config>

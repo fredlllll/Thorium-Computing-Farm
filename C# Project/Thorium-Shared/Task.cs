@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,13 +20,16 @@ namespace Thorium_Shared
         public string ID { get; }
         public string ProcessingClientID { get; set; }
         public TaskState State { get; set; }
+        protected Config Data { get; }
 
-        public Task(string parentJobID)
+        public Task(string parentJobID, Config data)
         {
+            Data = data;
             JobID = parentJobID;
             ID = Util.GetRandomID();
+            GetExecutionInfo();
         }
 
-        public abstract void PopulateJobExecutionInfo(IJobPartExecutionInfo part);
+        public abstract ITaskExecutionInfo GetExecutionInfo();
     }
 }

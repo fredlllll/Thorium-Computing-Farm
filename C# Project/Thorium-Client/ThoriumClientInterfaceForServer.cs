@@ -6,6 +6,13 @@ namespace Thorium_Client
     public class ThoriumClientInterfaceForServer : MarshalByRefObject, IThoriumClientInterfaceForServer
     {
         string id = Util.GetRandomID();
+
+        public string currentTaskID
+        {
+            get;
+            set;
+        }
+
         public string ID
         {
             get
@@ -14,7 +21,7 @@ namespace Thorium_Client
             }
         }
 
-        public void AbortJobPart(string ID)
+        public void AbortTask(string ID)
         {
             throw new NotImplementedException();
         }

@@ -8,12 +8,11 @@ namespace Thorium_Shared
 {
     public interface IThoriumServerInterfaceForClient
     {
-        bool RegisterClient(IThoriumClientInterfaceForServer instance);
+        void RegisterClient(IThoriumClientInterfaceForServer instance);//place for doing client authentication, just so no random people can get access to your data TODO
         void UnregisterClient(IThoriumClientInterfaceForServer instance);
 
-        Task GetJobPart(IThoriumClientInterfaceForServer instance);
-        void FinishJobPart(Task sj);
-
-        //string GetRandomStorageServerAddress();
+        Task GetTask(IThoriumClientInterfaceForServer instance);
+        void ReturnUnfinishedTask(Task task, string reason);
+        void TurnInTask(Task task, byte[] resultZip);
     }
 }

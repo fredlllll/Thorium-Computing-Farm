@@ -17,7 +17,7 @@ namespace Thorium_Server.BackendConfigs
         public string FilePath { get; set; }
         public BlenderRenderConfig Config { get; set; }
 
-        public override Thorium_Shared.Task[] GetAllJobs(Job job)
+        /*public override Thorium_Shared.Task[] GetAllJobs(Job job)
         {
             List<Thorium_Shared.Task> jobs = new List<Thorium_Shared.Task>();
 
@@ -39,6 +39,6 @@ namespace Thorium_Server.BackendConfigs
             }
 
             return jobs.ToArray();
-        }
+        }*/
     }
 }
