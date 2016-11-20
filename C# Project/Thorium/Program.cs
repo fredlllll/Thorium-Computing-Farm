@@ -18,6 +18,8 @@ namespace Thorium_Server
 
             menu = new ConsoleMenu();
             menu.AddMethod("stop", Stop);
+            menu.AddMethod("listtasks", ListTasks);
+            menu.AddMethod("help", Help);
             menu.Run();
             Help(null);
         }
@@ -52,6 +54,7 @@ namespace Thorium_Server
             Console.WriteLine("available commands:");
             Console.WriteLine("Stop");
             Console.WriteLine("ListTasks");
+            Console.WriteLine("Help");
         }
     }
 }

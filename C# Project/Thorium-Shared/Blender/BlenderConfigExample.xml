@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <config>
+  <option name="jobType">BlenderJob</option>
   <option name="frameBounds">0,1,5-9</option>
   <option name="tilesPerFrame">2</option>
   <option name="layers">layer1,layer2</option>

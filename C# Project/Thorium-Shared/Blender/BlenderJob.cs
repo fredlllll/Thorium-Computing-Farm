@@ -16,6 +16,7 @@ namespace Thorium_Shared.Blender
         List<Layer> layers = new List<Layer>();
         FileInfo zipFile;
         string filename;
+        Resolution resolution;
         BlenderRenderEngine engine = BlenderRenderEngine.Cycles;
         BlenderEngineConfig engineConfig = new BlenderEngineConfig();
 
@@ -34,7 +35,7 @@ namespace Thorium_Shared.Blender
             }
             var dir = data.GetString("sourceDirectory");
             DirectoryInfo di = new DirectoryInfo(dir);
-            DirectoryInfo tmpDir = new DirectoryInfo(SharedData.Get<Config>("serverConfig").GetString("tmpFolder"));
+            DirectoryInfo tmpDir = new DirectoryInfo(SharedData.Get<Config>(ServerConfigConstants.sharedServerConfigName).GetString(ServerConfigConstants.tmpFolder));
             zipFile = new FileInfo(Path.Combine(tmpDir.FullName, ID + "_data.zip"));
             if(zipFile.Exists)
             {
@@ -42,6 +43,7 @@ namespace Thorium_Shared.Blender
             }
             ZipFile.CreateFromDirectory(dir, zipFile.FullName);
             filename = data.GetString("filename");
+            resolution = Resolution.Parse(data.GetString("resolution"));
             engine = (BlenderRenderEngine)Enum.Parse(typeof(BlenderRenderEngine), data.GetString("engine"));
             engineConfig = BlenderEngineConfig.Create(data);
         }
@@ -62,6 +64,7 @@ namespace Thorium_Shared.Blender
                         c.Set("layers", layersString);
                         c.Set("zipFile", zipFile.FullName);
                         c.Set("filename", filename);
+                        c.Set("resolution", resolution);
                         var bt = new BlenderTask(ID, c);
                         tasks.Add(bt);
                     }

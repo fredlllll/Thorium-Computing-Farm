@@ -34,12 +34,23 @@ namespace Thorium_Server
             jobs.Remove(job.ID);
         }
 
-        internal Job GetJobById(string jobID)
+        public Job GetJobById(string jobID)
         {
             Job j;
             if(jobs.TryGetValue(jobID, out j))
             {
                 return j;
+            }
+            return null;
+        }
+
+        public Job GetNewJob(Config config)
+        {
+            var jobType = config.GetString(JobConfigConstants.jobType);
+            Type type = Codolith.Reflection.ReflectionHelper.GetTypeByShortName(jobType).FirstOrDefault();
+            if(type != null)
+            {
+                return (Job)Activator.CreateInstance(type, config);
             }
             return null;
         }

@@ -60,7 +60,9 @@ namespace Thorium_Client
                         {
                             execInfo.Setup();
                             execInfo.Run();
-                            serverInterface?.TurnInTask(task,execInfo.GetResultZip());
+                            byte[] results = execInfo.GetResultsZip();
+                            execInfo.Cleanup();
+                            serverInterface?.TurnInTask(task,results);//this can be put in a seperate thread at some point
                         }
                         catch(Exception execEx)
                         {

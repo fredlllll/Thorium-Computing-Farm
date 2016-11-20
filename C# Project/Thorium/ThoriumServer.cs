@@ -16,7 +16,6 @@ namespace Thorium_Server
     public class ThoriumServer
     {
         const string configFileName = "serverconfig.xml";
-        public const string sharedDataConfigName = "serverConfig";
 
         Config config;
         TcpServerChannel tcpChannel;
@@ -33,19 +32,41 @@ namespace Thorium_Server
             TaskManager.JobManager = JobManager;
 
             config = new Config(new FileInfo(configFileName));
-            SharedData.Set(sharedDataConfigName, this.config);
-            serverInterface = new ThoriumClientServerInterface(this);//does this belong here or in start?
+            SharedData.Set(ServerConfigConstants.sharedServerConfigName, this.config);
+            serverInterface = new ThoriumClientServerInterface(this);
         }
 
         public void Start()
         {
-            int instanceServerPort = config.GetInt("instanceServerPort");
+            int instanceServerPort = config.GetInt(ServerConfigConstants.remotingServerPort);
 
             tcpChannel = new TcpServerChannel(instanceServerPort);
             ChannelServices.RegisterChannel(tcpChannel, true);
             RemotingServices.Marshal(serverInterface, Constants.THORIUM_SERVER_INTERFACE_FOR_CLIENT);
 
-            //TODO: load jobs and tasks
+            DirectoryInfo jobsFolder = new DirectoryInfo(config.GetString(ServerConfigConstants.jobsFolder));
+            var jobs = jobsFolder.GetFiles("*.xml");
+            foreach(var job in jobs)
+            {
+                Config jobConfig = new Config(job);
+                try
+                {
+                    Job j = JobManager.GetNewJob(jobConfig);
+                    if(j != null)
+                    {
+                        JobManager.AddJob(j);
+                    }
+                    else
+                    {
+                        Console.WriteLine("Could not find type for " + job);
+                    }
+                }
+                catch(Exception jobCreateEx)
+                {
+                    Console.WriteLine("Exception when creating job: " + job);
+                    Console.WriteLine(jobCreateEx);
+                }
+            }
         }
 
         public void Stop()

@@ -16,9 +16,10 @@ namespace Thorium_Shared.Blender
         int frame;
         int tilesPerFrame;
         int tile;
-        string[] layers;
-        byte[] zipData;
+        Layer[] layers;
+        public byte[] zipData;
         string filename;
+        Resolution resolution;
 
         FileInfo tmpZip;
         DirectoryInfo workingDir;
@@ -30,17 +31,16 @@ namespace Thorium_Shared.Blender
             frame = data.GetInt("frame");
             tilesPerFrame = data.GetInt("tilesPerFrame");
             tile = data.GetInt("tile");
-            layers = data.GetString("layers").Split(',');
+            layers = data.GetString("layers").Split(',').Select((x)=> { return Layer.Parse(x); }).ToArray();
             filename = data.GetString("filename");
+            resolution = Resolution.Parse(data.GetString("resolution"));
         }
 
         public void Setup()
         {
             tmpZip = new FileInfo(Path.GetRandomFileName());
-            using(FileStream fs = new FileStream(tmpZip.FullName, FileMode.Truncate))
-            {
-                fs.Write(zipData, 0, zipData.Length);
-            }
+            File.WriteAllBytes(tmpZip.FullName, zipData);
+
             workingDir = new DirectoryInfo(Path.GetRandomFileName());
             if(workingDir.Exists)
             {
@@ -48,8 +48,6 @@ namespace Thorium_Shared.Blender
             }
             workingDir.Create();
             ZipFile.ExtractToDirectory(tmpZip.FullName,workingDir.FullName);
-            //ZipFile.ExtractToDirectory
-            //TODO: unpack zip
         }
 
         public void Run()
@@ -60,10 +58,14 @@ namespace Thorium_Shared.Blender
             rea.ExecutableFile = "blender";
             rea.Arguments = new string[] { };//TODO
             rea.Execute();
-            //TODO: gotta get the result back to the main server
         }
 
-        public byte[] GetResultZip()
+        public void Cleanup()
+        {
+            //workingDir.Delete();
+        }
+
+        public byte[] GetResultsZip()
         {
             throw new NotImplementedException();
         }
