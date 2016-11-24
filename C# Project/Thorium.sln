@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Thorium-Server", "Thorium\Thorium-Server.csproj", "{1440817D-1468-46DB-B086-E3049A3ADB92}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Thorium-Server", "Thorium-Server\Thorium-Server.csproj", "{1440817D-1468-46DB-B086-E3049A3ADB92}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Thorium-Client", "Thorium-Client\Thorium-Client.csproj", "{736545C5-DBBC-45F2-818B-6F2E79251D46}"
 EndProject
