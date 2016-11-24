@@ -40,5 +40,7 @@ namespace Thorium_Shared
         }*/
 
         public abstract void InitializeTasks();
+
+        public abstract void OnJobFinished();
     }
 }

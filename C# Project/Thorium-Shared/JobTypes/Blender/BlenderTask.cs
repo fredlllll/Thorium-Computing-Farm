@@ -5,6 +5,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Thorium_Shared.Services;
+using Thorium_Shared.Services.Server;
 
 namespace Thorium_Shared.Blender
 {
@@ -14,8 +16,8 @@ namespace Thorium_Shared.Blender
         int tilesPerFrame;
         int tile;
         Layer[] layers;
-        FileInfo zipFile;
         string filename;
+        DirectoryInfo outputDirectory;
         Resolution resolution;
 
         public BlenderTask(string parentJobID, Config data) : base(parentJobID, data)
@@ -24,16 +26,23 @@ namespace Thorium_Shared.Blender
             tilesPerFrame = data.GetInt("tilesPerFrame");
             tile = data.GetInt("tile");
             layers = data.GetString("layers").Split(',').Select((x) => { return Layer.Parse(x); }).ToArray();
-            zipFile = new FileInfo(data.GetString("zipFile"));
             filename = data.GetString("filename");
             resolution = Resolution.Parse(data.GetString("resolution"));
+            outputDirectory = new DirectoryInfo(data.GetString("outputDirectory"));
         }
 
         public override ITaskExecutionInfo GetExecutionInfo()
         {
             BlenderExecutionInfo bei = new BlenderExecutionInfo(Data);
-            bei.zipData = File.ReadAllBytes(zipFile.FullName);
             return bei;
+        }
+
+        public override void FinalizeTask()
+        {
+            var cache = SharedData.Get<AServiceManager<AServerService>>(ServerConfigConstants.SharedDataID_ServerServiceManager).GetService<ResultsCache>();
+
+            FileInfo resultFile = new FileInfo(Path.Combine(outputDirectory.FullName, Path.GetFileNameWithoutExtension(filename) + "_" + frame.ToString() + "_" + tile.ToString()));
+            File.WriteAllBytes(resultFile.FullName, cache.GetResult(JobID + ID, true));
         }
     }
 }

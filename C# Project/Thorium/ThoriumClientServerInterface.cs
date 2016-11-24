@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using Thorium_Shared;
+using Thorium_Shared.Services;
 
 namespace Thorium_Server
 {
@@ -19,6 +20,7 @@ namespace Thorium_Server
         public ThoriumClientServerInterface(ThoriumServer server)
         {
             this.server = server;
+            SharedData.Set(ClientConfigConstants.SharedDataID_ServerInterfaceForClient, this);
         }
 
         public void RegisterClient(IThoriumClientInterfaceForServer client)
@@ -42,9 +44,14 @@ namespace Thorium_Server
             server.TaskManager.ReturnUnfinishedTask(task);
         }
 
-        public void TurnInTask(Task task, byte[] resultZip)//TODO:ouch, gotta find something better than this
+        public void TurnInTask(Task task)
         {
             server.TaskManager.TurnInTask(task);
+        }
+
+        public AServerService GetService(Type type)
+        {
+            return server.ServerServiceManager.GetService(type);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using Thorium_Shared;
@@ -9,10 +10,40 @@ namespace Thorium_Server
     public class JobManager
     {
         TaskManager taskManager;
+        ThoriumServer server;
         Dictionary<string, Job> jobs = new Dictionary<string, Job>();
-        public JobManager(TaskManager taskManager)
+        public JobManager(TaskManager taskManager,ThoriumServer server)
         {
             this.taskManager = taskManager;
+            this.server = server;
+        }
+
+        public void Initialize()
+        {
+            DirectoryInfo jobsFolder = new DirectoryInfo(server.Config.GetString(ServerConfigConstants.jobsFolder));
+            Directory.CreateDirectory(jobsFolder.FullName);
+            var jobs = jobsFolder.GetFiles("*.xml");
+            foreach(var job in jobs)
+            {
+                Config jobConfig = new Config(job);
+                try
+                {
+                    Job j = GetNewJob(jobConfig);
+                    if(j != null)
+                    {
+                        AddJob(j);
+                    }
+                    else
+                    {
+                        Console.WriteLine("Could not find type for " + job);
+                    }
+                }
+                catch(Exception jobCreateEx)
+                {
+                    Console.WriteLine("Exception when creating job: " + job);
+                    Console.WriteLine(jobCreateEx);
+                }
+            }
         }
 
         public void AddJob(Job job)

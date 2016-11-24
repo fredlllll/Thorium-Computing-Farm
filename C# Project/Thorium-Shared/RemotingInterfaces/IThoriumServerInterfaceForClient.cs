@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Thorium_Shared.Services;
 
 namespace Thorium_Shared
 {
@@ -13,6 +14,8 @@ namespace Thorium_Shared
 
         Task GetTask(IThoriumClientInterfaceForServer instance);
         void ReturnUnfinishedTask(Task task, string reason);
-        void TurnInTask(Task task, byte[] resultZip);
+        void TurnInTask(Task task);
+
+        AServerService GetService(Type type);
     }
 }

@@ -14,7 +14,7 @@ namespace Thorium_Shared.ExecutionActions
         public string ExecutionFolder { get; set; }
         public string[] Arguments { get; set; }
 
-        public void Execute()
+        public void ExecuteAndWaitForExit()
         {
             ProcessStartInfo psi = new ProcessStartInfo();
             psi.FileName = ExecutableFile;

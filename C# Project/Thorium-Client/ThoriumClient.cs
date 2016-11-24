@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.Remoting.Channels;
 using System.Runtime.Remoting.Channels.Tcp;
@@ -12,34 +13,40 @@ namespace Thorium_Client
 {
     public class ThoriumClient
     {
+        const string configFileName = "clientconfig.xml";
+
         TcpClientChannel tcpChannel;
-        IThoriumServerInterfaceForClient serverInterface;
+        IThoriumServerInterfaceForClient ServerInterface { get; set; }
         ThoriumClientInterfaceForServer instance;
+        ClientServiceManager clientServiceManager = new ClientServiceManager();
+        Config Config { get; set; }
         Thread runner;
         public ThoriumClient()
         {
+            Config = new Config(new FileInfo(configFileName));
+            SharedData.Set(ClientConfigConstants.SharedDataID_ClientConfig,Config);
+
             tcpChannel = new TcpClientChannel();
             ChannelServices.RegisterChannel(tcpChannel, true);
-            serverInterface = (IThoriumServerInterfaceForClient)Activator.GetObject(typeof(IThoriumServerInterfaceForClient), "tcp://127.0.0.1/" + Constants.THORIUM_SERVER_INTERFACE_FOR_CLIENT);
+            string serverAddress = Config.GetString("serverAddress");
+            ServerInterface = (IThoriumServerInterfaceForClient)Activator.GetObject(typeof(IThoriumServerInterfaceForClient), "tcp://"+serverAddress+"/" + Constants.THORIUM_SERVER_INTERFACE_FOR_CLIENT);
             instance = new ThoriumClientInterfaceForServer();
 
-            serverInterface.RegisterClient(instance);
+            ServerInterface.RegisterClient(instance);
             runner = new Thread(Run);
-            /*if(serverInterface.RegisterClient(instance))
-            {
-                runner = new Thread(Run);
-            }
-            else
-            {
-                Shutdown();
-                Util.ShutdownSystem();
-            }*/
+
+            SharedData.Set(ClientConfigConstants.SharedDataID_ThoriumClient, this);
+        }
+
+        public void Start()
+        {
+            runner.Start();
         }
 
         public void Shutdown()
         {
-            serverInterface.UnregisterClient(instance);
-            serverInterface = null;
+            ServerInterface.UnregisterClient(instance);
+            ServerInterface = null;
             runner.Interrupt();
             ChannelServices.UnregisterChannel(tcpChannel);
 
@@ -52,7 +59,7 @@ namespace Thorium_Client
             {
                 while(true)
                 {
-                    var task = serverInterface?.GetTask(instance);
+                    var task = ServerInterface?.GetTask(instance);
                     if(task != null)
                     {
                         var execInfo = task.GetExecutionInfo();
@@ -60,13 +67,12 @@ namespace Thorium_Client
                         {
                             execInfo.Setup();
                             execInfo.Run();
-                            byte[] results = execInfo.GetResultsZip();
                             execInfo.Cleanup();
-                            serverInterface?.TurnInTask(task,results);//this can be put in a seperate thread at some point
+                            ServerInterface?.TurnInTask(task);//this can be put in a seperate thread at some point
                         }
                         catch(Exception execEx)
                         {
-                            serverInterface.ReturnUnfinishedTask(task, execEx.ToString());
+                            ServerInterface?.ReturnUnfinishedTask(task, execEx.ToString());
                         }
                         lastTimeJobCompleted = DateTime.UtcNow;
                     }
@@ -87,7 +93,7 @@ namespace Thorium_Client
             catch(Exception ex)
             {
                 //TODO: log
-                serverInterface?.UnregisterClient(instance);
+                ServerInterface?.UnregisterClient(instance);
                 Util.ShutdownSystem();
             }
 

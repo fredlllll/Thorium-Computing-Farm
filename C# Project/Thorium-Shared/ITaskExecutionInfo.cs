@@ -12,6 +12,5 @@ namespace Thorium_Shared
         void Setup();
         void Run();
         void Cleanup();
-        byte[] GetResultsZip();
     }
 }

@@ -31,5 +31,6 @@ namespace Thorium_Shared
         }
 
         public abstract ITaskExecutionInfo GetExecutionInfo();
+        public abstract void FinalizeTask();
     }
 }

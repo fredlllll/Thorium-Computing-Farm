@@ -15,6 +15,7 @@ namespace Thorium_Client
             ConsoleMenu menu = new ConsoleMenu();
 
             var client = new ThoriumClient();
+            client.Start();
 
             menu.Run();
         }

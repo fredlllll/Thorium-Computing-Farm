@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="ClientManager.cs" />
     <Compile Include="JobManager.cs" />
+    <Compile Include="ServerServiceManager.cs" />
     <Compile Include="TaskManager.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -16,12 +16,15 @@ namespace Thorium_Shared
         public Config(FileInfo file)
         {
             XmlDocument doc = new XmlDocument();
-            doc.Load(file.FullName);
-            foreach(XmlNode node in doc.SelectNodes("/config/option"))
+            if(file.Exists)
             {
-                string name = node.Attributes["name"].Value;
-                string value = node.InnerText;
-                dict[name] = value;
+                doc.Load(file.FullName);
+                foreach(XmlNode node in doc.SelectNodes("/config/option"))
+                {
+                    string name = node.Attributes["name"].Value;
+                    string value = node.InnerText;
+                    dict[name] = value;
+                }
             }
         }
 

@@ -5,6 +5,7 @@
   <option name="tilesPerFrame">2</option>
   <option name="layers">layer1,layer2</option>
   <option name="sourceDirectory">/home/me/blend/crap</option>
+  <option name="outputDirectory">/home/me/blend/crapOutput</option>
   <option name="filename">crip.blend</option>
   <option name="engine">Cycles</option>
   <option name="engineUseGPU">false</option>

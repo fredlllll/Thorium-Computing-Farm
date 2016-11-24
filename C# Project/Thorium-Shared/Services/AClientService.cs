@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Thorium_Server.BackendConfigs.Blender
+namespace Thorium_Shared.Services
 {
-    public class BlenderRenderConfig
+    public abstract class AClientService : IService
     {
     }
 }

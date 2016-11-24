@@ -37,9 +37,10 @@ namespace Thorium_Server
         {
             processingTasks.TryRemove(task.ID, out task);
             finishedTasks[task.ID] = task;
-            Job job = JobManager.GetJobById(task.JobID);
-            //uhhh wut now?
+            task.FinalizeTask();
             task.State = TaskState.Finished;
+            //Job job = JobManager.GetJobById(task.JobID);
+            //gotta somehow check if a job is done now
         }
 
         public void ReturnUnfinishedTask(Task task)

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Thorium_Server.BackendConfigs.Blender
+namespace Thorium_Shared.Services
 {
-    class NativeConfig
+    public interface IService
     {
     }
 }

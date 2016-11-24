@@ -6,6 +6,8 @@ using System.IO.Compression;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Thorium_Shared.Services;
+using Thorium_Shared.Services.Server;
 
 namespace Thorium_Shared.Blender
 {
@@ -14,14 +16,16 @@ namespace Thorium_Shared.Blender
         List<FrameBounds> frameBounds = new List<FrameBounds>();
         int tilesPerFrame;
         List<Layer> layers = new List<Layer>();
-        FileInfo zipFile;
         string filename;
         Resolution resolution;
         BlenderRenderEngine engine = BlenderRenderEngine.Cycles;
         BlenderEngineConfig engineConfig = new BlenderEngineConfig();
+        DirectoryInfo jobOutputDirectory;
 
         public BlenderJob(Config data) : base(data)
         {
+            DataPackageProviderServer packageProvider = SharedData.Get<AServiceManager<AServerService>>(ServerConfigConstants.SharedDataID_ServerServiceManager).GetService<DataPackageProviderServer>();
+
             var fbs = data.GetString("frameBounds").Split(',');
             foreach(var s in fbs)
             {
@@ -35,17 +39,20 @@ namespace Thorium_Shared.Blender
             }
             var dir = data.GetString("sourceDirectory");
             DirectoryInfo di = new DirectoryInfo(dir);
-            DirectoryInfo tmpDir = new DirectoryInfo(SharedData.Get<Config>(ServerConfigConstants.sharedServerConfigName).GetString(ServerConfigConstants.tmpFolder));
+            packageProvider.RegisterPackage(ID, di);
+            /*DirectoryInfo tmpDir = new DirectoryInfo(SharedData.Get<Config>(ServerConfigConstants.SharedDataID_ServerConfig).GetString(ServerConfigConstants.tmpFolder));
             zipFile = new FileInfo(Path.Combine(tmpDir.FullName, ID + "_data.zip"));
             if(zipFile.Exists)
             {
                 zipFile.Delete();
             }
-            ZipFile.CreateFromDirectory(dir, zipFile.FullName);
+            ZipFile.CreateFromDirectory(dir, zipFile.FullName);*/
             filename = data.GetString("filename");
             resolution = Resolution.Parse(data.GetString("resolution"));
             engine = (BlenderRenderEngine)Enum.Parse(typeof(BlenderRenderEngine), data.GetString("engine"));
             engineConfig = BlenderEngineConfig.Create(data);
+            jobOutputDirectory = new DirectoryInfo(data.GetString("outputDirectory"));
+            Directory.CreateDirectory(jobOutputDirectory.FullName);
         }
 
         public override void InitializeTasks()
@@ -58,18 +65,25 @@ namespace Thorium_Shared.Blender
                     for(int t = 0; t < tilesPerFrame; t++)
                     {
                         Config c = new Config();
+                        c.Set("jobID", ID);
                         c.Set("frame", f);
                         c.Set("tilesPerFrame", tilesPerFrame);
                         c.Set("tile", t);
                         c.Set("layers", layersString);
-                        c.Set("zipFile", zipFile.FullName);
                         c.Set("filename", filename);
                         c.Set("resolution", resolution);
+                        c.Set("outputDirectory", jobOutputDirectory.FullName);
                         var bt = new BlenderTask(ID, c);
+                        c.Set("taskID", bt.ID);
                         tasks.Add(bt);
                     }
                 }
             }
+        }
+
+        public override void OnJobFinished()
+        {
+            //TODO: unregister package i guess
         }
     }
 }

@@ -35,37 +35,37 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BackendConfig.cs" />
-    <Compile Include="BackendConfigs\BlenderConfig.cs" />
-    <Compile Include="BackendConfigs\Blender\BlenderJobPart.cs" />
-    <Compile Include="BackendConfigs\Blender\BlenderRenderConfig.cs" />
-    <Compile Include="BackendConfigs\Blender\CyclesConfig.cs" />
-    <Compile Include="BackendConfigs\Blender\NativeConfig.cs" />
-    <Compile Include="Blender\BlenderEngineConfig.cs" />
-    <Compile Include="Blender\BlenderExecutionInfo.cs" />
-    <Compile Include="Blender\BlenderJob.cs" />
-    <Compile Include="Blender\BlenderRenderEngine.cs" />
-    <Compile Include="Blender\BlenderTask.cs" />
+    <Compile Include="ClientConfigConstants.cs" />
+    <Compile Include="JobTypes\Blender\BlenderEngineConfig.cs" />
+    <Compile Include="JobTypes\Blender\BlenderExecutionInfo.cs" />
+    <Compile Include="JobTypes\Blender\BlenderJob.cs" />
+    <Compile Include="JobTypes\Blender\BlenderRenderEngine.cs" />
+    <Compile Include="JobTypes\Blender\BlenderTask.cs" />
     <Compile Include="ClientInstanceRequest.cs" />
-    <Compile Include="Codolith.Reflection\ReflectionHelper.cs" />
-    <Compile Include="Codolith.Util\IScheduler.cs" />
-    <Compile Include="Codolith.Util\IScheduleType.cs" />
-    <Compile Include="Codolith.Util\RescheduleObject.cs" />
-    <Compile Include="Codolith.Util\ScheduledObject.cs" />
-    <Compile Include="Codolith.Util\SchedulerThreadSafe.cs" />
+    <Compile Include="Codolith\Reflection\ReflectionHelper.cs" />
+    <Compile Include="Codolith\Util\IScheduler.cs" />
+    <Compile Include="Codolith\Util\IScheduleType.cs" />
+    <Compile Include="Codolith\Util\RescheduleObject.cs" />
+    <Compile Include="Codolith\Util\ScheduledObject.cs" />
+    <Compile Include="Codolith\Util\SchedulerThreadSafe.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="ConsoleMenu.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="ExecutionActions\IExecutionAction.cs" />
     <Compile Include="ExecutionActions\RunExecutableAction.cs" />
     <Compile Include="FrameBounds.cs" />
-    <Compile Include="IThoriumClientInterfaceForServer.cs" />
+    <Compile Include="Services\AClientService.cs" />
+    <Compile Include="Services\AServerService.cs" />
+    <Compile Include="Services\Client\DataPackageProviderClient.cs" />
+    <Compile Include="Services\IService.cs" />
+    <Compile Include="Services\IServiceProvider.cs" />
+    <Compile Include="RemotingInterfaces\IThoriumClientInterfaceForServer.cs" />
     <Compile Include="ITaskExecutionInfo.cs" />
-    <Compile Include="IThoriumServerInterfaceForStorage.cs" />
-    <Compile Include="IThoriumServerInterfaceForClient.cs" />
-    <Compile Include="IThoriumStorageInterfaceForClient.cs" />
-    <Compile Include="IThoriumServerInterfaceForConfigurator.cs" />
-    <Compile Include="IThoriumStorageInterfaceForServer.cs" />
+    <Compile Include="RemotingInterfaces\IThoriumServerInterfaceForStorage.cs" />
+    <Compile Include="RemotingInterfaces\IThoriumServerInterfaceForClient.cs" />
+    <Compile Include="RemotingInterfaces\IThoriumStorageInterfaceForClient.cs" />
+    <Compile Include="RemotingInterfaces\IThoriumServerInterfaceForConfigurator.cs" />
+    <Compile Include="RemotingInterfaces\IThoriumStorageInterfaceForServer.cs" />
     <Compile Include="Job.cs" />
     <Compile Include="JobConfigConstants.cs" />
     <Compile Include="Layer.cs" />
@@ -73,18 +73,21 @@
     <Compile Include="MachineManager\IMachinePool.cs" />
     <Compile Include="MachineManager\IMachineType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RequiredFileInfo.cs" />
     <Compile Include="Resolution.cs" />
     <Compile Include="ServerConfigConstants.cs" />
+    <Compile Include="Services\AServiceManager.cs" />
+    <Compile Include="Services\Server\DataPackageProviderServer.cs" />
+    <Compile Include="Services\Server\ResultsCache.cs" />
     <Compile Include="SharedData.cs" />
     <Compile Include="Task.cs" />
     <Compile Include="Util.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Blender\BlenderConfigExample.xml">
+    <Content Include="JobTypes\Blender\BlenderConfigExample.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

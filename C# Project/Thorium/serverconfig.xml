@@ -3,4 +3,5 @@
   <option name="remotingServerPort">8100</option>
   <option name="tmpFolder">temp</option>
   <option name="jobsFolder">jobs</option>
+  <option name="services">FileCache</option>
 </config>

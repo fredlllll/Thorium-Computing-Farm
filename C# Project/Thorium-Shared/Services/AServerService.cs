@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Thorium_Shared.ExecutionActions
+namespace Thorium_Shared.Services
 {
-    public interface IExecutionAction
+    public abstract class AServerService : MarshalByRefObject, IService
     {
-        void ExecuteAndWaitForExit();
+
     }
 }

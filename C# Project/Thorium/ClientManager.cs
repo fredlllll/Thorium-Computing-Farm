@@ -53,22 +53,29 @@ namespace Thorium_Server
             bool running = true;
             while(running)
             {
-                foreach(var kv in clients)
+                if(clients.Count > 0)
                 {
-                    try
+                    foreach(var kv in clients)
                     {
-                        kv.Value.Ping();
+                        try
+                        {
+                            kv.Value.Ping();
+                        }
+                        catch(ThreadInterruptedException)
+                        {
+                            running = false;
+                            break;
+                        }
+                        catch(Exception ex)//is it socketexception? TODO
+                        {
+                            UnregisterClient(kv.Value, "Client Died!");
+                        }
                         Thread.Sleep(100);
                     }
-                    catch(ThreadInterruptedException)
-                    {
-                        running = false;
-                        break;
-                    }
-                    catch(Exception ex)//is it socketexception? TODO
-                    {
-                        UnregisterClient(kv.Value, "Client Died!");
-                    }
+                }
+                else
+                {
+                    Thread.Sleep(1000);
                 }
             }
         }
