@@ -23,31 +23,33 @@ namespace Thorium_Server
         public IEnumerable<Task> FinishedTasks { get { return finishedTasks.Values; } }
         ConcurrentDictionary<string, Task> finishedTasks = new ConcurrentDictionary<string, Task>();
 
-        public Task GetTask(IThoriumClientInterfaceForServer client)
+        public ITask GetTask(IThoriumClientInterfaceForServer client)
         {
             Task t = tasks.RemoveFirst();
-            t.State = TaskState.Processing;
-            t.ProcessingClientID = client.ID;
-            client.currentTaskID = t.ID;
-            processingTasks[t.ID] = t;
+            t.SetState(TaskState.Processing);
+            t.SetProcessingClientID(client.GetID());
+            client.SetCurrentTaskID(t.GetID());
+            processingTasks[t.GetID()] = t;
             return t;
         }
 
-        public void TurnInTask(Task task)
+        public void TurnInTask(ITask task)
         {
-            processingTasks.TryRemove(task.ID, out task);
-            finishedTasks[task.ID] = task;
+            Task tsk;
+            processingTasks.TryRemove(task.GetID(), out tsk);
+            finishedTasks[task.GetID()] = tsk;
             task.FinalizeTask();
-            task.State = TaskState.Finished;
+            task.SetState(TaskState.Finished);
             //Job job = JobManager.GetJobById(task.JobID);
             //gotta somehow check if a job is done now
         }
 
-        public void ReturnUnfinishedTask(Task task)
+        public void ReturnUnfinishedTask(ITask task)
         {
-            task.State = TaskState.NotStarted;
-            processingTasks.TryRemove(task.ID, out task);
-            tasks.Add(task, 0);
+            task.SetState(TaskState.NotStarted);
+            Task tsk;
+            processingTasks.TryRemove(task.GetID(), out tsk);
+            tasks.Add(tsk, 0);
         }
 
         /// <summary>

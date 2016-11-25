@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 
 namespace Thorium_Shared.Services
 {
-    public abstract class AServerService : MarshalByRefObject, IService
+    public interface IClientService : IService
     {
-
     }
 }

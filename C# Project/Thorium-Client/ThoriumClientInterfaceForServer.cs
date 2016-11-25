@@ -3,22 +3,24 @@ using Thorium_Shared;
 
 namespace Thorium_Client
 {
-    public class ThoriumClientInterfaceForServer : MarshalByRefObject, IThoriumClientInterfaceForServer
+    public class ThoriumClientInterfaceForServer : IThoriumClientInterfaceForServer
     {
         string id = Util.GetRandomID();
 
-        public string currentTaskID
+        protected string currentTaskID;
+        public string GetCurrentTaskID()
         {
-            get;
-            set;
+            return currentTaskID;
         }
 
-        public string ID
+        public void SetCurrentTaskID(string id)
         {
-            get
-            {
-                return id;
-            }
+            currentTaskID = id;
+        }
+
+        public string GetID()
+        {
+            return id;
         }
 
         public void AbortTask(string ID)

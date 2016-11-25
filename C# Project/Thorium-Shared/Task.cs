@@ -14,20 +14,44 @@ namespace Thorium_Shared
         Finished
     }
 
-    public abstract class Task : MarshalByRefObject
+    public abstract class Task :ITask
     {
-        public string JobID { get; }
-        public string ID { get; }
-        public string ProcessingClientID { get; set; }
-        public TaskState State { get; set; }
+        string jobId;
+        public string GetJobID()
+        {
+            return jobId;
+        }
+        string id;
+        public string GetID()
+        {
+            return id;
+        }
+        string processingClientId;
+        public string GetProcessingClientID()
+        {
+            return processingClientId;
+        }
+        public void SetProcessingClientID(string id)
+        {
+            processingClientId = id;
+        }
+        TaskState state;
+        public TaskState GetState()
+        {
+            return state;
+        }
+        public void SetState(TaskState state)
+        {
+            this.state = state;
+        }
+
         protected Config Data { get; }
 
         public Task(string parentJobID, Config data)
         {
             Data = data;
-            JobID = parentJobID;
-            ID = Util.GetRandomID();
-            GetExecutionInfo();
+            jobId = parentJobID;
+            id = Util.GetRandomID();
         }
 
         public abstract ITaskExecutionInfo GetExecutionInfo();

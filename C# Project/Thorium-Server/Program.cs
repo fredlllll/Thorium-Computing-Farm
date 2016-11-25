@@ -35,17 +35,17 @@ namespace Thorium_Server
         {
             Console.WriteLine("Waiting:");
             foreach(var t in server.TaskManager.Tasks) {
-                Console.WriteLine(t.ID);
+                Console.WriteLine(t.GetID());
             }
             Console.WriteLine("Processing:");
             foreach(var t in server.TaskManager.ProcessingTasks)
             {
-                Console.WriteLine(t.ID+ " on "+t.ProcessingClientID);
+                Console.WriteLine(t.GetID()+ " on "+t.GetProcessingClientID());
             }
             Console.WriteLine("Finished:");
             foreach(var t in server.TaskManager.FinishedTasks)
             {
-                Console.WriteLine(t.ID);
+                Console.WriteLine(t.GetID());
             }
         }
 

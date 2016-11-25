@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.Remoting.Channels;
-using System.Runtime.Remoting.Channels.Tcp;
+using System.ServiceModel;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -15,7 +14,8 @@ namespace Thorium_Client
     {
         const string configFileName = "clientconfig.xml";
 
-        TcpClientChannel tcpChannel;
+        
+        ChannelFactory<IThoriumServerInterfaceForClient> channelFactory;
         IThoriumServerInterfaceForClient ServerInterface { get; set; }
         ThoriumClientInterfaceForServer instance;
         ClientServiceManager clientServiceManager = new ClientServiceManager();
@@ -26,10 +26,13 @@ namespace Thorium_Client
             Config = new Config(new FileInfo(configFileName));
             SharedData.Set(ClientConfigConstants.SharedDataID_ClientConfig,Config);
 
-            tcpChannel = new TcpClientChannel();
-            ChannelServices.RegisterChannel(tcpChannel, true);
+            NetTcpBinding tcpBinding = new NetTcpBinding();
             string serverAddress = Config.GetString("serverAddress");
-            ServerInterface = (IThoriumServerInterfaceForClient)Activator.GetObject(typeof(IThoriumServerInterfaceForClient), "tcp://"+serverAddress+"/" + Constants.THORIUM_SERVER_INTERFACE_FOR_CLIENT);
+            EndpointAddress wcfAddress = new EndpointAddress("net.tcp://" + serverAddress + "/"+Constants.THORIUM_SERVER_INTERFACE_FOR_CLIENT);
+            channelFactory = new ChannelFactory<IThoriumServerInterfaceForClient>(tcpBinding, wcfAddress);
+            ServerInterface = channelFactory.CreateChannel();
+            
+
             instance = new ThoriumClientInterfaceForServer();
 
             ServerInterface.RegisterClient(instance);
@@ -48,8 +51,7 @@ namespace Thorium_Client
             ServerInterface.UnregisterClient(instance);
             ServerInterface = null;
             runner.Interrupt();
-            ChannelServices.UnregisterChannel(tcpChannel);
-
+            channelFactory.Close();
         }
 
         void Run()

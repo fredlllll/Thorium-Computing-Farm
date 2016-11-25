@@ -24,7 +24,7 @@ namespace Thorium_Shared.Blender
 
         public BlenderJob(Config data) : base(data)
         {
-            DataPackageProviderServer packageProvider = SharedData.Get<AServiceManager<AServerService>>(ServerConfigConstants.SharedDataID_ServerServiceManager).GetService<DataPackageProviderServer>();
+            DataPackageProviderServer packageProvider = SharedData.Get<AServiceManager<IServerService>>(ServerConfigConstants.SharedDataID_ServerServiceManager).GetService<DataPackageProviderServer>();
 
             var fbs = data.GetString("frameBounds").Split(',');
             foreach(var s in fbs)
@@ -74,7 +74,7 @@ namespace Thorium_Shared.Blender
                         c.Set("resolution", resolution);
                         c.Set("outputDirectory", jobOutputDirectory.FullName);
                         var bt = new BlenderTask(ID, c);
-                        c.Set("taskID", bt.ID);
+                        c.Set("taskID", bt.GetID());
                         tasks.Add(bt);
                     }
                 }

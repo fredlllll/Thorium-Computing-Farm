@@ -10,7 +10,7 @@ using Thorium_Shared.Services.Server;
 
 namespace Thorium_Shared.Services.Client
 {
-    public class DataPackageProviderClient : AClientService
+    public class DataPackageProviderClient : IClientService
     {
         DataPackageProviderServer serverService;
         DirectoryInfo packageDir;

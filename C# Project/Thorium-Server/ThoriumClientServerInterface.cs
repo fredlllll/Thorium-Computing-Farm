@@ -2,20 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.ServiceModel;
 using System.Text;
 using Thorium_Shared;
 using Thorium_Shared.Services;
 
 namespace Thorium_Server
 {
-    public class ThoriumClientServerInterface : MarshalByRefObject, IThoriumServerInterfaceForClient
+    [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
+    public class ThoriumClientServerInterface : IThoriumServerInterfaceForClient
     {
         ThoriumServer server;
-
-        public override object InitializeLifetimeService()
-        {
-            return null; //infinite lease lifetime
-        }
 
         public ThoriumClientServerInterface(ThoriumServer server)
         {
@@ -33,23 +30,23 @@ namespace Thorium_Server
             server.ClientManager.UnregisterClient(client);
         }
 
-        public Task GetTask(IThoriumClientInterfaceForServer client)
+        public ITask GetTask(IThoriumClientInterfaceForServer client)
         {
             return server.TaskManager.GetTask(client);
         }
 
-        public void ReturnUnfinishedTask(Task task, string reason)
+        public void ReturnUnfinishedTask(ITask task, string reason)
         {
             Console.WriteLine("unfinished Task returned: " + reason);
             server.TaskManager.ReturnUnfinishedTask(task);
         }
 
-        public void TurnInTask(Task task)
+        public void TurnInTask(ITask task)
         {
             server.TaskManager.TurnInTask(task);
         }
 
-        public AServerService GetService(Type type)
+        public IServerService GetService(Type type)
         {
             return server.ServerServiceManager.GetService(type);
         }

@@ -40,7 +40,7 @@
       <HintPath>D:\Dropbox\progging\C#\Codolith.NetLib\Codolith.Util\bin\Release\Codolith.Util.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Runtime.Remoting" />
+    <Reference Include="System.ServiceModel" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ClientManager.cs" />

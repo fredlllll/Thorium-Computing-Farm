@@ -32,10 +32,12 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ClientConfigConstants.cs" />
+    <Compile Include="ITask.cs" />
     <Compile Include="JobTypes\Blender\BlenderEngineConfig.cs" />
     <Compile Include="JobTypes\Blender\BlenderExecutionInfo.cs" />
     <Compile Include="JobTypes\Blender\BlenderJob.cs" />
@@ -54,18 +56,18 @@
     <Compile Include="ExecutionActions\IExecutionAction.cs" />
     <Compile Include="ExecutionActions\RunExecutableAction.cs" />
     <Compile Include="FrameBounds.cs" />
-    <Compile Include="Services\AClientService.cs" />
-    <Compile Include="Services\AServerService.cs" />
+    <Compile Include="Services\IClientService.cs" />
+    <Compile Include="Services\IServerService.cs" />
     <Compile Include="Services\Client\DataPackageProviderClient.cs" />
     <Compile Include="Services\IService.cs" />
     <Compile Include="Services\IServiceProvider.cs" />
-    <Compile Include="RemotingInterfaces\IThoriumClientInterfaceForServer.cs" />
+    <Compile Include="WCFInterfaces\IThoriumClientInterfaceForServer.cs" />
     <Compile Include="ITaskExecutionInfo.cs" />
-    <Compile Include="RemotingInterfaces\IThoriumServerInterfaceForStorage.cs" />
-    <Compile Include="RemotingInterfaces\IThoriumServerInterfaceForClient.cs" />
-    <Compile Include="RemotingInterfaces\IThoriumStorageInterfaceForClient.cs" />
-    <Compile Include="RemotingInterfaces\IThoriumServerInterfaceForConfigurator.cs" />
-    <Compile Include="RemotingInterfaces\IThoriumStorageInterfaceForServer.cs" />
+    <Compile Include="WCFInterfaces\IThoriumServerInterfaceForStorage.cs" />
+    <Compile Include="WCFInterfaces\IThoriumServerInterfaceForClient.cs" />
+    <Compile Include="WCFInterfaces\IThoriumStorageInterfaceForClient.cs" />
+    <Compile Include="WCFInterfaces\IThoriumServerInterfaceForConfigurator.cs" />
+    <Compile Include="WCFInterfaces\IThoriumStorageInterfaceForServer.cs" />
     <Compile Include="Job.cs" />
     <Compile Include="JobConfigConstants.cs" />
     <Compile Include="Layer.cs" />

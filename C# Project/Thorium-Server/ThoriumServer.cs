@@ -3,9 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.Remoting;
-using System.Runtime.Remoting.Channels;
-using System.Runtime.Remoting.Channels.Tcp;
+using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
 using Codolith.DBUtil;
@@ -18,7 +16,7 @@ namespace Thorium_Server
         const string configFileName = "serverconfig.xml";
 
         public Config Config { get; private set; }
-        TcpServerChannel tcpChannel;
+        ServiceHost serviceHost;
         ThoriumClientServerInterface serverInterface;
 
         public ClientManager ClientManager { get; } = new ClientManager();
@@ -41,17 +39,19 @@ namespace Thorium_Server
         {
             int instanceServerPort = Config.GetInt(ServerConfigConstants.remotingServerPort);
 
-            tcpChannel = new TcpServerChannel(instanceServerPort);
-            ChannelServices.RegisterChannel(tcpChannel, true);
-            RemotingServices.Marshal(serverInterface, Constants.THORIUM_SERVER_INTERFACE_FOR_CLIENT);
+            NetTcpBinding tcpBinding = new NetTcpBinding();
+            Uri wcfAddress = new Uri("net.tcp://localhost:" + instanceServerPort + "/" + Constants.THORIUM_SERVER_INTERFACE_FOR_CLIENT);
+            serviceHost = new ServiceHost(serverInterface, wcfAddress);
+            serviceHost.AddServiceEndpoint(typeof(IThoriumServerInterfaceForClient), tcpBinding, wcfAddress);
+            serviceHost.Open();
 
             JobManager.Initialize();
         }
 
         public void Stop()
         {
-            RemotingServices.Disconnect(serverInterface);
-            ChannelServices.UnregisterChannel(tcpChannel);
+            serviceHost.Close();
+            //TODO: save stuff
         }
     }
 }

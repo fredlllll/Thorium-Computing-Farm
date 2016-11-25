@@ -41,11 +41,11 @@ namespace Thorium_Shared.Blender
             resolution = Resolution.Parse(data.GetString("resolution"));
         }
 
-        AServiceManager<AClientService> clientServiceManager;
+        AServiceManager<IClientService> clientServiceManager;
 
         public void Setup()
         {
-            clientServiceManager = SharedData.Get<AServiceManager<AClientService>>(ClientConfigConstants.SharedDataID_ClientServiceManager);
+            clientServiceManager = SharedData.Get<AServiceManager<IClientService>>(ClientConfigConstants.SharedDataID_ClientServiceManager);
             var provider = clientServiceManager.GetService<DataPackageProviderClient>();
 
             workingDir = new DirectoryInfo(Path.Combine(Path.GetTempPath(), Path.GetRandomFileName()));

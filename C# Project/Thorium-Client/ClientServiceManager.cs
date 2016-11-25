@@ -8,16 +8,16 @@ using Thorium_Shared.Services;
 
 namespace Thorium_Client
 {
-    public class ClientServiceManager : AServiceManager<AClientService>
+    public class ClientServiceManager : AServiceManager<IClientService>
     {
         public ClientServiceManager()
         {
             SharedData.Set(ClientConfigConstants.SharedDataID_ClientServiceManager,this);
         }
 
-        protected override AClientService GetNewInstance(Type type)
+        protected override IClientService GetNewInstance(Type type)
         {
-            return (AClientService)Activator.CreateInstance(type);
+            return (IClientService)Activator.CreateInstance(type);
         }
     }
 }
