@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Thorium_Shared.Services.Server
 {
-    public class DataPackageProviderServer : IServerService
+    public class DataPackageProviderServer : IDataPackageProviderServer
     {
         DirectoryInfo packageDirectory = new DirectoryInfo("DataPackageProviderPackages");
 

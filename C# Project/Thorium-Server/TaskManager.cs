@@ -16,6 +16,12 @@ namespace Thorium_Server
             set;
         }
 
+        public ClientManager ClientManager
+        {
+            get;
+            set;
+        }
+
         public IEnumerable<Task> Tasks { get { return tasks; } }
         ConcurrentPriorityList<Task> tasks = new ConcurrentPriorityList<Task>();
         public IEnumerable<Task> ProcessingTasks { get { return processingTasks.Values; } }
@@ -23,11 +29,12 @@ namespace Thorium_Server
         public IEnumerable<Task> FinishedTasks { get { return finishedTasks.Values; } }
         ConcurrentDictionary<string, Task> finishedTasks = new ConcurrentDictionary<string, Task>();
 
-        public ITask GetTask(IThoriumClientInterfaceForServer client)
+        public ITask GetTask(string clientID)
         {
             Task t = tasks.RemoveFirst();
             t.SetState(TaskState.Processing);
-            t.SetProcessingClientID(client.GetID());
+            t.SetProcessingClientID(clientID);
+            var client = ClientManager.GetClient(clientID);
             client.SetCurrentTaskID(t.GetID());
             processingTasks[t.GetID()] = t;
             return t;

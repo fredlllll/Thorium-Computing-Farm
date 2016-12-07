@@ -5,11 +5,12 @@ using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
+using Thorium_Shared.Services;
 
 namespace Thorium_Shared
 {
     [ServiceContract]
-    public interface IThoriumClientInterfaceForServer
+    public interface IThoriumClientInterfaceForServer : IService
     {
         [OperationContract]
         string GetID();

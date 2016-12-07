@@ -5,6 +5,7 @@ using System.IO.Compression;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Ninject;
 using Thorium_Shared.ExecutionActions;
 using Thorium_Shared.Services;
 using Thorium_Shared.Services.Client;
@@ -41,12 +42,10 @@ namespace Thorium_Shared.Blender
             resolution = Resolution.Parse(data.GetString("resolution"));
         }
 
-        AServiceManager<IClientService> clientServiceManager;
-
         public void Setup()
         {
-            clientServiceManager = SharedData.Get<AServiceManager<IClientService>>(ClientConfigConstants.SharedDataID_ClientServiceManager);
-            var provider = clientServiceManager.GetService<DataPackageProviderClient>();
+            //clientServiceManager = SharedData.Get<AServiceManager<IClientService>>(ClientConfigConstants.SharedDataID_ClientServiceManager);
+            var provider = ServiceManager.Instance.GetService<DataPackageProviderClient>();
 
             workingDir = new DirectoryInfo(Path.Combine(Path.GetTempPath(), Path.GetRandomFileName()));
             if(workingDir.Exists)
@@ -96,8 +95,12 @@ argv = argv[index:]
             rea.ExecuteAndWaitForExit();
 
             string[] files = Directory.GetFiles(Path.GetTempPath(), outputFileName + "*");
-            var serverInterface = SharedData.Get<IThoriumServerInterfaceForClient>(ClientConfigConstants.SharedDataID_ServerInterfaceForClient);
-            ((ResultsCache)serverInterface.GetService(typeof(ResultsCache))).RegisterResult(jobID + taskID, File.ReadAllBytes(files[0]));
+            var serverInterface = DependencyInjection.Kernel.Get<IThoriumServerInterfaceForClient>();
+
+            var address = serverInterface.GetServicePath(typeof(IResultsCache));
+            var cache = WCFServiceManager.Instance.GetServiceInstance<IResultsCache>(address);
+            cache.RegisterResult(jobID + taskID, File.ReadAllBytes(files[0]));
+            WCFServiceManager.Instance.FreeServiceInstance<IResultsCache>();
         }
 
         public void Cleanup()

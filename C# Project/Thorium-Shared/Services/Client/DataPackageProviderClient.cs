@@ -6,20 +6,23 @@ using System.IO.Compression;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Ninject;
 using Thorium_Shared.Services.Server;
 
 namespace Thorium_Shared.Services.Client
 {
-    public class DataPackageProviderClient : IClientService
+    public class DataPackageProviderClient : IDataPackageProviderClient
     {
-        DataPackageProviderServer serverService;
+        IDataPackageProviderServer serverService;
         DirectoryInfo packageDir;
         StringDictionary packages = new StringDictionary();
         FileInfo infoFile;
 
         public DataPackageProviderClient()
         {
-            serverService = (DataPackageProviderServer)SharedData.Get<IThoriumServerInterfaceForClient>(ClientConfigConstants.SharedDataID_ServerInterfaceForClient).GetService(typeof(DataPackageProviderServer));
+            //serverService = (DataPackageProviderServer)SharedData.Get<IThoriumServerInterfaceForClient>(ClientConfigConstants.SharedDataID_ServerInterfaceForClient).GetService(typeof(DataPackageProviderServer));
+            var serverInterface = DependencyInjection.Kernel.Get<IThoriumServerInterfaceForClient>();
+            serverService = WCFServiceManager.Instance.GetServiceInstance<IDataPackageProviderServer>( serverInterface.GetServicePath(typeof(IDataPackageProviderServer)));
             packageDir = new DirectoryInfo(Path.Combine(SharedData.Get<Config>(ClientConfigConstants.SharedDataID_ClientConfig).GetString(ClientConfigConstants.ConfigID_DataDirectory), "DataPackageProvider"));
             infoFile = new FileInfo(Path.Combine(packageDir.FullName, "DataPackageProviderClient.info"));
             Directory.CreateDirectory(packageDir.FullName);

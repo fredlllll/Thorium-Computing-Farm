@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Thorium_Shared.Services
 {
-    public interface IServiceProvider<T> where T : IService
+    public interface IServiceProvider
     {
-        U GetService<U>() where U : T;
-        T GetService(Type type);
+        U GetService<U>() where U : class, IService;
+        IService GetService(Type type);
     }
 }

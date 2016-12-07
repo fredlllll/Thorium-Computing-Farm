@@ -30,6 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Ninject">
+      <HintPath>..\..\Dependencies\Ninject-3.2.0.0-release-net-4.5\Ninject.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.ServiceModel" />
@@ -37,6 +40,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ClientConfigConstants.cs" />
+    <Compile Include="DependencyInjection.cs" />
     <Compile Include="ITask.cs" />
     <Compile Include="JobTypes\Blender\BlenderEngineConfig.cs" />
     <Compile Include="JobTypes\Blender\BlenderExecutionInfo.cs" />
@@ -56,11 +60,13 @@
     <Compile Include="ExecutionActions\IExecutionAction.cs" />
     <Compile Include="ExecutionActions\RunExecutableAction.cs" />
     <Compile Include="FrameBounds.cs" />
-    <Compile Include="Services\IClientService.cs" />
-    <Compile Include="Services\IServerService.cs" />
+    <Compile Include="ModuleInitializer.cs" />
     <Compile Include="Services\Client\DataPackageProviderClient.cs" />
+    <Compile Include="Services\Client\IDataPackageProviderClient.cs" />
     <Compile Include="Services\IService.cs" />
     <Compile Include="Services\IServiceProvider.cs" />
+    <Compile Include="Services\Server\IDataPackageProviderServer.cs" />
+    <Compile Include="Services\Server\IResultsCache.cs" />
     <Compile Include="WCFInterfaces\IThoriumClientInterfaceForServer.cs" />
     <Compile Include="ITaskExecutionInfo.cs" />
     <Compile Include="WCFInterfaces\IThoriumServerInterfaceForStorage.cs" />
@@ -77,12 +83,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resolution.cs" />
     <Compile Include="ServerConfigConstants.cs" />
-    <Compile Include="Services\AServiceManager.cs" />
+    <Compile Include="Services\ServiceManager.cs" />
     <Compile Include="Services\Server\DataPackageProviderServer.cs" />
     <Compile Include="Services\Server\ResultsCache.cs" />
     <Compile Include="SharedData.cs" />
     <Compile Include="Task.cs" />
     <Compile Include="Util.cs" />
+    <Compile Include="WCFServiceManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="JobTypes\Blender\BlenderConfigExample.xml">

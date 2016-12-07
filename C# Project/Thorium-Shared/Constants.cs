@@ -28,6 +28,9 @@ namespace Thorium_Shared
         /// thorium storage interface for client
         /// </summary>
         public const string THORIUM_STORAGE_INTERFACE_FOR_CLIENT = "ThoriumStorageForClient";
-
+        /// <summary>
+        /// thorium client interface for server
+        /// </summary>
+        public const string THORIUM_CLIENT_INTERFACE_FOR_SERVER = "ThoriumClientForServer";
     }
 }

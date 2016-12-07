@@ -9,20 +9,20 @@ using Thorium_Shared.Services;
 namespace Thorium_Shared
 {
     [ServiceContract]
-    public interface IThoriumServerInterfaceForClient
+    public interface IThoriumServerInterfaceForClient : IService
     {
         [OperationContract]
-        void RegisterClient(IThoriumClientInterfaceForServer instance);//place for doing client authentication, just so no random people can get access to your data TODO
+        void RegisterClient(string clientID);//place for doing client authentication, just so no random people can get access to your data TODO
         [OperationContract]
-        void UnregisterClient(IThoriumClientInterfaceForServer instance);
+        void UnregisterClient(string clientID);
         [OperationContract]
-        ITask GetTask(IThoriumClientInterfaceForServer instance);
+        ITask GetTask(string clientID);
         [OperationContract]
         void ReturnUnfinishedTask(ITask task, string reason);
         [OperationContract]
         void TurnInTask(ITask task);
 
         [OperationContract]
-        IServerService GetService(Type type);
+        string GetServicePath(Type interfaceType);
     }
 }

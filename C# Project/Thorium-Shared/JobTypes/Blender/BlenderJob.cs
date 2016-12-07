@@ -24,7 +24,7 @@ namespace Thorium_Shared.Blender
 
         public BlenderJob(Config data) : base(data)
         {
-            DataPackageProviderServer packageProvider = SharedData.Get<AServiceManager<IServerService>>(ServerConfigConstants.SharedDataID_ServerServiceManager).GetService<DataPackageProviderServer>();
+            DataPackageProviderServer packageProvider = ServiceManager.Instance.GetService<DataPackageProviderServer>();
 
             var fbs = data.GetString("frameBounds").Split(',');
             foreach(var s in fbs)

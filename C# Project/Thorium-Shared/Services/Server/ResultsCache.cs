@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Thorium_Shared.Services.Server
 {
-    public class ResultsCache : IServerService
+    public class ResultsCache : IResultsCache
     {
         Dictionary<string, byte[]> cache = new Dictionary<string, byte[]>();
         public void RegisterResult(string name, byte[] bytes)

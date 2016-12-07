@@ -39,7 +39,8 @@ namespace Thorium_Shared.Blender
 
         public override void FinalizeTask()
         {
-            var cache = SharedData.Get<AServiceManager<IServerService>>(ServerConfigConstants.SharedDataID_ServerServiceManager).GetService<ResultsCache>();
+            var cache = ServiceManager.Instance.GetService<IResultsCache>();
+            //var cache = SharedData.Get<AServiceManager<IServerService>>(ServerConfigConstants.SharedDataID_ServerServiceManager).GetService<ResultsCache>();
 
             FileInfo resultFile = new FileInfo(Path.Combine(outputDirectory.FullName, Path.GetFileNameWithoutExtension(filename) + "_" + frame.ToString() + "_" + tile.ToString()));
             File.WriteAllBytes(resultFile.FullName, cache.GetResult(GetJobID() + GetID(), true));

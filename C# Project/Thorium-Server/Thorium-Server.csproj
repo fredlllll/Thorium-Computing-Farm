@@ -33,11 +33,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Codolith.DBUtil">
-      <HintPath>D:\Dropbox\progging\C#\Codolith.NetLib\Codolith.DBUtil\bin\Debug\Codolith.DBUtil.dll</HintPath>
-    </Reference>
     <Reference Include="Codolith.Util">
       <HintPath>D:\Dropbox\progging\C#\Codolith.NetLib\Codolith.Util\bin\Release\Codolith.Util.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject">
+      <HintPath>..\..\Dependencies\Ninject-3.2.0.0-release-net-4.5\Ninject.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ServiceModel" />
@@ -45,7 +45,6 @@
   <ItemGroup>
     <Compile Include="ClientManager.cs" />
     <Compile Include="JobManager.cs" />
-    <Compile Include="ServerServiceManager.cs" />
     <Compile Include="TaskManager.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

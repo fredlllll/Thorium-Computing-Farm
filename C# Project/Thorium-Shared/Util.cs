@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
+using System.ServiceModel;
+using System.ServiceModel.Channels;
 
 namespace Thorium_Shared
 {
@@ -39,8 +41,18 @@ namespace Thorium_Shared
         public static string GetRandomString(int length)
         {
             const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-            return new string(Enumerable.Repeat(chars, length)
-              .Select(s => s[R.Next(s.Length)]).ToArray());
+            return new string(Enumerable.Repeat(chars, length).Select(s => s[R.Next(s.Length)]).ToArray());
+        }
+
+        public static string GetWCFClientHost()
+        {
+            var properties = OperationContext.Current.IncomingMessageProperties;
+            var endpointProperty = properties[RemoteEndpointMessageProperty.Name] as RemoteEndpointMessageProperty;
+            if(endpointProperty != null)
+            {
+                return endpointProperty.Address;
+            }
+            return null;
         }
     }
 }

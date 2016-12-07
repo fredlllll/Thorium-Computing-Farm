@@ -17,22 +17,24 @@ namespace Thorium_Server
         public ThoriumClientServerInterface(ThoriumServer server)
         {
             this.server = server;
-            SharedData.Set(ClientConfigConstants.SharedDataID_ServerInterfaceForClient, this);
         }
 
-        public void RegisterClient(IThoriumClientInterfaceForServer client)
+        public void RegisterClient(string clientID)
         {
+            //string host = Util.GetWCFClientHost();
+            var client = OperationContext.Current.GetCallbackChannel<IThoriumClientInterfaceForServer>();
+            //var client = WCFServiceManager.Instance.GetServiceInstance<IThoriumClientInterfaceForServer>(Constants.THORIUM_CLIENT_INTERFACE_FOR_SERVER, host);
             server.ClientManager.RegisterClient(client);
         }
 
-        public void UnregisterClient(IThoriumClientInterfaceForServer client)
+        public void UnregisterClient(string clientID)
         {
-            server.ClientManager.UnregisterClient(client);
+            server.ClientManager.UnregisterClient(clientID);
         }
 
-        public ITask GetTask(IThoriumClientInterfaceForServer client)
+        public ITask GetTask(string clientID)
         {
-            return server.TaskManager.GetTask(client);
+            return server.TaskManager.GetTask(clientID);
         }
 
         public void ReturnUnfinishedTask(ITask task, string reason)
@@ -46,9 +48,11 @@ namespace Thorium_Server
             server.TaskManager.TurnInTask(task);
         }
 
-        public IServerService GetService(Type type)
+        public string GetServicePath(Type interfaceType)
         {
-            return server.ServerServiceManager.GetService(type);
+            var service = ServiceManager.Instance.GetService(interfaceType);
+            var address = WCFServiceManager.Instance.HostServiceInstance(service);
+            return address;
         }
     }
 }

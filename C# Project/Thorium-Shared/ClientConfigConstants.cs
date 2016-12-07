@@ -8,11 +8,11 @@ namespace Thorium_Shared
 {
     public static class ClientConfigConstants
     {
-        public const string SharedDataID_ClientServiceManager = "ClientServiceManager";
         public const string SharedDataID_ThoriumClient = "ThoriumClient";
-        public const string SharedDataID_ServerInterfaceForClient = "ServerInterfaceForClient";
         public const string SharedDataID_ClientConfig = "ClientConfig";
 
         public const string ConfigID_DataDirectory = "DataDirectory";
+        public const string ConfigID_WCFPort = "wcfPort";
+        public const string ConfigID_WCFAddress = "wcfAddress";
     }
 }

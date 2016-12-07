@@ -37,9 +37,9 @@ namespace Thorium_Server
             Console.WriteLine("Client Registered: " + client.GetID());
         }
 
-        public void UnregisterClient(IThoriumClientInterfaceForServer client)
+        public void UnregisterClient(string clientID)
         {
-            UnregisterClient(client, null);
+            UnregisterClient(clients[clientID], null);
         }
 
         void UnregisterClient(IThoriumClientInterfaceForServer client, string reason)

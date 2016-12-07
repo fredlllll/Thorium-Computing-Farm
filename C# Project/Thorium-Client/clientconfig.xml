@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <config>
-  <option name="serverAddress">127.0.0.1:8100</option>
+  <option name="wcfPort">8100</option>
+  <option name="wcfAddress">127.0.0.1</option>
   <option name="DataDirectory">/var/thoriumClient/</option>
 </config>

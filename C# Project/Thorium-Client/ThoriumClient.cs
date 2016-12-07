@@ -6,6 +6,7 @@ using System.ServiceModel;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Ninject;
 using Thorium_Shared;
 
 namespace Thorium_Client
@@ -14,28 +15,25 @@ namespace Thorium_Client
     {
         const string configFileName = "clientconfig.xml";
 
-        
-        ChannelFactory<IThoriumServerInterfaceForClient> channelFactory;
-        IThoriumServerInterfaceForClient ServerInterface { get; set; }
-        ThoriumClientInterfaceForServer instance;
-        ClientServiceManager clientServiceManager = new ClientServiceManager();
         Config Config { get; set; }
         Thread runner;
         public ThoriumClient()
         {
             Config = new Config(new FileInfo(configFileName));
-            SharedData.Set(ClientConfigConstants.SharedDataID_ClientConfig,Config);
+            SharedData.Set(ClientConfigConstants.SharedDataID_ClientConfig, Config);
 
-            NetTcpBinding tcpBinding = new NetTcpBinding();
-            string serverAddress = Config.GetString("serverAddress");
-            EndpointAddress wcfAddress = new EndpointAddress("net.tcp://" + serverAddress + "/"+Constants.THORIUM_SERVER_INTERFACE_FOR_CLIENT);
-            channelFactory = new ChannelFactory<IThoriumServerInterfaceForClient>(tcpBinding, wcfAddress);
-            ServerInterface = channelFactory.CreateChannel();
-            
+            string serverAddress = Config.GetString(ClientConfigConstants.ConfigID_WCFAddress);
+            int port = Config.GetInt(ClientConfigConstants.ConfigID_WCFPort);
+            WCFServiceManager.Instance.Port = port;
+            WCFServiceManager.Instance.RemoteHost = serverAddress;
 
-            instance = new ThoriumClientInterfaceForServer();
+            IThoriumServerInterfaceForClient serverInterface;
+            DependencyInjection.Kernel.Bind<IThoriumServerInterfaceForClient>().ToConstant(serverInterface = WCFServiceManager.Instance.GetServiceInstance<IThoriumServerInterfaceForClient>(Constants.THORIUM_SERVER_INTERFACE_FOR_CLIENT));
+            IThoriumClientInterfaceForServer clientInterface;
+            DependencyInjection.Kernel.Bind<IThoriumClientInterfaceForServer>().ToConstant(clientInterface = new ThoriumClientInterfaceForServer());
+            WCFServiceManager.Instance.HostServiceInstance(clientInterface, Constants.THORIUM_CLIENT_INTERFACE_FOR_SERVER);
 
-            ServerInterface.RegisterClient(instance);
+            serverInterface.RegisterClient(clientInterface.GetID());//i basically have to tell the server how he can reach me... but i dunno how. ip could be local or external, but what about stupid routers without loopback?
             runner = new Thread(Run);
 
             SharedData.Set(ClientConfigConstants.SharedDataID_ThoriumClient, this);
@@ -48,20 +46,25 @@ namespace Thorium_Client
 
         public void Shutdown()
         {
-            ServerInterface.UnregisterClient(instance);
-            ServerInterface = null;
+            var serverInterface = DependencyInjection.Kernel.Get<IThoriumServerInterfaceForClient>();
+            var clientInterface = DependencyInjection.Kernel.Get<IThoriumClientInterfaceForServer>();
+            serverInterface.UnregisterClient(clientInterface.GetID());
+            serverInterface = null;
             runner.Interrupt();
-            channelFactory.Close();
+
+            WCFServiceManager.Instance.FreeServiceInstance<IThoriumServerInterfaceForClient>();
         }
 
         void Run()
         {
             DateTime lastTimeJobCompleted = DateTime.UtcNow;
+            var serverInterface = DependencyInjection.Kernel.Get<IThoriumServerInterfaceForClient>();
+            var clientInterface = DependencyInjection.Kernel.Get<IThoriumClientInterfaceForServer>();
             try
             {
                 while(true)
                 {
-                    var task = ServerInterface?.GetTask(instance);
+                    var task = serverInterface?.GetTask(clientInterface.GetID());
                     if(task != null)
                     {
                         var execInfo = task.GetExecutionInfo();
@@ -70,11 +73,11 @@ namespace Thorium_Client
                             execInfo.Setup();
                             execInfo.Run();
                             execInfo.Cleanup();
-                            ServerInterface?.TurnInTask(task);//this can be put in a seperate thread at some point
+                            serverInterface?.TurnInTask(task);//this can be put in a seperate thread at some point
                         }
                         catch(Exception execEx)
                         {
-                            ServerInterface?.ReturnUnfinishedTask(task, execEx.ToString());
+                            serverInterface?.ReturnUnfinishedTask(task, execEx.ToString());
                         }
                         lastTimeJobCompleted = DateTime.UtcNow;
                     }
@@ -95,7 +98,7 @@ namespace Thorium_Client
             catch(Exception ex)
             {
                 //TODO: log
-                ServerInterface?.UnregisterClient(instance);
+                serverInterface?.UnregisterClient(clientInterface.GetID());
                 Util.ShutdownSystem();
             }
 

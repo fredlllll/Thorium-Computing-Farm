@@ -1,8 +1,10 @@
 ﻿using System;
+using System.ServiceModel;
 using Thorium_Shared;
 
 namespace Thorium_Client
 {
+    [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
     public class ThoriumClientInterfaceForServer : IThoriumClientInterfaceForServer
     {
         string id = Util.GetRandomID();
