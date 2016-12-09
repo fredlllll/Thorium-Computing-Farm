@@ -29,12 +29,12 @@ namespace Thorium_Server
         public IEnumerable<Task> FinishedTasks { get { return finishedTasks.Values; } }
         ConcurrentDictionary<string, Task> finishedTasks = new ConcurrentDictionary<string, Task>();
 
-        public ITask GetTask(string clientID)
+        public ITask GetTask(IThoriumClientInterfaceForServer client)
         {
+            var clientID = client.GetID();
             Task t = tasks.RemoveFirst();
             t.SetState(TaskState.Processing);
             t.SetProcessingClientID(clientID);
-            var client = ClientManager.GetClient(clientID);
             client.SetCurrentTaskID(t.GetID());
             processingTasks[t.GetID()] = t;
             return t;

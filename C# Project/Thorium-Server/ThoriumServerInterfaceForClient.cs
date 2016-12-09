@@ -9,32 +9,32 @@ using Thorium_Shared.Services;
 
 namespace Thorium_Server
 {
-    [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
-    public class ThoriumClientServerInterface : IThoriumServerInterfaceForClient
+    [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single, IncludeExceptionDetailInFaults = true,ConcurrencyMode = ConcurrencyMode.Reentrant)]
+    public class ThoriumServerInterfaceForClient : IThoriumServerInterfaceForClient
     {
         ThoriumServer server;
 
-        public ThoriumClientServerInterface(ThoriumServer server)
+        public ThoriumServerInterfaceForClient(ThoriumServer server)
         {
             this.server = server;
         }
 
-        public void RegisterClient(string clientID)
+        public void RegisterClient()
         {
-            //string host = Util.GetWCFClientHost();
             var client = OperationContext.Current.GetCallbackChannel<IThoriumClientInterfaceForServer>();
-            //var client = WCFServiceManager.Instance.GetServiceInstance<IThoriumClientInterfaceForServer>(Constants.THORIUM_CLIENT_INTERFACE_FOR_SERVER, host);
             server.ClientManager.RegisterClient(client);
         }
 
-        public void UnregisterClient(string clientID)
+        public void UnregisterClient()
         {
-            server.ClientManager.UnregisterClient(clientID);
+            var client = OperationContext.Current.GetCallbackChannel<IThoriumClientInterfaceForServer>();
+            server.ClientManager.UnregisterClient(client);
         }
 
-        public ITask GetTask(string clientID)
+        public ITask GetTask()
         {
-            return server.TaskManager.GetTask(clientID);
+            var client = OperationContext.Current.GetCallbackChannel<IThoriumClientInterfaceForServer>();
+            return server.TaskManager.GetTask(client);
         }
 
         public void ReturnUnfinishedTask(ITask task, string reason)

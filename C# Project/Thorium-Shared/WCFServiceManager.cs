@@ -15,6 +15,7 @@ namespace Thorium_Shared
         {
             public ChannelFactory channelFactory;
             public IService serviceInstance;
+            public IService callbackInstance;
             public int referenceCount = 1;
         }
 
@@ -52,7 +53,7 @@ namespace Thorium_Shared
 
         private WCFServiceManager() { }
 
-        public InterfaceType GetServiceInstance<InterfaceType>(string remotePath, string remoteHost = null) where InterfaceType : IService
+        public InterfaceType GetServiceInstance<InterfaceType>(string remotePath, IService callbackInstance = null, string remoteHost = null) where InterfaceType : IService
         {
             ServiceInfo info;
             Type T = typeof(InterfaceType);
@@ -71,13 +72,21 @@ namespace Thorium_Shared
             EndpointAddress endpointAddress = new EndpointAddress("net.tcp://" + remoteHost + ":" + Port + "/" + remotePath);
 
             info = new ServiceInfo();
-            //var channelFactory = new ChannelFactory<InterfaceType>(T.Name + "_Endpoint", endpointAddress);
-            //var tcpBinding = new NetTcpBinding();
-            var channelFactory = new ChannelFactory<InterfaceType>(tcpBinding, endpointAddress);
-            //TODO: duplex @~@
-            //var channelFactory = new DuplexChannelFactory<InterfaceType>(
-            info.channelFactory = channelFactory;
-            return (InterfaceType)(info.serviceInstance = channelFactory.CreateChannel());
+            if(callbackInstance == null)
+            {
+                var channelFactory = new ChannelFactory<InterfaceType>(tcpBinding, endpointAddress);
+                info.channelFactory = channelFactory;
+                info.serviceInstance = channelFactory.CreateChannel();
+            }
+            else
+            {
+                var channelFactory = new DuplexChannelFactory<InterfaceType>(callbackInstance, tcpBinding, endpointAddress);
+                info.channelFactory = channelFactory;
+                info.serviceInstance = channelFactory.CreateChannel();
+                info.callbackInstance = callbackInstance;
+            }
+            
+            return (InterfaceType)info.serviceInstance;
         }
 
         public void FreeServiceInstance<InterfaceType>()

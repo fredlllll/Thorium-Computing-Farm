@@ -27,13 +27,13 @@ namespace Thorium_Client
             WCFServiceManager.Instance.Port = port;
             WCFServiceManager.Instance.RemoteHost = serverAddress;
 
-            IThoriumServerInterfaceForClient serverInterface;
-            DependencyInjection.Kernel.Bind<IThoriumServerInterfaceForClient>().ToConstant(serverInterface = WCFServiceManager.Instance.GetServiceInstance<IThoriumServerInterfaceForClient>(Constants.THORIUM_SERVER_INTERFACE_FOR_CLIENT));
             IThoriumClientInterfaceForServer clientInterface;
             DependencyInjection.Kernel.Bind<IThoriumClientInterfaceForServer>().ToConstant(clientInterface = new ThoriumClientInterfaceForServer());
-            WCFServiceManager.Instance.HostServiceInstance(clientInterface, Constants.THORIUM_CLIENT_INTERFACE_FOR_SERVER);
 
-            serverInterface.RegisterClient(clientInterface.GetID());//i basically have to tell the server how he can reach me... but i dunno how. ip could be local or external, but what about stupid routers without loopback?
+            IThoriumServerInterfaceForClient serverInterface;
+            DependencyInjection.Kernel.Bind<IThoriumServerInterfaceForClient>().ToConstant(serverInterface = WCFServiceManager.Instance.GetServiceInstance<IThoriumServerInterfaceForClient>(Constants.THORIUM_SERVER_INTERFACE_FOR_CLIENT,clientInterface));
+
+            serverInterface.RegisterClient();//i basically have to tell the server how he can reach me... but i dunno how. ip could be local or external, but what about stupid routers without loopback?
             runner = new Thread(Run);
 
             SharedData.Set(ClientConfigConstants.SharedDataID_ThoriumClient, this);
@@ -48,7 +48,7 @@ namespace Thorium_Client
         {
             var serverInterface = DependencyInjection.Kernel.Get<IThoriumServerInterfaceForClient>();
             var clientInterface = DependencyInjection.Kernel.Get<IThoriumClientInterfaceForServer>();
-            serverInterface.UnregisterClient(clientInterface.GetID());
+            serverInterface.UnregisterClient();
             serverInterface = null;
             runner.Interrupt();
 
@@ -64,7 +64,7 @@ namespace Thorium_Client
             {
                 while(true)
                 {
-                    var task = serverInterface?.GetTask(clientInterface.GetID());
+                    var task = serverInterface?.GetTask();
                     if(task != null)
                     {
                         var execInfo = task.GetExecutionInfo();
@@ -98,7 +98,7 @@ namespace Thorium_Client
             catch(Exception ex)
             {
                 //TODO: log
-                serverInterface?.UnregisterClient(clientInterface.GetID());
+                serverInterface?.UnregisterClient();
                 Util.ShutdownSystem();
             }
 

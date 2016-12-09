@@ -49,7 +49,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ThoriumServer.cs" />
-    <Compile Include="ThoriumClientServerInterface.cs" />
+    <Compile Include="ThoriumServerInterfaceForClient.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
