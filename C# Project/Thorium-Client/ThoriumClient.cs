@@ -94,14 +94,14 @@ namespace Thorium_Client
             catch(ThreadInterruptedException)
             {
                 //bye bye
+                Console.WriteLine("thread interrupted");
             }
             catch(Exception ex)
             {
                 //TODO: log
-                serverInterface?.UnregisterClient();
-                Util.ShutdownSystem();
+                Console.WriteLine("exception: " + ex);
             }
-
+            Shutdown();
         }
     }
 }

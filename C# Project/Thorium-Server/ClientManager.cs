@@ -44,8 +44,15 @@ namespace Thorium_Server
 
         void UnregisterClient(IThoriumClientInterfaceForServer client, string reason)
         {
-            clients.TryRemove(client.GetID(), out client);
-            Console.WriteLine("Client Unregistered: " + client.GetID() + (reason == null ? "No Reason" : " Reason: " + reason));
+            try
+            {
+                clients.TryRemove(client.GetID(), out client);
+                Console.WriteLine("Client Unregistered: " + client.GetID() + (reason == null ? "No Reason" : " Reason: " + reason));
+            }
+            catch
+            {
+
+            }
         }
 
         void PingRun()

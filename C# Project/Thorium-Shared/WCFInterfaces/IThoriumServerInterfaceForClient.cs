@@ -8,18 +8,18 @@ using Thorium_Shared.Services;
 
 namespace Thorium_Shared
 {
-    [ServiceContract(CallbackContract = typeof(IThoriumClientInterfaceForServer))]
+    [ServiceContract(CallbackContract = typeof(IThoriumClientInterfaceForServer), SessionMode = SessionMode.Required)]
     public interface IThoriumServerInterfaceForClient : IService
     {
-        [OperationContract]
+        [OperationContract(IsInitiating = true, IsTerminating = false)]
         void RegisterClient();//place for doing client authentication, just so no random people can get access to your data TODO
-        [OperationContract]
+        [OperationContract(IsInitiating = false, IsTerminating = true)]
         void UnregisterClient();
         [OperationContract]
         ITask GetTask();
-        [OperationContract]
+        [OperationContract(IsOneWay = true)]
         void ReturnUnfinishedTask(ITask task, string reason);
-        [OperationContract]
+        [OperationContract(IsOneWay = true)]
         void TurnInTask(ITask task);
 
         [OperationContract]

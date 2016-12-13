@@ -33,10 +33,13 @@ namespace Thorium_Server
         {
             var clientID = client.GetID();
             Task t = tasks.RemoveFirst();
-            t.SetState(TaskState.Processing);
-            t.SetProcessingClientID(clientID);
-            client.SetCurrentTaskID(t.GetID());
-            processingTasks[t.GetID()] = t;
+            if(t != null)
+            {
+                t.SetState(TaskState.Processing);
+                t.SetProcessingClientID(clientID);
+                client.SetCurrentTaskID(t.GetID());
+                processingTasks[t.GetID()] = t;
+            }
             return t;
         }
 
