@@ -1,4 +1,4 @@
-﻿using System;
+﻿/*using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
@@ -8,10 +8,11 @@ using System.Text;
 using System.Threading.Tasks;
 using Thorium_Shared.Services;
 using Thorium_Shared.Services.Server;
+using Codolith.Config;
 
 namespace Thorium_Shared.Blender
 {
-    public class BlenderJob : Job
+    public class BlenderJob : AJob
     {
         List<FrameBounds> frameBounds = new List<FrameBounds>();
         int tilesPerFrame;
@@ -26,18 +27,18 @@ namespace Thorium_Shared.Blender
         {
             DataPackageProviderServer packageProvider = ServiceManager.Instance.GetService<DataPackageProviderServer>();
 
-            var fbs = data.GetString("frameBounds").Split(',');
+            var fbs = data.Get("frameBounds").Split(',');
             foreach(var s in fbs)
             {
                 frameBounds.Add(FrameBounds.Parse(s));
             }
-            tilesPerFrame = data.GetInt("tilesPerFrame");
-            var ls = data.GetString("layers").Split(',');
+            tilesPerFrame = data.Get<int>("tilesPerFrame");
+            var ls = data.Get("layers").Split(',');
             foreach(var s in ls)
             {
                 layers.Add(Layer.Parse(s));
             }
-            var dir = data.GetString("sourceDirectory");
+            var dir = data.Get("sourceDirectory");
             DirectoryInfo di = new DirectoryInfo(dir);
             packageProvider.RegisterPackage(ID, di);
             /*DirectoryInfo tmpDir = new DirectoryInfo(SharedData.Get<Config>(ServerConfigConstants.SharedDataID_ServerConfig).GetString(ServerConfigConstants.tmpFolder));
@@ -46,16 +47,16 @@ namespace Thorium_Shared.Blender
             {
                 zipFile.Delete();
             }
-            ZipFile.CreateFromDirectory(dir, zipFile.FullName);*/
-            filename = data.GetString("filename");
-            resolution = Resolution.Parse(data.GetString("resolution"));
-            engine = (BlenderRenderEngine)Enum.Parse(typeof(BlenderRenderEngine), data.GetString("engine"));
+            ZipFile.CreateFromDirectory(dir, zipFile.FullName);/
+            filename = data.Get("filename");
+            resolution = Resolution.Parse(data.Get("resolution"));
+            engine = (BlenderRenderEngine)Enum.Parse(typeof(BlenderRenderEngine), data.Get("engine"));
             engineConfig = BlenderEngineConfig.Create(data);
-            jobOutputDirectory = new DirectoryInfo(data.GetString("outputDirectory"));
+            jobOutputDirectory = new DirectoryInfo(data.Get("outputDirectory"));
             Directory.CreateDirectory(jobOutputDirectory.FullName);
         }
 
-        public override void InitializeTasks()
+        public override void Initialize()
         {
             string layersString = string.Join(",", layers);
             foreach(var fb in frameBounds)
@@ -87,3 +88,4 @@ namespace Thorium_Shared.Blender
         }
     }
 }
+*/

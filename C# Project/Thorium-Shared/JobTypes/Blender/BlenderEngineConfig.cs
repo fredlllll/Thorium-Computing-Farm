@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Codolith.Config;
 
 namespace Thorium_Shared.Blender
 {
@@ -14,8 +15,8 @@ namespace Thorium_Shared.Blender
         public static BlenderEngineConfig Create(Config data)
         {
             BlenderEngineConfig bec = new BlenderEngineConfig();
-            bec.UseGPU = data.GetBool("engineUseGPU");
-            bec.samples = data.GetInt("engineSamples");
+            bec.UseGPU = data.Get<bool>("engineUseGPU");
+            bec.samples = data.Get<int>("engineSamples");
             return bec;
         }
     }

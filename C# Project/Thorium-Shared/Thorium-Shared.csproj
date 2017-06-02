@@ -40,8 +40,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ClientConfigConstants.cs" />
+    <Compile Include="Codolith\Config\Config.cs" />
+    <Compile Include="Codolith\Config\ConfigType.cs" />
+    <Compile Include="Codolith\Config\IConfigParser.cs" />
+    <Compile Include="Codolith\Config\IConfigSaver.cs" />
+    <Compile Include="Codolith\Config\INIConfigParser.cs" />
+    <Compile Include="Codolith\Config\XMLConfigParser.cs" />
+    <Compile Include="Codolith\Logging\Logger.cs" />
+    <Compile Include="ConfigKeys\ServerConfigKeys.cs" />
     <Compile Include="DependencyInjection.cs" />
     <Compile Include="ITask.cs" />
+    <Compile Include="ATaskInformation.cs" />
     <Compile Include="JobTypes\Blender\BlenderEngineConfig.cs" />
     <Compile Include="JobTypes\Blender\BlenderExecutionInfo.cs" />
     <Compile Include="JobTypes\Blender\BlenderJob.cs" />
@@ -54,7 +63,6 @@
     <Compile Include="Codolith\Util\RescheduleObject.cs" />
     <Compile Include="Codolith\Util\ScheduledObject.cs" />
     <Compile Include="Codolith\Util\SchedulerThreadSafe.cs" />
-    <Compile Include="Config.cs" />
     <Compile Include="ConsoleMenu.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="ExecutionActions\IExecutionAction.cs" />
@@ -67,6 +75,7 @@
     <Compile Include="Services\IServiceProvider.cs" />
     <Compile Include="Services\Server\IDataPackageProviderServer.cs" />
     <Compile Include="Services\Server\IResultsCache.cs" />
+    <Compile Include="ATaskInformationProducer.cs" />
     <Compile Include="WCFInterfaces\IThoriumClientInterfaceForServer.cs" />
     <Compile Include="ITaskExecutionInfo.cs" />
     <Compile Include="WCFInterfaces\IThoriumServerInterfaceForStorage.cs" />
@@ -74,8 +83,8 @@
     <Compile Include="WCFInterfaces\IThoriumStorageInterfaceForClient.cs" />
     <Compile Include="WCFInterfaces\IThoriumServerInterfaceForConfigurator.cs" />
     <Compile Include="WCFInterfaces\IThoriumStorageInterfaceForServer.cs" />
-    <Compile Include="Job.cs" />
-    <Compile Include="JobConfigConstants.cs" />
+    <Compile Include="AJob.cs" />
+    <Compile Include="ConfigKeys\JobConfigConstants.cs" />
     <Compile Include="Layer.cs" />
     <Compile Include="MachineManager\IMachineManager.cs" />
     <Compile Include="MachineManager\IMachinePool.cs" />
@@ -89,7 +98,9 @@
     <Compile Include="SharedData.cs" />
     <Compile Include="Task.cs" />
     <Compile Include="Util.cs" />
-    <Compile Include="WCFServiceManager.cs" />
+    <Compile Include="WCF\WCFServiceHostingInfo.cs" />
+    <Compile Include="WCF\WCFServiceInfo.cs" />
+    <Compile Include="WCF\WCFServiceManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="JobTypes\Blender\BlenderConfigExample.xml">

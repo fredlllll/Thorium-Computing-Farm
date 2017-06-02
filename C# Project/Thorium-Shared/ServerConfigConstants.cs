@@ -10,8 +10,6 @@ namespace Thorium_Shared
     {
         public const string SharedDataID_ServerConfig = "ServerConfig";
 
-        public const string tmpFolder = "tmpFolder";
-        public const string wcfPort = "wcfPort";
-        public const string jobsFolder = "jobsFolder";
+       
     }
 }

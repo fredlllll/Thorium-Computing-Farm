@@ -18,7 +18,7 @@ namespace Thorium_Server
 
             menu = new ConsoleMenu();
             menu.AddMethod("stop", Stop);
-            menu.AddMethod("listtasks", ListTasks);
+            menu.AddMethod("listjobs", ListJobs);
             menu.AddMethod("help", Help);
             menu.Run();
             Help(null);
@@ -26,26 +26,15 @@ namespace Thorium_Server
 
         static void Stop(string[] args)
         {
-            //lets exit the show
             server.Stop();
             menu.Stop();
         }
 
-        static void ListTasks(string[] args)
+        static void ListJobs(string[] args)
         {
-            Console.WriteLine("Waiting:");
-            foreach(var t in server.TaskManager.Tasks) {
-                Console.WriteLine(t.GetID());
-            }
-            Console.WriteLine("Processing:");
-            foreach(var t in server.TaskManager.ProcessingTasks)
-            {
-                Console.WriteLine(t.GetID()+ " on "+t.GetProcessingClientID());
-            }
-            Console.WriteLine("Finished:");
-            foreach(var t in server.TaskManager.FinishedTasks)
-            {
-                Console.WriteLine(t.GetID());
+            Console.WriteLine("Jobs:");
+            foreach(var j in server.JobManager.Jobs) {
+                Console.WriteLine(j.Value.ID);
             }
         }
 

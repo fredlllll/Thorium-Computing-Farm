@@ -4,31 +4,53 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using Thorium_Shared;
+using Codolith.Config;
+using static Thorium_Shared.ConfigKeys.ServerConfigKeys;
+using static Thorium_Shared.ConfigKeys.JobConfigKeys;
+using static Thorium_Server.ServerStatics;
 
 namespace Thorium_Server
 {
     public class JobManager
     {
-        TaskManager taskManager;
-        ThoriumServer server;
-        Dictionary<string, Job> jobs = new Dictionary<string, Job>();
-        public JobManager(TaskManager taskManager,ThoriumServer server)
+        JobInitializator jobInitializator = new JobInitializator();
+        Dictionary<string, AJob> jobs = new Dictionary<string, AJob>();
+        public IEnumerable<KeyValuePair<string, AJob>> Jobs
         {
-            this.taskManager = taskManager;
-            this.server = server;
+            get { return jobs; }
         }
 
-        public void Initialize()
+        public JobManager()
         {
-            DirectoryInfo jobsFolder = new DirectoryInfo(server.Config.GetString(ServerConfigConstants.jobsFolder));
+            jobInitializator.JobInitializationFailed += JobInitializationFailed;
+            jobInitializator.JobInitialized += JobInitialized;
+        }
+
+        private void JobInitialized(JobInitializator sender, AJob job)
+        {
+            Logger.LogInfo("Job initialized: " + job.Name);
+            jobs[job.ID] = job;
+        }
+
+        private void JobInitializationFailed(JobInitializator sender, AJob job, Exception ex)
+        {
+            Logger.LogWarning("Job initialization failed: " + job.Name, ex.ToString());
+        }
+
+        public void Startup()
+        {
+            jobInitializator.Start();
+
+            //TODO: load serialized jobs
+            DirectoryInfo jobsFolder = new DirectoryInfo(ServerStatics.ServerConfig.Get(Key_JobsFolder));
             Directory.CreateDirectory(jobsFolder.FullName);
             var jobs = jobsFolder.GetFiles("*.xml");
             foreach(var job in jobs)
             {
-                Config jobConfig = new Config(job);
+                Config jobConfig = new Config(job.FullName);
                 try
                 {
-                    Job j = GetNewJob(jobConfig);
+                    AJob j = GetNewJob(jobConfig);
                     if(j != null)
                     {
                         AddJob(j);
@@ -46,28 +68,31 @@ namespace Thorium_Server
             }
         }
 
-        public void AddJob(Job job)
+        public void Shutdown()
         {
-            job.InitializeTasks();
-            foreach(var t in job.Tasks)
-            {
-                taskManager.RegisterTask(t);
-            }
-            jobs[job.ID] = job;
+            //TODO: save stuff
         }
 
-        public void RemoveJob(Job job)
+        public void AddJob(AJob job)
         {
-            foreach(var t in job.Tasks)
-            {
-                taskManager.UnregisterTask(t);
-            }
-            jobs.Remove(job.ID);
+            jobInitializator.AddJob(job);
         }
 
-        public Job GetJobById(string jobID)
+        public void CancelJob(AJob job)
         {
-            Job j;
+            CancelJob(job.ID);
+        }
+
+        public void CancelJob(string id) {
+            AJob job;
+            if(!jobs.TryGetValue(id, out job)) {
+                //TODO: add to cancel list/handler
+            }
+        }
+
+        public AJob GetJobById(string jobID)
+        {
+            AJob j;
             if(jobs.TryGetValue(jobID, out j))
             {
                 return j;
@@ -75,13 +100,13 @@ namespace Thorium_Server
             return null;
         }
 
-        public Job GetNewJob(Config config)
+        public AJob GetNewJob(Config config)
         {
-            var jobType = config.GetString(JobConfigConstants.jobType);
+            var jobType = config.Get(Key_JobType);
             Type type = Codolith.Reflection.ReflectionHelper.GetTypeByShortName(jobType).FirstOrDefault();
             if(type != null)
             {
-                return (Job)Activator.CreateInstance(type, config);
+                return (AJob)Activator.CreateInstance(type, config);
             }
             return null;
         }

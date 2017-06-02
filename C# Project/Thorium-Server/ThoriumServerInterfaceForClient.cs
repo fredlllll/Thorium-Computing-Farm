@@ -6,6 +6,7 @@ using System.ServiceModel;
 using System.Text;
 using Thorium_Shared;
 using Thorium_Shared.Services;
+using Thorium_Shared.WCF;
 
 namespace Thorium_Server
 {

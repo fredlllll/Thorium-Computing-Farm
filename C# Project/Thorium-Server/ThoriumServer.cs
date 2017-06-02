@@ -7,45 +7,41 @@ using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
 using Thorium_Shared;
+using Codolith.Config;
 using Ninject;
+using static Thorium_Server.ServerStatics;
 
 namespace Thorium_Server
 {
     public class ThoriumServer
     {
-        const string configFileName = "serverconfig.xml";
-
-        public Config Config { get; private set; }
-
-        public ClientManager ClientManager { get; } = new ClientManager();
-        public TaskManager TaskManager { get; } = new TaskManager();
+        public ClientManager ClientManager { get; }
         public JobManager JobManager { get; }
+
+        public ServerWCFInterface ServerWCFInterface { get; }
 
         public ThoriumServer()
         {
-            Config = new Config(new FileInfo(configFileName));
-            JobManager = new JobManager(TaskManager, this);
-            TaskManager.JobManager = JobManager;
-            TaskManager.ClientManager = ClientManager;
+            ClientManager = new ClientManager();
+            JobManager = new JobManager();
 
-            int wcfPort = Config.GetInt(ServerConfigConstants.wcfPort);
-            WCFServiceManager.Instance.Port = wcfPort;
+            ServerWCFInterface = new ServerWCFInterface();
 
-            SharedData.Set(ServerConfigConstants.SharedDataID_ServerConfig, this.Config);
+            SharedData.Set(ServerConfigConstants.SharedDataID_ServerConfig, ServerConfig);
 
             DependencyInjection.Kernel.Bind<IThoriumServerInterfaceForClient>().ToConstant(new ThoriumServerInterfaceForClient(this));
         }
 
         public void Start()
         {
-            WCFServiceManager.Instance.HostServiceInstance(DependencyInjection.Kernel.Get<IThoriumServerInterfaceForClient>(), Constants.THORIUM_SERVER_INTERFACE_FOR_CLIENT);
-            JobManager.Initialize();
+            ServerWCFInterface.Start();
+            JobManager.Startup(); //Load jobs
         }
 
         public void Stop()
         {
-            WCFServiceManager.Instance.UnhostServiceInstance(DependencyInjection.Kernel.Get<IThoriumServerInterfaceForClient>());
-            //TODO: save stuff
+            ServerWCFInterface.Stop();
+            JobManager.Shutdown(); //Save jobs
         }
     }
 }

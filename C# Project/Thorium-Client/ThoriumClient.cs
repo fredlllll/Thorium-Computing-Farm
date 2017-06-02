@@ -8,6 +8,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using Ninject;
 using Thorium_Shared;
+using Codolith.Config;
+using Thorium_Shared.WCF;
 
 namespace Thorium_Client
 {
@@ -19,11 +21,11 @@ namespace Thorium_Client
         Thread runner;
         public ThoriumClient()
         {
-            Config = new Config(new FileInfo(configFileName));
+            Config = new Config(configFileName);
             SharedData.Set(ClientConfigConstants.SharedDataID_ClientConfig, Config);
 
-            string serverAddress = Config.GetString(ClientConfigConstants.ConfigID_WCFAddress);
-            int port = Config.GetInt(ClientConfigConstants.ConfigID_WCFPort);
+            string serverAddress = Config.Get(ClientConfigConstants.ConfigID_WCFAddress);
+            int port = Config.Get<int>(ClientConfigConstants.ConfigID_WCFPort);
             WCFServiceManager.Instance.Port = port;
             WCFServiceManager.Instance.RemoteHost = serverAddress;
 

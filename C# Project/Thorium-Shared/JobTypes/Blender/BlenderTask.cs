@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Thorium_Shared.Services;
 using Thorium_Shared.Services.Server;
+using Codolith.Config;
 
 namespace Thorium_Shared.Blender
 {
@@ -22,13 +23,13 @@ namespace Thorium_Shared.Blender
 
         public BlenderTask(string parentJobID, Config data) : base(parentJobID, data)
         {
-            frame = data.GetInt("frame");
-            tilesPerFrame = data.GetInt("tilesPerFrame");
-            tile = data.GetInt("tile");
-            layers = data.GetString("layers").Split(',').Select((x) => { return Layer.Parse(x); }).ToArray();
-            filename = data.GetString("filename");
-            resolution = Resolution.Parse(data.GetString("resolution"));
-            outputDirectory = new DirectoryInfo(data.GetString("outputDirectory"));
+            frame = data.Get<int>("frame");
+            tilesPerFrame = data.Get<int>("tilesPerFrame");
+            tile = data.Get<int>("tile");
+            layers = data.Get("layers").Split(',').Select((x) => { return Layer.Parse(x); }).ToArray();
+            filename = data.Get("filename");
+            resolution = Resolution.Parse(data.Get("resolution"));
+            outputDirectory = new DirectoryInfo(data.Get("outputDirectory"));
         }
 
         public override ITaskExecutionInfo GetExecutionInfo()

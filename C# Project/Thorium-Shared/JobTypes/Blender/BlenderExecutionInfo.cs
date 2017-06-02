@@ -10,6 +10,8 @@ using Thorium_Shared.ExecutionActions;
 using Thorium_Shared.Services;
 using Thorium_Shared.Services.Client;
 using Thorium_Shared.Services.Server;
+using Codolith.Config;
+using Thorium_Shared.WCF;
 
 namespace Thorium_Shared.Blender
 {
@@ -32,14 +34,14 @@ namespace Thorium_Shared.Blender
         {
             //this.data = data;
 
-            jobID = data.GetString("jobID");
-            taskID = data.GetString("taskID");
-            frame = data.GetInt("frame");
-            tilesPerFrame = data.GetInt("tilesPerFrame");
-            tile = data.GetInt("tile");
-            layers = data.GetString("layers").Split(',').Select((x) => { return Layer.Parse(x); }).ToArray();
-            filename = data.GetString("filename");
-            resolution = Resolution.Parse(data.GetString("resolution"));
+            jobID = data.Get("jobID");
+            taskID = data.Get("taskID");
+            frame = data.Get<int>("frame");
+            tilesPerFrame = data.Get<int>("tilesPerFrame");
+            tile = data.Get<int>("tile");
+            layers = data.Get("layers").Split(',').Select((x) => { return Layer.Parse(x); }).ToArray();
+            filename = data.Get("filename");
+            resolution = Resolution.Parse(data.Get("resolution"));
         }
 
         public void Setup()

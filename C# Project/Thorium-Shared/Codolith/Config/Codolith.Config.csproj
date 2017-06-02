@@ -4,17 +4,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{1440817D-1468-46DB-B086-E3049A3ADB92}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <ProjectGuid>{290DF4A4-76AB-4200-ADE8-1082BB2D6C59}</ProjectGuid>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Thorium_Server</RootNamespace>
-    <AssemblyName>Thorium-Server</AssemblyName>
+    <RootNamespace>Codolith.Config</RootNamespace>
+    <AssemblyName>Codolith.Config</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -24,7 +22,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -33,41 +30,21 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Codolith.Util">
-      <HintPath>D:\Dropbox\progging\C#\Codolith.NetLib\Codolith.Util\bin\Release\Codolith.Util.dll</HintPath>
-    </Reference>
-    <Reference Include="Ninject">
-      <HintPath>..\..\Dependencies\Ninject-3.2.0.0-release-net-4.5\Ninject.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.ServiceModel" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="ClientManager.cs" />
-    <Compile Include="JobInitializator.cs" />
-    <Compile Include="JobManager.cs" />
-    <Compile Include="ServerStatics.cs" />
-    <Compile Include="ServerWCFInterface.cs" />
-    <Compile Include="TaskManager.cs" />
-    <Compile Include="Program.cs" />
+    <Compile Include="Config.cs" />
+    <Compile Include="IConfigParser.cs" />
+    <Compile Include="ConfigType.cs" />
+    <Compile Include="IConfigSaver.cs" />
+    <Compile Include="INIConfigParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ThoriumServer.cs" />
-    <Compile Include="ThoriumServerInterfaceForClient.cs" />
-    <Compile Include="ThoriumServerInterfaceForConfigurator.cs" />
+    <Compile Include="XMLConfigParser.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="ConfigSchema.xsd">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Thorium-Shared\Thorium-Shared.csproj">
-      <Project>{FE33D9C9-43CA-4EC3-AB9F-154611627BFF}</Project>
-      <Name>Thorium-Shared</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="serverconfig.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

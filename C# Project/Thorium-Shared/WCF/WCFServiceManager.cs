@@ -3,34 +3,24 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.ServiceModel;
+using System.ServiceModel.Channels;
 using System.Text;
 using System.Threading.Tasks;
 using Thorium_Shared.Services;
 
-namespace Thorium_Shared
+namespace Thorium_Shared.WCF
 {
     public class WCFServiceManager
     {
-        class ServiceInfo
-        {
-            public ChannelFactory channelFactory;
-            public IService serviceInstance;
-            public IService callbackInstance;
-            public int referenceCount = 1;
-        }
-
-        class ServiceHostingInfo
-        {
-            public ServiceHost serviceHost;
-            public IService serviceInstance;
-            public string path;
-        }
-
-        static WCFServiceManager instance = new WCFServiceManager(); //lazy static initialization
+        static WCFServiceManager instance = default(WCFServiceManager);
         public static WCFServiceManager Instance
         {
             get
             {
+                if(instance == default(WCFServiceManager))
+                {
+                    instance = new WCFServiceManager();
+                }
                 return instance;
             }
         }
@@ -47,15 +37,23 @@ namespace Thorium_Shared
             set;
         } = 8200;
 
-        Dictionary<Type, ServiceInfo> serviceInstances = new Dictionary<Type, ServiceInfo>();
-        Dictionary<IService, ServiceHostingInfo> serviceHosts = new Dictionary<IService, ServiceHostingInfo>();
-        NetTcpBinding tcpBinding = new NetTcpBinding();
+        Binding binding;
 
-        private WCFServiceManager() { }
+        Dictionary<Type, WCFServiceInfo> serviceInstances = new Dictionary<Type, WCFServiceInfo>();
+        Dictionary<IService, WCFServiceHostingInfo> serviceHosts = new Dictionary<IService, WCFServiceHostingInfo>();
+
+        private WCFServiceManager() {
+            BasicHttpsBinding bhb = new BasicHttpsBinding(BasicHttpsSecurityMode.TransportWithMessageCredential);
+            binding = bhb;
+            bhb.Security.Message.ClientCredentialType = BasicHttpMessageCredentialType.UserName;
+            bhb.Security.Mode = BasicHttpsSecurityMode.TransportWithMessageCredential;
+            bhb.Security.Transport.ClientCredentialType = HttpClientCredentialType.Basic;
+            bhb.Security.Transport.ProxyCredentialType = HttpProxyCredentialType.Basic;
+        }
 
         public InterfaceType GetServiceInstance<InterfaceType>(string remotePath, IService callbackInstance = null, string remoteHost = null) where InterfaceType : IService
         {
-            ServiceInfo info;
+            WCFServiceInfo info;
             Type T = typeof(InterfaceType);
             if(serviceInstances.ContainsKey(T))
             {
@@ -71,16 +69,16 @@ namespace Thorium_Shared
 
             EndpointAddress endpointAddress = new EndpointAddress("net.tcp://" + remoteHost + ":" + Port + "/" + remotePath);
 
-            info = new ServiceInfo();
+            info = new WCFServiceInfo();
             if(callbackInstance == null)
             {
-                var channelFactory = new ChannelFactory<InterfaceType>(tcpBinding, endpointAddress);
+                var channelFactory = new ChannelFactory<InterfaceType>(binding, endpointAddress);
                 info.channelFactory = channelFactory;
                 info.serviceInstance = channelFactory.CreateChannel();
             }
             else
             {
-                var channelFactory = new DuplexChannelFactory<InterfaceType>(callbackInstance, tcpBinding, endpointAddress);
+                var channelFactory = new DuplexChannelFactory<InterfaceType>(callbackInstance, binding, endpointAddress);
                 info.channelFactory = channelFactory;
                 info.serviceInstance = channelFactory.CreateChannel();
                 info.callbackInstance = callbackInstance;
@@ -91,7 +89,7 @@ namespace Thorium_Shared
 
         public void FreeServiceInstance<InterfaceType>()
         {
-            ServiceInfo info;
+            WCFServiceInfo info;
             Type T = typeof(InterfaceType);
             if(serviceInstances.TryGetValue(T, out info))
             {
@@ -117,7 +115,7 @@ namespace Thorium_Shared
 
             var address = "net.tcp://localhost:" + Port + "/" + path;
 
-            ServiceHostingInfo info = new ServiceHostingInfo();
+            WCFServiceHostingInfo info = new WCFServiceHostingInfo();
             info.serviceInstance = serviceInstance;
             info.path = path;
 
@@ -132,7 +130,7 @@ namespace Thorium_Shared
 
         public string GetHostedInstancePath(IService serviceInstance)
         {
-            ServiceHostingInfo info;
+            WCFServiceHostingInfo info;
             if(serviceHosts.TryGetValue(serviceInstance, out info))
             {
                 return info.path;
@@ -142,7 +140,7 @@ namespace Thorium_Shared
 
         public void UnhostServiceInstance(IService serviceInstance)
         {
-            ServiceHostingInfo info;
+            WCFServiceHostingInfo info;
             if(serviceHosts.TryGetValue(serviceInstance, out info))
             {
                 info.serviceHost.Close();

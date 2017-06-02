@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Thorium_Shared
+namespace Codolith.Config
 {
-    public static class JobConfigConstants
+    public enum ConfigType
     {
-        public const string jobType = "jobType";
+        XML,
+        INI
     }
 }
