@@ -8,6 +8,9 @@ using Thorium_Shared.Services;
 
 namespace Thorium_Shared
 {
+    /// <summary>
+    /// used to host a singleton for dependency injection
+    /// </summary>
     public static class DependencyInjection
     {
         public static IKernel Kernel

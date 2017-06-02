@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Thorium_Shared
+namespace Thorium_Shared.MachineManager
 {
-    public interface IThoriumServerInterfaceForConfigurator
+    public interface IMachineType
     {
     }
 }

@@ -4,10 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Thorium_Shared
+namespace Thorium_Shared.Blender
 {
-    public interface IThoriumServerInterfaceForConfigurator
+    public enum BlenderRenderEngine
     {
+        Native,
+        Cycles
     }
 }
 */

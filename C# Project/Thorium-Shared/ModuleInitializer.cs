@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Thorium_Shared
 {
+    /// <summary>
+    /// initializes static stuff i guess. still has to be called though
+    /// </summary>
     public static class ModuleInitializer
     {
         public static void Initialize()

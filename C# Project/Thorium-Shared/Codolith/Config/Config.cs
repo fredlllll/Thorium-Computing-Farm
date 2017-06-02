@@ -3,15 +3,20 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Codolith.Config
 {
+    [DataContract]
     public class Config
     {
+        [DataMember]
         Dictionary<string, string> dict = new Dictionary<string, string>();
+        [IgnoreDataMember] //ignore as it could be confidential
         public string Filename { get; protected set; }
+        [DataMember]
         public ConfigType ConfigType { get; protected set; }
 
         public Config(string filename = default(string), ConfigType configType = ConfigType.XML)

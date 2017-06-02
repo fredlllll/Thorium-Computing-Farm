@@ -33,7 +33,7 @@ namespace Thorium_Client
             DependencyInjection.Kernel.Bind<IThoriumClientInterfaceForServer>().ToConstant(clientInterface = new ThoriumClientInterfaceForServer());
 
             IThoriumServerInterfaceForClient serverInterface;
-            DependencyInjection.Kernel.Bind<IThoriumServerInterfaceForClient>().ToConstant(serverInterface = WCFServiceManager.Instance.GetServiceInstance<IThoriumServerInterfaceForClient>(Constants.THORIUM_SERVER_INTERFACE_FOR_CLIENT,clientInterface));
+            DependencyInjection.Kernel.Bind<IThoriumServerInterfaceForClient>().ToConstant(serverInterface = WCFServiceManager.Instance.GetServiceInstance<IThoriumServerInterfaceForClient>(Constants.THORIUM_SERVER_INTERFACE_FOR_CLIENT, clientInterface));
 
             serverInterface.RegisterClient();//i basically have to tell the server how he can reach me... but i dunno how. ip could be local or external, but what about stupid routers without loopback?
             runner = new Thread(Run);
@@ -66,20 +66,18 @@ namespace Thorium_Client
             {
                 while(true)
                 {
-                    var task = serverInterface?.GetTask();
-                    if(task != null)
+                    var taskInformation = serverInterface?.GetFreeTaskInformation();
+                    if(taskInformation != null)
                     {
-                        var execInfo = task.GetExecutionInfo();
+                        ATask task = ATask.TaskFromInformation(taskInformation);
                         try
                         {
-                            execInfo.Setup();
-                            execInfo.Run();
-                            execInfo.Cleanup();
-                            serverInterface?.TurnInTask(task);//this can be put in a seperate thread at some point
+                            task.Run();
+                            serverInterface?.SignalTaskFinished(taskInformation.JobID, taskInformation.ID);
                         }
                         catch(Exception execEx)
                         {
-                            serverInterface?.ReturnUnfinishedTask(task, execEx.ToString());
+                            serverInterface?.SignalTaskAborted(taskInformation.JobID, taskInformation.ID, execEx.ToString());
                         }
                         lastTimeJobCompleted = DateTime.UtcNow;
                     }

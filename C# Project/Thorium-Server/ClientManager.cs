@@ -39,19 +39,32 @@ namespace Thorium_Server
 
         public void UnregisterClient(IThoriumClientInterfaceForServer client)
         {
-            UnregisterClient(clients[client.GetID()], null);
+            string id = GetClientID(client);
+            if(id != default(string))
+            {
+                UnregisterClient(clients[id], null);
+            }
+        }
+
+        string GetClientID(IThoriumClientInterfaceForServer client)
+        {
+            foreach(var kv in clients)
+            {
+                if(kv.Value == client)
+                {
+                    return kv.Key;
+                }
+            }
+            return default(string);
         }
 
         void UnregisterClient(IThoriumClientInterfaceForServer client, string reason)
         {
-            try
+            string id = GetClientID(client);
+            if(id != default(string))
             {
-                clients.TryRemove(client.GetID(), out client);
-                Console.WriteLine("Client Unregistered: " + client.GetID() + (reason == null ? "No Reason" : " Reason: " + reason));
-            }
-            catch
-            {
-
+                clients.TryRemove(id, out client);
+                Console.WriteLine("Client Unregistered: " + id + " - " + (reason == null ? "Unregistered" : "Reason: " + reason));
             }
         }
 
@@ -73,7 +86,7 @@ namespace Thorium_Server
                             running = false;
                             break;
                         }
-                        catch(Exception ex)//is it socketexception? TODO
+                        catch(Exception)//is it socketexception? TODO: find out what exception is thrown if client dies
                         {
                             UnregisterClient(kv.Value, "Client Died!");
                         }

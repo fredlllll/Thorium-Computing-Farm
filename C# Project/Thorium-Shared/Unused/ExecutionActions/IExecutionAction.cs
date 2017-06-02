@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Thorium_Shared
+namespace Thorium_Shared.ExecutionActions
 {
-    public interface IThoriumServerInterfaceForConfigurator
+    public interface IExecutionAction
     {
+        void ExecuteAndWaitForExit();
     }
 }
 */

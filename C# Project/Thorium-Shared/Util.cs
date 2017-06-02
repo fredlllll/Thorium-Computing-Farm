@@ -16,18 +16,18 @@ namespace Thorium_Shared
             {
                 case PlatformID.MacOSX://probably the same as linux?
                 case PlatformID.Unix:
-                    ProcessStartInfo pri = new ProcessStartInfo();
-                    pri.FileName = "shutdown";
-                    pri.UseShellExecute = false;
-                    pri.Arguments = "-h +1";
-                    Process.Start(pri);
+                    ProcessStartInfo procInfo = new ProcessStartInfo();
+                    procInfo.FileName = "shutdown";
+                    procInfo.UseShellExecute = false;
+                    procInfo.Arguments = "-h +1";
+                    Process.Start(procInfo);
                     break;
                 case PlatformID.Win32NT:
-                    pri = new ProcessStartInfo();
-                    pri.FileName = "shutdown";
-                    pri.UseShellExecute = false;
-                    pri.Arguments = "/s /t 30";
-                    Process.Start(pri);
+                    procInfo = new ProcessStartInfo();
+                    procInfo.FileName = "shutdown";
+                    procInfo.UseShellExecute = false;
+                    procInfo.Arguments = "/s /t 30";
+                    Process.Start(procInfo);
                     break;
             }
         }
@@ -44,7 +44,7 @@ namespace Thorium_Shared
             return new string(Enumerable.Repeat(chars, length).Select(s => s[R.Next(s.Length)]).ToArray());
         }
 
-        public static string GetWCFClientHost()
+        /*public static string GetWCFClientHost()
         {
             var properties = OperationContext.Current.IncomingMessageProperties;
             var endpointProperty = properties[RemoteEndpointMessageProperty.Name] as RemoteEndpointMessageProperty;
@@ -53,6 +53,6 @@ namespace Thorium_Shared
                 return endpointProperty.Address;
             }
             return null;
-        }
+        }*/
     }
 }

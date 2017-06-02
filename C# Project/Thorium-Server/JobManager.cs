@@ -8,6 +8,7 @@ using Codolith.Config;
 using static Thorium_Shared.ConfigKeys.ServerConfigKeys;
 using static Thorium_Shared.ConfigKeys.JobConfigKeys;
 using static Thorium_Server.ServerStatics;
+using System.Collections.Concurrent;
 
 namespace Thorium_Server
 {
@@ -42,7 +43,7 @@ namespace Thorium_Server
             jobInitializator.Start();
 
             //TODO: load serialized jobs
-            DirectoryInfo jobsFolder = new DirectoryInfo(ServerStatics.ServerConfig.Get(Key_JobsFolder));
+            /*DirectoryInfo jobsFolder = new DirectoryInfo(ServerStatics.ServerConfig.Get(Key_JobsFolder));
             Directory.CreateDirectory(jobsFolder.FullName);
             var jobs = jobsFolder.GetFiles("*.xml");
             foreach(var job in jobs)
@@ -65,7 +66,7 @@ namespace Thorium_Server
                     Console.WriteLine("Exception when creating job: " + job);
                     Console.WriteLine(jobCreateEx);
                 }
-            }
+            }*/
         }
 
         public void Shutdown()
@@ -83,9 +84,11 @@ namespace Thorium_Server
             CancelJob(job.ID);
         }
 
-        public void CancelJob(string id) {
+        public void CancelJob(string id)
+        {
             AJob job;
-            if(!jobs.TryGetValue(id, out job)) {
+            if(!jobs.TryGetValue(id, out job))
+            {
                 //TODO: add to cancel list/handler
             }
         }
@@ -100,15 +103,42 @@ namespace Thorium_Server
             return null;
         }
 
-        public AJob GetNewJob(Config config)
+        ConcurrentDictionary<string, TaskInformation> currentlyProcessingTasks = new ConcurrentDictionary<string, TaskInformation>();
+        public TaskInformation GetFreeTask()
         {
-            var jobType = config.Get(Key_JobType);
-            Type type = Codolith.Reflection.ReflectionHelper.GetTypeByShortName(jobType).FirstOrDefault();
-            if(type != null)
+            TaskInformation task = default(TaskInformation);
+            foreach(var kv in jobs)
             {
-                return (AJob)Activator.CreateInstance(type, config);
+                if((task = kv.Value.TaskInformationProducer.GetNextTaskInformation()) != null)
+                {
+                    break;
+                }
             }
-            return null;
+            if(task != default(TaskInformation))
+            {
+                currentlyProcessingTasks[task.ID] = task;
+            }
+            return task;
         }
+
+        public void SignalTaskFinished(string jobID, string id)
+        {
+            AJob job = default(AJob);
+            if(jobs.TryGetValue(jobID, out job))
+            {
+                job.SignalTaskFinished(id);
+            }
+        }
+
+        public void SignalTaskAborted(string jobID, string id, string reason)
+        {
+            AJob job = default(AJob);
+            if(jobs.TryGetValue(jobID, out job))
+            {
+                job.SignalTaskAborted(id, reason);
+            }
+        }
+
+
     }
 }

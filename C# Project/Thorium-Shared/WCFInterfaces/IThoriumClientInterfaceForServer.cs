@@ -16,8 +16,6 @@ namespace Thorium_Shared
         string GetID();
         [OperationContract]
         string GetCurrentTaskID();
-        [OperationContract]
-        void SetCurrentTaskID(string id);
 
         [OperationContract]
         void Ping();
