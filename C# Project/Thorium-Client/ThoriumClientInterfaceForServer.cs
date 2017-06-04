@@ -7,22 +7,26 @@ namespace Thorium_Client
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
     public class ThoriumClientInterfaceForServer : IThoriumClientInterfaceForServer
     {
-        string id = Util.GetRandomID();
+        ThoriumClient client;
 
-        protected string currentTaskID;
+        public ThoriumClientInterfaceForServer(ThoriumClient client)
+        {
+            this.client = client;
+        }
+        
         public string GetCurrentTaskID()
         {
-            return currentTaskID;
+            return client.CurrentTask.GetID();
         }
 
-        public void SetCurrentTaskID(string id)
+        public string GetCurrentTaskJobID()
         {
-            currentTaskID = id;
+            return client.CurrentTask.GetJobID();
         }
 
         public string GetID()
         {
-            return id;
+            return client.ID;
         }
 
         public void AbortTask(string ID)

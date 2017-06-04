@@ -9,28 +9,26 @@ using Codolith.Config;
 namespace Thorium_Shared
 {
     [DataContract]
-    public class TaskInformation
+    public class JobInformation
     {
-        [DataMember]
-        public string JobID { get; set; }
         [DataMember]
         public string ID { get; set; }
         [DataMember]
         public Config Config { get; } = new Config();
 
-        public Type TaskType
+        public Type JobType
         {
             get
             {
-                return Type.GetType(Config.Get(nameof(TaskType)));
+                return Type.GetType(Config.Get(nameof(JobType)));
             }
             set
             {
-                if(!value.IsSubclassOf(typeof(ATask)))
+                if(!value.IsSubclassOf(typeof(AJob)))
                 {
-                    throw new ArgumentException("the type has to be a subclass of " + nameof(ATask));
+                    throw new ArgumentException("the type has to be a subclass of " + nameof(AJob));
                 }
-                Config.Set(nameof(TaskType), value.AssemblyQualifiedName);
+                Config.Set(nameof(JobType), value.AssemblyQualifiedName);
             }
         }
     }

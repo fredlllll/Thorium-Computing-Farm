@@ -17,6 +17,10 @@ namespace Thorium_Client
     {
         const string configFileName = "clientconfig.xml";
 
+        public string ID { get; } = Util.GetRandomID();
+
+        public ATask CurrentTask { get; private set; }
+
         Config Config { get; set; }
         Thread runner;
         public ThoriumClient()
@@ -30,7 +34,7 @@ namespace Thorium_Client
             WCFServiceManager.Instance.RemoteHost = serverAddress;
 
             IThoriumClientInterfaceForServer clientInterface;
-            DependencyInjection.Kernel.Bind<IThoriumClientInterfaceForServer>().ToConstant(clientInterface = new ThoriumClientInterfaceForServer());
+            DependencyInjection.Kernel.Bind<IThoriumClientInterfaceForServer>().ToConstant(clientInterface = new ThoriumClientInterfaceForServer(this));
 
             IThoriumServerInterfaceForClient serverInterface;
             DependencyInjection.Kernel.Bind<IThoriumServerInterfaceForClient>().ToConstant(serverInterface = WCFServiceManager.Instance.GetServiceInstance<IThoriumServerInterfaceForClient>(Constants.THORIUM_SERVER_INTERFACE_FOR_CLIENT, clientInterface));
@@ -69,16 +73,17 @@ namespace Thorium_Client
                     var taskInformation = serverInterface?.GetFreeTaskInformation();
                     if(taskInformation != null)
                     {
-                        ATask task = ATask.TaskFromInformation(taskInformation);
+                        CurrentTask = ATask.TaskFromInformation(taskInformation);
                         try
                         {
-                            task.Run();
+                            CurrentTask.Run();
                             serverInterface?.SignalTaskFinished(taskInformation.JobID, taskInformation.ID);
                         }
                         catch(Exception execEx)
                         {
                             serverInterface?.SignalTaskAborted(taskInformation.JobID, taskInformation.ID, execEx.ToString());
                         }
+                        CurrentTask = default(ATask);
                         lastTimeJobCompleted = DateTime.UtcNow;
                     }
                     else

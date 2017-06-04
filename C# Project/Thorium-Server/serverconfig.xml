@@ -1,7 +1,6 @@
 ﻿<?xml version="1.0" standalone="yes" ?>
 <config>
-  <option name="wcfPort">8100</option>
-  <option name="tmpFolder">temp</option>
-  <option name="jobsFolder">jobs</option>
-  <option name="services">FileCache</option>
+  <element key="wcfPort" value="8100"/>
+  <element key="tmpFolder" value="temp"/>
+  <element key="jobsFolder" value="jobs"/>
 </config>

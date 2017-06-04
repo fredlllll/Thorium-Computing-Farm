@@ -9,6 +9,7 @@ using static Thorium_Shared.ConfigKeys.ServerConfigKeys;
 using static Thorium_Shared.ConfigKeys.JobConfigKeys;
 using static Thorium_Server.ServerStatics;
 using System.Collections.Concurrent;
+using System.Runtime.Serialization;
 
 namespace Thorium_Server
 {
@@ -42,6 +43,8 @@ namespace Thorium_Server
         {
             jobInitializator.Start();
 
+            
+
             //TODO: load serialized jobs
             /*DirectoryInfo jobsFolder = new DirectoryInfo(ServerStatics.ServerConfig.Get(Key_JobsFolder));
             Directory.CreateDirectory(jobsFolder.FullName);
@@ -72,6 +75,14 @@ namespace Thorium_Server
         public void Shutdown()
         {
             //TODO: save stuff
+            using(FileStream fs = new FileStream("jobs.xml", FileMode.Create))
+            {
+                foreach(var kv in jobs)
+                {
+                    DataContractSerializer serializer = new DataContractSerializer(kv.Value.GetType());
+                    serializer.WriteObject(fs, kv.Value);
+                }
+            }
         }
 
         public void AddJob(AJob job)

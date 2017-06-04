@@ -30,8 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Ninject">
-      <HintPath>..\..\Dependencies\Ninject-3.2.0.0-release-net-4.5\Ninject.dll</HintPath>
+    <Reference Include="Ninject, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.3.2.2.0\lib\net45-full\Ninject.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.IO.Compression.FileSystem" />
@@ -50,13 +51,14 @@
     <Compile Include="Codolith\Logging\Logger.cs" />
     <Compile Include="ConfigKeys\ServerConfigKeys.cs" />
     <Compile Include="DependencyInjection.cs" />
+    <Compile Include="JobInformation.cs" />
     <Compile Include="Unused\ITask.cs" />
     <Compile Include="TaskInformation.cs" />
-    <Compile Include="JobTypes\Blender\BlenderEngineConfig.cs" />
-    <Compile Include="JobTypes\Blender\BlenderExecutionInfo.cs" />
-    <Compile Include="JobTypes\Blender\BlenderJob.cs" />
-    <Compile Include="JobTypes\Blender\BlenderRenderEngine.cs" />
-    <Compile Include="JobTypes\Blender\BlenderTask.cs" />
+    <Compile Include="Unused\JobTypes\Blender\BlenderEngineConfig.cs" />
+    <Compile Include="Unused\JobTypes\Blender\BlenderExecutionInfo.cs" />
+    <Compile Include="Unused\JobTypes\Blender\BlenderJob.cs" />
+    <Compile Include="Unused\JobTypes\Blender\BlenderRenderEngine.cs" />
+    <Compile Include="Unused\JobTypes\Blender\BlenderTask.cs" />
     <Compile Include="Unused\ClientInstanceRequest.cs" />
     <Compile Include="Codolith\Reflection\ReflectionHelper.cs" />
     <Compile Include="Codolith\Util\IScheduler.cs" />
@@ -104,11 +106,13 @@
     <Compile Include="WCF\WCFServiceManager.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="JobTypes\Blender\BlenderConfigExample.xml">
+    <Content Include="Unused\JobTypes\Blender\BlenderConfigExample.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

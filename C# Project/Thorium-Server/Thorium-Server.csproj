@@ -33,14 +33,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Codolith.Util">
-      <HintPath>D:\Dropbox\progging\C#\Codolith.NetLib\Codolith.Util\bin\Release\Codolith.Util.dll</HintPath>
-    </Reference>
     <Reference Include="Ninject">
       <HintPath>..\..\Dependencies\Ninject-3.2.0.0-release-net-4.5\Ninject.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
+    <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ClientManager.cs" />
