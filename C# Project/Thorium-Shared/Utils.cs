@@ -6,7 +6,7 @@ using System.ServiceModel.Channels;
 
 namespace Thorium_Shared
 {
-    public static class Util
+    public static class Utils
     {
         public static Random R { get; } = new Random();
 
@@ -34,7 +34,7 @@ namespace Thorium_Shared
 
         public static string GetRandomID()
         {
-            Guid guid = new Guid();
+            Guid guid = Guid.NewGuid();
             return guid.ToString();
         }
 

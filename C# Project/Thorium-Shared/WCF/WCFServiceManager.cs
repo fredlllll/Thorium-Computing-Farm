@@ -110,7 +110,7 @@ namespace Thorium_Shared.WCF
         {
             if(string.IsNullOrEmpty(path))
             {
-                path = Util.GetRandomString(25);
+                path = Utils.GetRandomString(25);
             }
 
             var address = "net.tcp://localhost:" + Port + "/" + path;

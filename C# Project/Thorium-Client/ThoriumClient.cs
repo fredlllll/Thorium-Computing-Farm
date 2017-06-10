@@ -17,7 +17,7 @@ namespace Thorium_Client
     {
         const string configFileName = "clientconfig.xml";
 
-        public string ID { get; } = Util.GetRandomID();
+        public string ID { get; } = Utils.GetRandomID();
 
         public ATask CurrentTask { get; private set; }
 

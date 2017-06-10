@@ -48,10 +48,32 @@
     <Compile Include="Codolith\Config\IConfigSaver.cs" />
     <Compile Include="Codolith\Config\INIConfigParser.cs" />
     <Compile Include="Codolith\Config\XMLConfigParser.cs" />
+    <Compile Include="Codolith\Serialization\ADataMemberInfo.cs" />
+    <Compile Include="Codolith\Serialization\BidirectionalDict.cs" />
+    <Compile Include="Codolith\Serialization\DataStructures\ArrayTypeDataStructure.cs" />
+    <Compile Include="Codolith\Serialization\DataStructures\EnumTypeDataStructure.cs" />
+    <Compile Include="Codolith\Serialization\FieldDataMemberInfo.cs" />
+    <Compile Include="Codolith\Serialization\Formatters\BinaryFormatter.cs" />
+    <Compile Include="Codolith\Serialization\Formatters\XMLFormatter.cs" />
+    <Compile Include="Codolith\Serialization\ITypeDataStructure.cs" />
+    <Compile Include="Codolith\Serialization\ModTuple.cs" />
+    <Compile Include="Codolith\Serialization\MultiDictionary.cs" />
+    <Compile Include="Codolith\Serialization\ObjectSerializationDataSet.cs" />
+    <Compile Include="Codolith\Serialization\Primitive.cs" />
+    <Compile Include="Codolith\Serialization\PropertyDataMemberInfo.cs" />
+    <Compile Include="Codolith\Serialization\ReferencingSerializer.cs" />
     <Compile Include="Codolith\Logging\Logger.cs" />
+    <Compile Include="Codolith\Serialization\SerializationDataSet.cs" />
+    <Compile Include="Codolith\Serialization\DataStructures\DefaultTypeDataStructure.cs" />
+    <Compile Include="Codolith\Serialization\TypeDescription.cs" />
+    <Compile Include="Codolith\Serialization\Utils.cs" />
+    <Compile Include="Codolith\Serialization\Formatters\IFormatter.cs" />
     <Compile Include="ConfigKeys\ServerConfigKeys.cs" />
     <Compile Include="DependencyInjection.cs" />
     <Compile Include="JobInformation.cs" />
+    <Compile Include="Jobtypes\SimpleExecution\SETask.cs" />
+    <Compile Include="Jobtypes\SimpleExecution\SETaskInformationProducer.cs" />
+    <Compile Include="Jobtypes\SimpleExecution\SEJob.cs" />
     <Compile Include="Unused\ITask.cs" />
     <Compile Include="TaskInformation.cs" />
     <Compile Include="Unused\JobTypes\Blender\BlenderEngineConfig.cs" />
@@ -100,7 +122,7 @@
     <Compile Include="Unused\Services\Server\ResultsCache.cs" />
     <Compile Include="SharedData.cs" />
     <Compile Include="ATask.cs" />
-    <Compile Include="Util.cs" />
+    <Compile Include="Utils.cs" />
     <Compile Include="WCF\WCFServiceHostingInfo.cs" />
     <Compile Include="WCF\WCFServiceInfo.cs" />
     <Compile Include="WCF\WCFServiceManager.cs" />
@@ -113,6 +135,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

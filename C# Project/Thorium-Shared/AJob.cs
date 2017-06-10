@@ -48,11 +48,13 @@ namespace Thorium_Shared
         public void SignalTaskAborted(string id, string reason = default(string))
         {
             TaskAborted?.Invoke(this, id, reason);
+            TaskInformationProducer.SignalTaskAborted(id, reason);
         }
         
         public void SignalTaskFinished(string id)
         {
             TaskFinished?.Invoke(this, id);
+            TaskInformationProducer.SignalTaskFinished(id);
         }
 
         public static AJob JobFromInformation(JobInformation information)

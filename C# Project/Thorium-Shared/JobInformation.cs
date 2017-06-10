@@ -14,7 +14,7 @@ namespace Thorium_Shared
         [DataMember]
         public string ID { get; set; }
         [DataMember]
-        public Config Config { get; } = new Config();
+        public Config Config { get; private set; } = new Config();
 
         public Type JobType
         {

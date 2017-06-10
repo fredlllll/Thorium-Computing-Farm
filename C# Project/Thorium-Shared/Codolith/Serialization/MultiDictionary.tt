@@ -1,0 +1,100 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ output extension=".cs" #>
+using System.Collections;
+using System.Collections.Generic;
+
+namespace Codolith.Serialization {
+<#
+
+    
+
+    for(int i = 2; i < 11; i++){
+        Write("class MultiDictionary");
+        WriteArgumentList(i);
+        Write(" : IEnumerable<KeyValuePair<T1,ModTuple");
+        WriteArgumentList(i);
+        WriteLine(">>{");
+
+        WriteDictionaries(i);
+        WriteCount();
+        WriteAccessors(i);
+        WriteContainsKeys(i);
+        WriteEnumerators(i);
+
+        WriteLine("}");
+    }
+
+#>
+}
+
+<#+
+    public void WriteArgumentList(int count){
+        Write("<");
+        for(int i = 0; i < count; i++){
+            Write("T" + (i + 1));
+            if(i < count - 1){
+                Write(",");
+            }
+        }
+        Write(">");
+    }
+
+    public void WriteDictionaries(int count){
+        for(int i = 0; i < count; i++){
+            Write("Dictionary<T"+(i+1)+",ModTuple");
+            WriteArgumentList(count);
+            Write("> T"+(i+1)+"AsKey = new Dictionary<T"+(i+1)+",ModTuple");
+            WriteArgumentList(count);
+            WriteLine(">();");
+        }
+    }
+
+    public void WriteCount(){
+        WriteLine("public int Count{get{return T1AsKey.Count;}}");
+    }
+
+    public void WriteAccessors(int count){
+        for(int i = 0; i < count; i++){
+            Write("public ModTuple");
+            WriteArgumentList(count);
+            Write(" this[T"+(i+1)+" key]{");
+            Write("get{ return T"+(i+1)+"AsKey[key]; }");
+            WriteLine("set{");
+            for(int j = 0; j < count; j++){
+                WriteLine("T"+(j+1)+"AsKey[value.Value"+(j+1)+"] = value;");
+            }
+            WriteLine("}");
+            WriteLine("}");
+
+            Write("public bool TryGetValue(T"+(i+1)+" key, out ModTuple");
+            WriteArgumentList(count);
+            WriteLine(" outval){");
+            WriteLine("return T"+(i+1)+"AsKey.TryGetValue(key,out outval);");
+            WriteLine("}");
+        }
+    }
+
+    public void WriteContainsKeys(int count){
+        for(int i = 0; i < count; i++){
+            WriteLine("public bool ContainsKey(T"+(i+1)+" key){");
+            WriteLine("return T"+(i+1)+"AsKey.ContainsKey(key);");
+            WriteLine("}");
+        }
+    }
+
+    public void WriteEnumerators(int count){
+        Write("public IEnumerator<KeyValuePair<T1,ModTuple");
+        WriteArgumentList(count);
+        WriteLine(">> GetEnumerator(){");
+        WriteLine("return T1AsKey.GetEnumerator();");
+        WriteLine("}");
+
+        WriteLine("IEnumerator IEnumerable.GetEnumerator(){");
+        WriteLine("return T1AsKey.GetEnumerator();");
+        WriteLine("}");
+    }
+#>
