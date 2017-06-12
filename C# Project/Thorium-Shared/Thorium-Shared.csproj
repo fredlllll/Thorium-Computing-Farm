@@ -52,6 +52,8 @@
     <Compile Include="Codolith\Serialization\BidirectionalDict.cs" />
     <Compile Include="Codolith\Serialization\DataStructures\ArrayTypeDataStructure.cs" />
     <Compile Include="Codolith\Serialization\DataStructures\EnumTypeDataStructure.cs" />
+    <Compile Include="Codolith\Serialization\DataStructures\IDictionaryTypeDataStructure.cs" />
+    <Compile Include="Codolith\Serialization\DataStructures\IListTypeDataStructure.cs" />
     <Compile Include="Codolith\Serialization\FieldDataMemberInfo.cs" />
     <Compile Include="Codolith\Serialization\Formatters\BinaryFormatter.cs" />
     <Compile Include="Codolith\Serialization\Formatters\XMLFormatter.cs" />

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -38,18 +39,7 @@ namespace Codolith.Serialization
             ModTuple<object, int> reference = new ModTuple<object, int>(obj, references.Count);
             references[obj] = reference;
             objects.Add(obj);
-
-            if(tds.ComplexMembers != null)
-            {
-                foreach(var member in tds.ComplexMembers)
-                {
-                    object value = member.GetFromObject(obj);
-                    if(value != null)
-                    {
-                        AddObject(value);
-                    }
-                }
-            }
+            tds.OnObjectAdd(obj);
         }
 
         public void SetTypeDataStructure(Type t, ITypeDataStructure tds)
@@ -92,7 +82,7 @@ namespace Codolith.Serialization
             Dictionary<object, ObjectSerializationDataSet> tdss = new Dictionary<object, ObjectSerializationDataSet>();
             foreach(var ods in sds.objectDataSets)
             {
-                Type t = GetType(ods.TypeIndex);
+                Type t = GetType(ods.TypeID);
                 var tds = GetTypeDataStructure(t);
                 object obj = tds.GetSimpleObject(ods);
 
@@ -150,9 +140,18 @@ namespace Codolith.Serialization
             }
 
             ITypeDataStructure tds;
+            //TODO: list with filters, so this is more dynamic
             if(t.IsEnum)
             {
                 tds = new EnumTypeDataStructure(t, this);
+            }
+            else if(typeof(IList).IsAssignableFrom(t))
+            {
+                tds = new IListTypeDataStructure(t, this);
+            }
+            else if(typeof(IDictionary).IsAssignableFrom(t))
+            {
+                tds = new IDictionaryTypeDataStructure(t, this);
             }
             else
             {

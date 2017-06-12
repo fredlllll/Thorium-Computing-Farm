@@ -34,6 +34,8 @@
     <Compile Include="DataStructures\ArrayTypeDataStructure.cs" />
     <Compile Include="DataStructures\DefaultTypeDataStructure.cs" />
     <Compile Include="DataStructures\EnumTypeDataStructure.cs" />
+    <Compile Include="DataStructures\IDictionaryTypeDataStructure.cs" />
+    <Compile Include="DataStructures\IListTypeDataStructure.cs" />
     <Compile Include="Formatters\BinaryFormatter.cs" />
     <Compile Include="ReferencingSerializer.cs" />
     <Compile Include="FieldDataMemberInfo.cs" />

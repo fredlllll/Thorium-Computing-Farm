@@ -25,13 +25,13 @@ namespace Codolith.Serialization.DataStructures
             Type = t;
             Serializer = serializer;
 
-            IsOfPrimitiveType = Utils.IsTypePrimitive(t.GetElementType());
+            IsOfPrimitiveType = Utils.IsPrimitiveType(t.GetElementType());
         }
 
         public ObjectSerializationDataSet GetObjectSerializationDataSet(object obj)
         {
             ObjectSerializationDataSet osds = new ObjectSerializationDataSet();
-            osds.TypeIndex = Serializer.GetTypeID(Type);
+            osds.TypeID = Serializer.GetTypeID(Type);
 
             var oaa = (Array)obj;
             int length = oaa.Length;
@@ -39,7 +39,7 @@ namespace Codolith.Serialization.DataStructures
             Primitive p = new Primitive();
             p.Name = "length";
             p.Value = length;
-            osds.primitives.Add(p);
+            osds.AddPrimitive(p);
 
 
             if(IsOfPrimitiveType)
@@ -49,7 +49,7 @@ namespace Codolith.Serialization.DataStructures
                     p = new Primitive();
                     p.Name = i.ToString();
                     p.Value = oaa.GetValue(i);
-                    osds.primitives.Add(p);
+                    osds.AddPrimitive(p);
                 }
             }
             else
@@ -59,7 +59,7 @@ namespace Codolith.Serialization.DataStructures
                     p = new Primitive();
                     p.Name = i.ToString();
                     p.Value = Serializer.GetReferenceID(oaa.GetValue(i));
-                    osds.complexPrimitives.Add(p);
+                    osds.AddComplexPrimitive(p);
                 }
             }
 
@@ -68,21 +68,18 @@ namespace Codolith.Serialization.DataStructures
 
         public object GetSimpleObject(ObjectSerializationDataSet osds)
         {
-            Type t = Serializer.GetType(osds.TypeIndex);
+            Type t = Serializer.GetType(osds.TypeID);
 
-            int length = (int)osds.primitives.Find((x) => { return x.Name == "length"; }).Value;
+            int length = (int)osds.GetPrimitive("length").Value;
 
             var arr = Array.CreateInstance(t.GetElementType(), length);
 
             if(IsOfPrimitiveType)
             {
-                foreach(var p in osds.primitives)
+                for(int i = 0; i < length; i++)
                 {
-                    int index;
-                    if(int.TryParse(p.Name, out index))
-                    {
-                        arr.SetValue(p.Value, index);
-                    }
+                    Primitive p = osds.GetPrimitive(i.ToString());
+                    arr.SetValue(p.Value, i);
                 }
             }
 
@@ -91,17 +88,26 @@ namespace Codolith.Serialization.DataStructures
 
         public void SetComplexMembers(ObjectSerializationDataSet osds, object obj)
         {
-            var arr = (Array)obj;
-
             if(!IsOfPrimitiveType)
             {
-                foreach(var p in osds.complexPrimitives)
+                var arr = (Array)obj;
+                int length = (int)osds.GetPrimitive("length").Value;
+                for(int i = 0; i < length; i++)
                 {
-                    int index;
-                    if(int.TryParse(p.Name, out index))
-                    {
-                        arr.SetValue(Serializer.GetReference((int)p.Value), index);
-                    }
+                    Primitive p = osds.GetComplex(i.ToString());
+                    arr.SetValue(Serializer.GetReference((int)p.Value), i);
+                }
+            }
+        }
+
+        public void OnObjectAdd(object obj)
+        {
+            if(!IsOfPrimitiveType)
+            {
+                var arr = (Array)obj;
+                for(int i = 0; i < arr.Length; i++)
+                {
+                    Serializer.AddObject(arr.GetValue(i));
                 }
             }
         }

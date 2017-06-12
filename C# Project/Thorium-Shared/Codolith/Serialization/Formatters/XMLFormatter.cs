@@ -56,18 +56,18 @@ namespace Codolith.Serialization.Formatters
                 wr.WriteStartElement("objectdataset");
 
                 wr.WriteStartElement("typeindex");
-                wr.WriteValue(ods.TypeIndex);
+                wr.WriteValue(ods.TypeID);
                 wr.WriteEndElement();
 
                 wr.WriteStartElement("primitives");
-                foreach(var p in ods.primitives)
+                foreach(var p in ods.Primitives)
                 {
                     WritePrimitive(p);
                 }
                 wr.WriteEndElement();
 
                 wr.WriteStartElement("complexprimitives");
-                foreach(var p in ods.complexPrimitives)
+                foreach(var p in ods.ComplexPrimitives)
                 {
                     WritePrimitive(p);
                 }
@@ -107,18 +107,18 @@ namespace Codolith.Serialization.Formatters
             foreach(XmlNode ods in objDataSets)
             {
                 ObjectSerializationDataSet osds = new ObjectSerializationDataSet();
-                osds.TypeIndex = Convert.ToInt32(ods.SelectSingleNode("typeindex").InnerText, System.Globalization.CultureInfo.InvariantCulture);
+                osds.TypeID = Convert.ToInt32(ods.SelectSingleNode("typeindex").InnerText, System.Globalization.CultureInfo.InvariantCulture);
 
                 var primitives = ods.SelectNodes("primitives/primitive");
                 foreach(XmlNode prim in primitives)
                 {
-                    osds.primitives.Add(ReadPrimitive(prim));
+                    osds.AddPrimitive(ReadPrimitive(prim));
                 }
 
                 primitives = ods.SelectNodes("complexprimitives/primitive");
                 foreach(XmlNode prim in primitives)
                 {
-                    osds.complexPrimitives.Add(ReadPrimitive(prim));
+                    osds.AddComplexPrimitive(ReadPrimitive(prim));
                 }
 
                 sds.objectDataSets.Add(osds);

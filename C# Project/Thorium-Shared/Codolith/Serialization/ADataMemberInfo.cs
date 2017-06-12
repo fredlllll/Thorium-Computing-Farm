@@ -12,7 +12,7 @@ namespace Codolith.Serialization
 
         public abstract string Name { get; }
         public abstract Type MemberType { get; }
-        public bool IsPrimitive { get { return Utils.IsTypePrimitive(MemberType); } }
+        public bool IsPrimitive { get { return Utils.IsPrimitiveType(MemberType); } }
 
         public ADataMemberInfo(ReferencingSerializer serializer)
         {

@@ -83,15 +83,15 @@ namespace Codolith.Serialization.Formatters
             bw.Write(dataSet.objectDataSets.Count);
             foreach(var ods in dataSet.objectDataSets)
             {
-                bw.Write(ods.TypeIndex);
+                bw.Write(ods.TypeID);
 
-                bw.Write(ods.primitives.Count);
-                foreach(var p in ods.primitives)
+                bw.Write(ods.PrimitiveCount);
+                foreach(var p in ods.Primitives)
                 {
                     WritePrimitive(p);
                 }
-                bw.Write(ods.complexPrimitives.Count);
-                foreach(var p in ods.complexPrimitives)
+                bw.Write(ods.ComplexCount);
+                foreach(var p in ods.ComplexPrimitives)
                 {
                     WritePrimitive(p);
                 }
@@ -120,18 +120,18 @@ namespace Codolith.Serialization.Formatters
             for(int i = 0; i < count; i++)
             {
                 var ods = new ObjectSerializationDataSet();
-                ods.TypeIndex = br.ReadInt32();
+                ods.TypeID = br.ReadInt32();
 
                 int count2 = br.ReadInt32();
                 for(int j = 0; j < count2; j++)
                 {
-                    ods.primitives.Add(ReadPrimitive());
+                    ods.AddPrimitive(ReadPrimitive());
                 }
 
                 count2 = br.ReadInt32();
                 for(int j = 0; j < count2; j++)
                 {
-                    ods.complexPrimitives.Add(ReadPrimitive());
+                    ods.AddComplexPrimitive(ReadPrimitive());
                 }
                 sds.objectDataSets.Add(ods);
             }

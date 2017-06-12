@@ -18,5 +18,7 @@ namespace Codolith.Serialization
 
         object GetSimpleObject(ObjectSerializationDataSet osds);
         void SetComplexMembers(ObjectSerializationDataSet osds, object obj);
+
+        void OnObjectAdd(object obj);
     }
 }

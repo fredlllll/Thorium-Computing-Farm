@@ -25,24 +25,29 @@ namespace Codolith.Serialization.DataStructures
         public ObjectSerializationDataSet GetObjectSerializationDataSet(object obj)
         {
             ObjectSerializationDataSet osds = new ObjectSerializationDataSet();
-            osds.TypeIndex = Serializer.GetTypeID(Type);
+            osds.TypeID = Serializer.GetTypeID(Type);
 
             Primitive p = new Primitive();
             p.Name = "value";
             p.Value = Enum.GetName(Type, obj);
-            osds.primitives.Add(p);
+            osds.AddPrimitive(p);
 
             return osds;
         }
 
         public object GetSimpleObject(ObjectSerializationDataSet osds)
         {
-            return Enum.Parse(Type, (string)osds.primitives[0].Value);
+            return Enum.Parse(Type, (string)osds.GetPrimitive("value").Value);
         }
 
         public void SetComplexMembers(ObjectSerializationDataSet osds, object obj)
         {
 
+        }
+
+        public void OnObjectAdd(object obj)
+        {
+           
         }
     }
 }

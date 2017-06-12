@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using Codolith.Serialization;
 using Codolith.Serialization.Formatters;
 using Thorium_Shared;
@@ -17,20 +18,24 @@ namespace Thorium_Test
             ji.Config.Set("count", 10);
             ji.Config.Set("program", "echo");
 
+            var jl = new List<JobInformation>();
+            jl.Add(ji);
+
             ReferencingSerializer rs = new ReferencingSerializer();
-            rs.AddObject(ji);
+            rs.AddObject(jl);
             var sds = rs.GetSerializationDataSet();
 
-            using(FileStream fs = new FileStream("job.bin", FileMode.Create))
+            string file = "job.xml";
+            using(FileStream fs = new FileStream(file, FileMode.Create))
             {
-                IFormatter xf = new BinaryFormatter(fs);
+                IFormatter xf = new XMLFormatter(fs);
                 xf.Write(sds);
             }
 
             SerializationDataSet sds_in;
-            using(FileStream fs = new FileStream("job.bin", FileMode.Open))
+            using(FileStream fs = new FileStream(file, FileMode.Open))
             {
-                IFormatter xf = new BinaryFormatter(fs);
+                IFormatter xf = new XMLFormatter(fs);
                 sds_in = xf.Read();
             }
 

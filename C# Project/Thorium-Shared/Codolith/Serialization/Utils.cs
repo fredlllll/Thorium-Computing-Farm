@@ -37,9 +37,19 @@ namespace Codolith.Serialization
             primitiveTypes.Add(typeof(bool));
         }
 
-        public static bool IsTypePrimitive(Type t)
+        public static bool IsPrimitiveType(Type t)
         {
             return t.IsPrimitive || t == typeof(string) || t == typeof(decimal);
+        }
+
+        public static object GetDefaulInstanceOrUninitialized(Type t)
+        {
+            var constr = t.GetConstructor(Type.EmptyTypes);
+            if(constr != null)
+            {
+                return constr.Invoke(new object[0]);
+            }
+            return FormatterServices.GetSafeUninitializedObject(t);
         }
 
         public static object GetUninitializedInstance(Type t)

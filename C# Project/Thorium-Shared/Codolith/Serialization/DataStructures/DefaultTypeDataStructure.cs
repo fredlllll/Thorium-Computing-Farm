@@ -86,14 +86,14 @@ namespace Codolith.Serialization.DataStructures
         public ObjectSerializationDataSet GetObjectSerializationDataSet(object obj)
         {
             ObjectSerializationDataSet osds = new ObjectSerializationDataSet();
-            osds.TypeIndex = Serializer.GetTypeID(Type);
+            osds.TypeID = Serializer.GetTypeID(Type);
             foreach(var p in GetComplexPrimitives(obj))
             {
-                osds.complexPrimitives.Add(p);
+                osds.AddComplexPrimitive(p);
             }
             foreach(var p in GetPrimitives(obj))
             {
-                osds.primitives.Add(p);
+                osds.AddPrimitive(p);
             }
             return osds;
         }
@@ -122,10 +122,10 @@ namespace Codolith.Serialization.DataStructures
 
         public object GetSimpleObject(ObjectSerializationDataSet osds)
         {
-            Type t = Serializer.GetType(osds.TypeIndex);
-            object retval = Utils.GetUninitializedInstance(t);
+            Type t = Serializer.GetType(osds.TypeID);
+            object retval = Utils.GetDefaulInstanceOrUninitialized(t);
 
-            foreach(var prim in osds.primitives)
+            foreach(var prim in osds.Primitives)
             {
                 var dm = GetPrimitiveByName(prim.Name);
                 dm.SetOnObject(retval, prim.Value);
@@ -136,11 +136,23 @@ namespace Codolith.Serialization.DataStructures
 
         public void SetComplexMembers(ObjectSerializationDataSet osds,object obj)
         {
-            foreach(var prim in osds.complexPrimitives)
+            foreach(var prim in osds.ComplexPrimitives)
             {
                 object other = Serializer.GetReference((int)prim.Value);
                 var dm = GetComplexByName(prim.Name);
                 dm.SetOnObject(obj, other);
+            }
+        }
+
+        public void OnObjectAdd(object obj)
+        {
+            foreach(var member in ComplexMembers)
+            {
+                object value = member.GetFromObject(obj);
+                if(value != null)
+                {
+                    Serializer.AddObject(value);
+                }
             }
         }
     }
