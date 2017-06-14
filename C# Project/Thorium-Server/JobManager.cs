@@ -10,6 +10,8 @@ using static Thorium_Shared.ConfigKeys.JobConfigKeys;
 using static Thorium_Server.ServerStatics;
 using System.Collections.Concurrent;
 using System.Runtime.Serialization;
+using Codolith.Serialization;
+using Codolith.Serialization.Formatters;
 
 namespace Thorium_Server
 {
@@ -43,7 +45,28 @@ namespace Thorium_Server
         {
             jobInitializator.Start();
 
-            
+
+            ReferencingSerializer rs = new ReferencingSerializer();
+            using(FileStream fs = new FileStream("jobs.xml", FileMode.Open)) {
+                var formatter = new XMLFormatter(fs);
+                rs.ReadSerializationDataSet(formatter.Read());
+            }
+
+            List<JobInformation> jobInfos = new List<JobInformation>();
+            foreach(object obj in rs.Objects)
+            {
+                if(obj.GetType() == typeof(List<JobInformation>))
+                {
+                    jobInfos = (List<JobInformation>)obj;
+                    break;
+                }
+            }
+
+            foreach(var ji in jobInfos)
+            {
+                var j = AJob.JobFromInformation(ji);
+                jobInitializator.AddJob(j);
+            }
 
             //TODO: load serialized jobs
             /*DirectoryInfo jobsFolder = new DirectoryInfo(ServerStatics.ServerConfig.Get(Key_JobsFolder));

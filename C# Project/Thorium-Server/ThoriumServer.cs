@@ -10,6 +10,7 @@ using Thorium_Shared;
 using Codolith.Config;
 using Ninject;
 using static Thorium_Server.ServerStatics;
+using Codolith.Logging;
 
 namespace Thorium_Server
 {

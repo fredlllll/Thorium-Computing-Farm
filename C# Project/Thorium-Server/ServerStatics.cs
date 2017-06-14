@@ -32,7 +32,7 @@ namespace Thorium_Server
         {
             get
             {
-                return ServerConfigFolder + "thorium_server_config.xml";
+                return Path.Combine(ServerConfigFolder, "thorium_server_config.xml");
             }
         }
 
@@ -56,7 +56,7 @@ namespace Thorium_Server
             {
                 if(logger == default(Logger))
                 {
-                    logger = new Logger(logCurrentDomainUnhandledExceptions:true);
+                    logger = new Logger(logCurrentDomainUnhandledExceptions: true);
                 }
                 return logger;
             }

@@ -61,8 +61,10 @@ namespace Thorium_Server
                     {
                         try
                         {
+                            Console.WriteLine("initing job " + job.ID);
                             job.Initialize();
                             JobInitialized?.Invoke(this, job);
+                            Console.WriteLine("done");
                         }
                         //dont handle thread interrupt here
                         catch(Exception ex) when(!(ex is ThreadInterruptedException))

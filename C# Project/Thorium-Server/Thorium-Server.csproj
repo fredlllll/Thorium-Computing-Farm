@@ -63,7 +63,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="serverconfig.xml">
+    <Content Include="jobs.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="thorium_server_config.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

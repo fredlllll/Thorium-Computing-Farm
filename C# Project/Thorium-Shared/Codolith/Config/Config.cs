@@ -48,6 +48,7 @@ namespace Codolith.Config
                     {
                         throw new Exception("the type " + parserType + " has to be convertible to " + nameof(IConfigParser));
                     }
+                    parser.Stream = fs;
 
                     parser.FillDictionary(dict);
                 }
@@ -139,9 +140,6 @@ namespace Codolith.Config
         {
             SetParserType(ConfigType.XML, typeof(XMLConfigParser));
             SetParserType(ConfigType.INI, typeof(INIConfigParser));
-
-            SetParserType(ConfigType.XML, null);//TODO
-            SetParserType(ConfigType.INI, null);
         }
 
         public static void SetParserType(ConfigType ctype, Type t)

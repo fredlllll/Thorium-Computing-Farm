@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Codolith.Logging;
 using Thorium_Shared;
 
 namespace Thorium_Server
@@ -13,6 +14,8 @@ namespace Thorium_Server
         static ConsoleMenu menu;
         static void Main(string[] args)
         {
+            
+
             server = new ThoriumServer();
             server.Start();
 

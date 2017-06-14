@@ -35,7 +35,7 @@ namespace Thorium_Shared.WCF
         {
             get;
             set;
-        } = 8200;
+        } = 8100;
 
         Binding binding;
 
@@ -43,12 +43,11 @@ namespace Thorium_Shared.WCF
         Dictionary<IService, WCFServiceHostingInfo> serviceHosts = new Dictionary<IService, WCFServiceHostingInfo>();
 
         private WCFServiceManager() {
-            BasicHttpsBinding bhb = new BasicHttpsBinding(BasicHttpsSecurityMode.TransportWithMessageCredential);
-            binding = bhb;
-            bhb.Security.Message.ClientCredentialType = BasicHttpMessageCredentialType.UserName;
-            bhb.Security.Mode = BasicHttpsSecurityMode.TransportWithMessageCredential;
-            bhb.Security.Transport.ClientCredentialType = HttpClientCredentialType.Basic;
-            bhb.Security.Transport.ProxyCredentialType = HttpProxyCredentialType.Basic;
+            NetTcpBinding b = new NetTcpBinding(SecurityMode.None);
+            binding = b;
+            b.Security.Message.ClientCredentialType = MessageCredentialType.IssuedToken;
+            b.Security.Transport.ClientCredentialType = TcpClientCredentialType.None;
+            b.Security.Transport.ProtectionLevel = System.Net.Security.ProtectionLevel.None;
         }
 
         public InterfaceType GetServiceInstance<InterfaceType>(string remotePath, IService callbackInstance = null, string remoteHost = null) where InterfaceType : IService
@@ -114,6 +113,7 @@ namespace Thorium_Shared.WCF
             }
 
             var address = "net.tcp://localhost:" + Port + "/" + path;
+            Console.WriteLine("hosting " + serviceInstance + " on " + address);
 
             WCFServiceHostingInfo info = new WCFServiceHostingInfo();
             info.serviceInstance = serviceInstance;
