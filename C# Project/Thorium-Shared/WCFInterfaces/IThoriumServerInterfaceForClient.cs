@@ -20,9 +20,9 @@ namespace Thorium_Shared
         [OperationContract(IsInitiating = false, IsTerminating = true)]
         void Deauthenticate();*/
 
-        [OperationContract(IsInitiating = true, IsTerminating = false)]
+        [OperationContract(IsInitiating = true)]
         void RegisterClient();//place for doing client authentication, just so no random people can get access to your data TODO
-        [OperationContract(IsInitiating = false, IsTerminating = true)]
+        [OperationContract(IsTerminating = true)]
         void UnregisterClient();
         [OperationContract]
         TaskInformation GetFreeTaskInformation();

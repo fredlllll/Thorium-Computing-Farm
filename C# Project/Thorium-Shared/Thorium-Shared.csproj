@@ -48,6 +48,10 @@
     <Compile Include="Codolith\Config\IConfigSaver.cs" />
     <Compile Include="Codolith\Config\INIConfigParser.cs" />
     <Compile Include="Codolith\Config\XMLConfigParser.cs" />
+    <Compile Include="Codolith\Logging\Listeners\ConsoleLogListener.cs" />
+    <Compile Include="Codolith\Logging\Listeners\FileLogListener.cs" />
+    <Compile Include="Codolith\Logging\Listeners\ILogListener.cs" />
+    <Compile Include="Codolith\Logging\LogMessage.cs" />
     <Compile Include="Codolith\Serialization\ADataMemberInfo.cs" />
     <Compile Include="Codolith\Serialization\BidirectionalDict.cs" />
     <Compile Include="Codolith\Serialization\DataStructures\ArrayTypeDataStructure.cs" />
@@ -76,6 +80,7 @@
     <Compile Include="Jobtypes\SimpleExecution\SETask.cs" />
     <Compile Include="Jobtypes\SimpleExecution\SETaskInformationProducer.cs" />
     <Compile Include="Jobtypes\SimpleExecution\SEJob.cs" />
+    <Compile Include="SharedStatics.cs" />
     <Compile Include="Unused\ITask.cs" />
     <Compile Include="TaskInformation.cs" />
     <Compile Include="Unused\JobTypes\Blender\BlenderEngineConfig.cs" />

@@ -10,6 +10,7 @@ using Ninject;
 using Thorium_Shared;
 using Codolith.Config;
 using Thorium_Shared.WCF;
+using static Thorium_Shared.SharedStatics;
 
 namespace Thorium_Client
 {
@@ -34,10 +35,13 @@ namespace Thorium_Client
             WCFServiceManager.Instance.RemoteHost = serverAddress;
 
             IThoriumClientInterfaceForServer clientInterface;
-            DependencyInjection.Kernel.Bind<IThoriumClientInterfaceForServer>().ToConstant(clientInterface = new ThoriumClientInterfaceForServer(this));
+            clientInterface = new ThoriumClientInterfaceForServer(this);
+            DependencyInjection.Kernel.Bind<IThoriumClientInterfaceForServer>().ToConstant(clientInterface);
 
             IThoriumServerInterfaceForClient serverInterface;
-            DependencyInjection.Kernel.Bind<IThoriumServerInterfaceForClient>().ToConstant(serverInterface = WCFServiceManager.Instance.GetServiceInstance<IThoriumServerInterfaceForClient>(Constants.THORIUM_SERVER_INTERFACE_FOR_CLIENT, clientInterface));
+            serverInterface = WCFServiceManager.Instance.GetServiceInstance<IThoriumServerInterfaceForClient>(Constants.THORIUM_SERVER_INTERFACE_FOR_CLIENT, clientInterface);
+            DependencyInjection.Kernel.Bind<IThoriumServerInterfaceForClient>().ToConstant(serverInterface);
+            Thread.Sleep(1000);
 
             serverInterface.RegisterClient();//i basically have to tell the server how he can reach me... but i dunno how. ip could be local or external, but what about stupid routers without loopback?
             runner = new Thread(Run);
@@ -61,6 +65,16 @@ namespace Thorium_Client
             WCFServiceManager.Instance.FreeServiceInstance<IThoriumServerInterfaceForClient>();
         }
 
+        public void AbortTask(string id)
+        {
+            if(CurrentTask.GetID() == id)
+            {
+                CurrentTask.Abort();
+                var serverInterface = DependencyInjection.Kernel.Get<IThoriumServerInterfaceForClient>();
+                serverInterface.SignalTaskAborted(CurrentTask.GetJobID(), id, "Aborted");
+            }
+        }
+
         void Run()
         {
             DateTime lastTimeJobCompleted = DateTime.UtcNow;
@@ -70,17 +84,22 @@ namespace Thorium_Client
             {
                 while(true)
                 {
+                    Logger.Log("getting job...");
                     var taskInformation = serverInterface?.GetFreeTaskInformation();
                     if(taskInformation != null)
                     {
+                        Logger.Log("got task: " + taskInformation.ID);
                         CurrentTask = ATask.TaskFromInformation(taskInformation);
                         try
                         {
+                            Logger.Log("executing task");
                             CurrentTask.Run();
                             serverInterface?.SignalTaskFinished(taskInformation.JobID, taskInformation.ID);
+                            Logger.Log("done task");
                         }
-                        catch(Exception execEx)
+                        catch(Exception execEx) when (!(execEx is ThreadInterruptedException))
                         {
+                            Logger.Log("task failed: " +execEx);
                             serverInterface?.SignalTaskAborted(taskInformation.JobID, taskInformation.ID, execEx.ToString());
                         }
                         CurrentTask = default(ATask);
@@ -88,6 +107,8 @@ namespace Thorium_Client
                     }
                     else
                     {
+                        Logger.Log("no task available");
+                        //TODO: make shutdown an option
                         if((DateTime.UtcNow - lastTimeJobCompleted).TotalSeconds > 180) //if idle for x seconds we shutdown
                         {
                             break;
@@ -99,12 +120,12 @@ namespace Thorium_Client
             catch(ThreadInterruptedException)
             {
                 //bye bye
-                Console.WriteLine("thread interrupted");
+                Logger.Log("worker thread interrupted. exiting");
             }
             catch(Exception ex)
             {
                 //TODO: log
-                Console.WriteLine("exception: " + ex);
+                Logger.Log("exception: " + ex);
             }
             Shutdown();
         }

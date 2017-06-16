@@ -1,5 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.ServiceModel;
+using System.Threading;
 using Codolith.Serialization;
 using Codolith.Serialization.Formatters;
 using Thorium_Shared;
@@ -11,36 +14,63 @@ namespace Thorium_Test
     {
         static void Main(string[] args)
         {
-            JobInformation ji = new JobInformation();
-            ji.ID = Thorium_Shared.Utils.GetRandomID();
-            ji.JobType = typeof(SEJob);
+            NetTcpBinding b = new NetTcpBinding();
 
-            ji.Config.Set("count", 10);
-            ji.Config.Set("program", "echo");
+            var s = new service();
 
-            var jl = new List<JobInformation>();
-            jl.Add(ji);
+            var address = "net.tcp://localhost:8100/test";
+            Console.WriteLine("hosting " + s + " on " + address);
 
-            ReferencingSerializer rs = new ReferencingSerializer();
-            rs.AddObject(jl);
-            var sds = rs.GetSerializationDataSet();
+            Uri wcfAddress = new Uri(address);
+            var host = new ServiceHost(s, wcfAddress);
+            host.Open();
 
-            string file = "job.xml";
-            using(FileStream fs = new FileStream(file, FileMode.Create))
-            {
-                IFormatter xf = new XMLFormatter(fs);
-                xf.Write(sds);
-            }
 
-            SerializationDataSet sds_in;
-            using(FileStream fs = new FileStream(file, FileMode.Open))
-            {
-                IFormatter xf = new XMLFormatter(fs);
-                sds_in = xf.Read();
-            }
+            EndpointAddress endpointAddress = new EndpointAddress("net.tcp://localhost:8100/test");
 
-            ReferencingSerializer rs_in = new ReferencingSerializer();
-            rs_in.ReadSerializationDataSet(sds_in);
+            var cb = new callback();
+            var channelFactory = new DuplexChannelFactory<iservice>(cb, new NetTcpBinding(), endpointAddress);
+            var serviceInstance = channelFactory.CreateChannel();
+
+            serviceInstance.doMe();
+
+            Thread.Sleep(5000);
         }
+
+        [ServiceContract(CallbackContract = typeof(icallback), SessionMode = SessionMode.Required)]
+        interface iservice
+        {
+            [OperationContract(IsInitiating = true, IsOneWay = true)]
+            void doMe();
+        }
+
+        [ServiceContract]
+        interface icallback
+        {
+            [OperationContract]
+            void didMe();
+        }
+
+        class callback : icallback
+        {
+            public void didMe()
+            {
+                Console.WriteLine("didme");
+            }
+        }
+
+        [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single, IncludeExceptionDetailInFaults = true, ConcurrencyMode = ConcurrencyMode.Reentrant)]
+        class service :iservice
+        {
+            
+            public void doMe()
+            {
+                Console.WriteLine("dome");
+                var client = OperationContext.Current.GetCallbackChannel<icallback>();
+                client.didMe();
+            }
+        }
+
+        
     }
 }

@@ -42,5 +42,7 @@ namespace Thorium_Shared
         {
             return (ATask)Activator.CreateInstance(information.TaskType, information);
         }
+
+        public abstract void Abort();
     }
 }

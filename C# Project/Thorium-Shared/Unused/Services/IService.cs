@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 
 namespace Thorium_Shared.Services
 {
-    [ServiceContract]
     public interface IService
     {
     }

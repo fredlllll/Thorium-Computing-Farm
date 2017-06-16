@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Codolith.Config;
 using Codolith.Logging;
+using Codolith.Logging.Listeners;
 
 namespace Thorium_Server
 {
@@ -46,19 +47,6 @@ namespace Thorium_Server
                     serverConfig = new Config(ServerConfigPath);
                 }
                 return serverConfig;
-            }
-        }
-
-        private static Logger logger = default(Logger);
-        public static Logger Logger
-        {
-            get
-            {
-                if(logger == default(Logger))
-                {
-                    logger = new Logger(logCurrentDomainUnhandledExceptions: true);
-                }
-                return logger;
             }
         }
 

@@ -7,7 +7,7 @@ using Thorium_Shared;
 using Codolith.Config;
 using static Thorium_Shared.ConfigKeys.ServerConfigKeys;
 using static Thorium_Shared.ConfigKeys.JobConfigKeys;
-using static Thorium_Server.ServerStatics;
+using static Thorium_Shared.SharedStatics;
 using System.Collections.Concurrent;
 using System.Runtime.Serialization;
 using Codolith.Serialization;
@@ -41,70 +41,50 @@ namespace Thorium_Server
             Logger.LogWarning("Job initialization failed: " + job.Name, ex.ToString());
         }
 
-        public void Startup()
+        public void Start()
         {
             jobInitializator.Start();
 
-
-            ReferencingSerializer rs = new ReferencingSerializer();
-            using(FileStream fs = new FileStream("jobs.xml", FileMode.Open)) {
-                var formatter = new XMLFormatter(fs);
-                rs.ReadSerializationDataSet(formatter.Read());
-            }
-
-            List<JobInformation> jobInfos = new List<JobInformation>();
-            foreach(object obj in rs.Objects)
+            //loading jobs
+            if(File.Exists("jobs.xml"))
             {
-                if(obj.GetType() == typeof(List<JobInformation>))
+                ReferencingSerializer rs = new ReferencingSerializer();
+                using(FileStream fs = new FileStream("jobs.xml", FileMode.Open))
                 {
-                    jobInfos = (List<JobInformation>)obj;
-                    break;
+                    var formatter = new XMLFormatter(fs);
+                    rs.ReadSerializationDataSet(formatter.Read());
                 }
-            }
 
-            foreach(var ji in jobInfos)
-            {
-                var j = AJob.JobFromInformation(ji);
-                jobInitializator.AddJob(j);
-            }
-
-            //TODO: load serialized jobs
-            /*DirectoryInfo jobsFolder = new DirectoryInfo(ServerStatics.ServerConfig.Get(Key_JobsFolder));
-            Directory.CreateDirectory(jobsFolder.FullName);
-            var jobs = jobsFolder.GetFiles("*.xml");
-            foreach(var job in jobs)
-            {
-                Config jobConfig = new Config(job.FullName);
-                try
+                List<JobInformation> jobInfos = new List<JobInformation>();
+                foreach(object obj in rs.Objects)
                 {
-                    AJob j = GetNewJob(jobConfig);
-                    if(j != null)
+                    if(obj.GetType() == typeof(List<JobInformation>))
                     {
-                        AddJob(j);
-                    }
-                    else
-                    {
-                        Console.WriteLine("Could not find type for " + job);
+                        jobInfos = (List<JobInformation>)obj;
+                        break;
                     }
                 }
-                catch(Exception jobCreateEx)
+
+                foreach(var ji in jobInfos)
                 {
-                    Console.WriteLine("Exception when creating job: " + job);
-                    Console.WriteLine(jobCreateEx);
+                    var j = AJob.JobFromInformation(ji);
+                    jobInitializator.AddJob(j);
                 }
-            }*/
+            }
         }
 
         public void Shutdown()
         {
-            //TODO: save stuff
+            //TODO: save jobstate and everything
+            ReferencingSerializer rs = new ReferencingSerializer();
             using(FileStream fs = new FileStream("jobs.xml", FileMode.Create))
             {
                 foreach(var kv in jobs)
                 {
-                    DataContractSerializer serializer = new DataContractSerializer(kv.Value.GetType());
-                    serializer.WriteObject(fs, kv.Value);
+                    rs.AddObject(kv.Value);
                 }
+                var formatter = new XMLFormatter(fs);
+                formatter.Write(rs.GetSerializationDataSet());
             }
         }
 
@@ -115,16 +95,12 @@ namespace Thorium_Server
 
         public void CancelJob(AJob job)
         {
-            CancelJob(job.ID);
+            job.Cancel();
         }
 
         public void CancelJob(string id)
         {
-            AJob job;
-            if(!jobs.TryGetValue(id, out job))
-            {
-                //TODO: add to cancel list/handler
-            }
+            CancelJob(GetJobById(id));
         }
 
         public AJob GetJobById(string jobID)
@@ -137,20 +113,16 @@ namespace Thorium_Server
             return null;
         }
 
-        ConcurrentDictionary<string, TaskInformation> currentlyProcessingTasks = new ConcurrentDictionary<string, TaskInformation>();
-        public TaskInformation GetFreeTask()
+        
+        public TaskInformation GetFreeTask(IThoriumClientInterfaceForServer client)
         {
             TaskInformation task = default(TaskInformation);
             foreach(var kv in jobs)
             {
-                if((task = kv.Value.TaskInformationProducer.GetNextTaskInformation()) != null)
+                if((task = kv.Value.GetFreeTask(client)) != default(TaskInformation))
                 {
                     break;
                 }
-            }
-            if(task != default(TaskInformation))
-            {
-                currentlyProcessingTasks[task.ID] = task;
             }
             return task;
         }

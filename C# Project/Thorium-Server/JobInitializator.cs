@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Thorium_Shared;
+using static Thorium_Shared.SharedStatics;
 
 namespace Thorium_Server
 {
@@ -61,10 +62,10 @@ namespace Thorium_Server
                     {
                         try
                         {
-                            Console.WriteLine("initing job " + job.ID);
+                            Logger.Log("initializing job " + job.ID);
                             job.Initialize();
                             JobInitialized?.Invoke(this, job);
-                            Console.WriteLine("done");
+                            Logger.Log("done");
                         }
                         //dont handle thread interrupt here
                         catch(Exception ex) when(!(ex is ThreadInterruptedException))

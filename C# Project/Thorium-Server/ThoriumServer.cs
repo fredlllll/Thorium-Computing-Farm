@@ -36,7 +36,7 @@ namespace Thorium_Server
         public void Start()
         {
             ServerWCFInterface.Start();
-            JobManager.Startup(); //Load jobs
+            JobManager.Start(); //Load jobs
         }
 
         public void Stop()

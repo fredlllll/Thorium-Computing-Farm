@@ -4,7 +4,7 @@ using Thorium_Shared;
 
 namespace Thorium_Client
 {
-    [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
+    [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single, IncludeExceptionDetailInFaults = true)]
     public class ThoriumClientInterfaceForServer : IThoriumClientInterfaceForServer
     {
         ThoriumClient client;
@@ -13,7 +13,7 @@ namespace Thorium_Client
         {
             this.client = client;
         }
-        
+
         public string GetCurrentTaskID()
         {
             return client.CurrentTask.GetID();
@@ -31,7 +31,7 @@ namespace Thorium_Client
 
         public void AbortTask(string ID)
         {
-            throw new NotImplementedException();
+            client.AbortTask(ID);
         }
 
         public void Ping()

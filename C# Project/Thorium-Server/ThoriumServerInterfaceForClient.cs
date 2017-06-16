@@ -6,6 +6,7 @@ using System.ServiceModel;
 using System.Text;
 using Thorium_Shared;
 using Thorium_Shared.WCF;
+using static Thorium_Shared.SharedStatics;
 
 namespace Thorium_Server
 {
@@ -34,8 +35,8 @@ namespace Thorium_Server
         public TaskInformation GetFreeTaskInformation()
         {
             var client = OperationContext.Current.GetCallbackChannel<IThoriumClientInterfaceForServer>();
-            var retVal = server.JobManager.GetFreeTask();
-            //TODO: make not of which client processes which task (and vice versa)
+            var retVal = server.JobManager.GetFreeTask(client);
+            //TODO: make note of which client processes which task (and vice versa)
             return retVal;
         }
 
@@ -48,7 +49,7 @@ namespace Thorium_Server
 
         public void SignalTaskAborted(string jobID, string taskID, string reason)
         {
-            Console.WriteLine("Task Aborted. Reason: " + reason);
+            Logger.Log("Task Aborted. Reason: " + reason);
             server.JobManager.SignalTaskAborted(jobID, taskID, reason);
         }
 

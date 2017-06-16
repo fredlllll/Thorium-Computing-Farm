@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using Thorium_Shared;
+using static Thorium_Shared.SharedStatics;
 
 namespace Thorium_Server
 {
@@ -26,15 +27,10 @@ namespace Thorium_Server
             pingThread.Start();
         }
 
-        public IThoriumClientInterfaceForServer GetClient(string id)
-        {
-            return clients[id];
-        }
-
         public void RegisterClient(IThoriumClientInterfaceForServer client)
         {
             clients[client.GetID()] = client;
-            Console.WriteLine("Client Registered: " + client.GetID());
+            Logger.Log("Client Registered: " + client.GetID());
         }
 
         public void UnregisterClient(IThoriumClientInterfaceForServer client)
@@ -64,7 +60,7 @@ namespace Thorium_Server
             if(id != default(string))
             {
                 clients.TryRemove(id, out client);
-                Console.WriteLine("Client Unregistered: " + id + " - " + (reason == null ? "Unregistered" : "Reason: " + reason));
+                Logger.Log("Client Unregistered: " + id + " - " + (reason == null ? "Unregistered" : "Reason: " + reason));
             }
         }
 

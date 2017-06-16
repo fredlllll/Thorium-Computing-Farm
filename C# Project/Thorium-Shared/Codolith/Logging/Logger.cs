@@ -5,15 +5,17 @@ using System.IO;
 using System.Globalization;
 using System.Threading;
 using System.Reflection;
+using Codolith.Logging.Listeners;
 
 namespace Codolith.Logging
 {
     public enum LogLevel : byte
     {
-        Debug = 40,
-        Info = 30,
-        Warning = 20,
-        Error = 10,
+        Always = 250,
+        Debug = 200,
+        Info = 150,
+        Warning = 100,
+        Error = 50,
         None = 0
     }
 
@@ -25,96 +27,88 @@ namespace Codolith.Logging
         /// <summary>
         /// Metric DateTime format (day.month.year - 24hrs:Mins:Secs.Microsecs)
         /// </summary>
-        public const String METRIC_DATETIME_FORMAT = "dd.MM.yy - HH:mm:ss.ffff";
+        public const string METRIC_DATETIME_FORMAT = "dd.MM.yy - HH:mm:ss.ffff";
 
-        private StreamWriter streamWriter = null;
-
-        public string HashtagMarker { get; set; } = "#####";
-
-        public Logger(string filename = default(string), bool logCurrentDomainUnhandledExceptions = false)
-        {
-            MaxLogLevel = LogLevel.Debug;
-            DefaultLogLevel = LogLevel.Info;
-            LogFirstChanceExceptions = false;
-            if(filename == default(string))
-            {
-                LogFile = new FileInfo(Assembly.GetEntryAssembly().GetName().Name + ".log");
-            }
-            else
-            {
-                LogFile = new FileInfo(filename);
-            }
-            CultureInfo = CultureInfo.InvariantCulture;
-
-            if(logCurrentDomainUnhandledExceptions)
-            {
-                AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
+        private List<ILogListener> listeners = new List<ILogListener>();
 #if !NET_35
-                AppDomain.CurrentDomain.FirstChanceException += new EventHandler<System.Runtime.ExceptionServices.FirstChanceExceptionEventArgs>(CurrentDomain_FirstChanceException);
+        private bool logFirstChanceExceptions = false;
 #endif
-                AppDomain.CurrentDomain.ProcessExit += new EventHandler(CurrentDomain_ProcessExit);
-            }
-        }
+        private bool logUnhandledExceptions = false;
 
         /// <summary>
         /// The maximum log level that should be logged
         /// </summary>
-        public LogLevel MaxLogLevel { get; set; }
+        public LogLevel MaxLogLevel { get; set; } = LogLevel.Debug;
 
         /// <summary>
         /// The default log level
         /// </summary>
-        public LogLevel DefaultLogLevel { get; set; }
+        public LogLevel DefaultLogLevel { get; set; } = LogLevel.Info;
 
-        private CultureInfo cultureInfo;
         /// <summary>
         /// The culture used for determining the date time format. The format can always be altered manually afterwards.
         /// </summary>
-        public CultureInfo CultureInfo
-        {
-            get { return cultureInfo; }
-            set
-            {
-                cultureInfo = value;
-                DateTimeFormat = cultureInfo.DateTimeFormat.FullDateTimePattern + ".ffff";
-                LogCultureInfo();
-            }
-        }
+        public CultureInfo CultureInfo { get; set; } = CultureInfo.InvariantCulture;
 
         /// <summary>
         /// The format used to format the date & time part of a log message.
         /// </summary>
-        public String DateTimeFormat
-        {
-            get;
-            set;
-        }
+        public String DateTimeFormat { get; set; } = METRIC_DATETIME_FORMAT;
 
+#if !NET_35        
         /// <summary>
-        /// Determines if every thrown Exception should be Logged.
+        /// Determines if every thrown exception should be logged, even if it got handled
         /// </summary>
-        public static bool LogFirstChanceExceptions
-        {
-            get;
-            set;
-        }
-
-        private FileInfo logFile;
-        /// <summary>
-        /// The currently used log file.
-        /// </summary>
-        public FileInfo LogFile
+        public bool LogFirstChanceExceptions
         {
             get
             {
-                return logFile;
+                return logFirstChanceExceptions;
             }
             set
             {
-                PrintEndAndClose();
-                logFile = value;
+                if(value != logFirstChanceExceptions)
+                {
+                    if(value)
+                    {
+                        AppDomain.CurrentDomain.FirstChanceException += CurrentDomain_FirstChanceException;
+                    }
+                    else
+                    {
+                        AppDomain.CurrentDomain.FirstChanceException -= CurrentDomain_FirstChanceException;
+                    }
+                    logFirstChanceExceptions = value;
+                }
             }
         }
+#endif
+
+        /// <summary>
+        /// Determines if unhandled exceptions should be logged
+        /// </summary>
+        public bool LogUnhandledExceptions
+        {
+            get
+            {
+                return logUnhandledExceptions;
+            }
+            set
+            {
+                if(value != logUnhandledExceptions)
+                {
+                    if(value)
+                    {
+                        AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+                    }
+                    else
+                    {
+                        AppDomain.CurrentDomain.UnhandledException -= CurrentDomain_UnhandledException;
+                    }
+                    logUnhandledExceptions = value;
+                }
+            }
+        }
+
 
         /// <summary>
         /// Logs messages with the given log level.
@@ -123,37 +117,21 @@ namespace Codolith.Logging
         /// <param name="messages">The messages</param>
         public void Log(LogLevel logLevel, params string[] messages)
         {
-            if(streamWriter == null)
-            {
-                OpenStreamAndPrintStart();
-            }
             if(logLevel <= MaxLogLevel)
             {
+                LogMessage lm = new LogMessage();
+                lm.DateTimeFormat = DateTimeFormat;
+                lm.Tags.Add(logLevel.ToString());
                 foreach(String message in messages)
                 {
-                    lock(streamWriter)
+                    lm.DateTime = DateTime.Now;
+                    lm.Message = message;
+                    foreach(var l in listeners)
                     {
-                        streamWriter.WriteLine("[" + DateTime.Now.ToString(DateTimeFormat, cultureInfo) + "][" + logLevel.ToString() + "]: " + message);
+                        l.Log(lm.ToString());
                     }
                 }
-                streamWriter.Flush();
             }
-        }
-
-        private void LogNoLevel(params string[] messages)
-        {
-            if(streamWriter == null)
-            {
-                OpenStreamAndPrintStart();
-            }
-            foreach(String message in messages)
-            {
-                lock(streamWriter)
-                {
-                    streamWriter.WriteLine("[" + DateTime.Now.ToString(DateTimeFormat, cultureInfo) + "]: " + message);
-                }
-            }
-            streamWriter.Flush();
         }
 
         /// <summary>
@@ -201,58 +179,32 @@ namespace Codolith.Logging
             Log(LogLevel.Error, messages);
         }
 
+        public void AddListener(ILogListener listener)
+        {
+            listener.Attach(this);
+            listeners.Add(listener);
+        }
+
+        public void RemoveListener(ILogListener listener)
+        {
+            listener.Detach(this);
+            listeners.Remove(listener);
+        }
+
         private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
-            LogError("Unhandled Error: " + e.ExceptionObject.ToString());
+            LogError("Unhandled Exception: " + e.ExceptionObject.ToString());
             if(e.IsTerminating)
             {
                 LogInfo("Terminating...");
             }
         }
+
 #if !NET_35
         private void CurrentDomain_FirstChanceException(object sender, System.Runtime.ExceptionServices.FirstChanceExceptionEventArgs e)
         {
-            if(LogFirstChanceExceptions)
-            {
-                LogWarning("First Chance Exception: " + e.Exception);
-            }
+            LogWarning("First Chance Exception: " + e.Exception);
         }
 #endif
-
-        private void CurrentDomain_ProcessExit(object sender, EventArgs e)
-        {
-            PrintEndAndClose();
-        }
-
-        private void OpenStreamAndPrintStart()
-        {
-            if(streamWriter == null)
-            {
-                FileStream fs = LogFile.Open(FileMode.OpenOrCreate, FileAccess.Write, FileShare.Read);
-                fs.Seek(0, SeekOrigin.End);
-                //add byte order mark only if at beginning of file
-                streamWriter = new StreamWriter(fs, new UTF8Encoding(fs.Position == 0));
-                LogNoLevel(HashtagMarker + " Start " + HashtagMarker);
-            }
-        }
-
-        private void LogCultureInfo()
-        {
-            if(streamWriter != null)//only log the culture if the file is already open. (if the user wants to change it we would create a log with only this culture info at the beginning)
-            {
-                LogNoLevel(HashtagMarker + " Culture: " + cultureInfo.EnglishName + " " + HashtagMarker);
-            }
-        }
-
-        private void PrintEndAndClose()
-        {
-            if(streamWriter != null)
-            {
-                LogNoLevel(HashtagMarker + " End " + HashtagMarker);
-                streamWriter.Close();
-                streamWriter.Dispose();
-                streamWriter = null;
-            }
-        }
     }
 }

@@ -7,6 +7,7 @@ using System.ServiceModel.Channels;
 using System.Text;
 using System.Threading.Tasks;
 using Thorium_Shared.Services;
+using static Thorium_Shared.SharedStatics;
 
 namespace Thorium_Shared.WCF
 {
@@ -42,12 +43,14 @@ namespace Thorium_Shared.WCF
         Dictionary<Type, WCFServiceInfo> serviceInstances = new Dictionary<Type, WCFServiceInfo>();
         Dictionary<IService, WCFServiceHostingInfo> serviceHosts = new Dictionary<IService, WCFServiceHostingInfo>();
 
-        private WCFServiceManager() {
-            NetTcpBinding b = new NetTcpBinding(SecurityMode.None);
+        private WCFServiceManager()
+        {
+            var b = new NetTcpBinding();
             binding = b;
-            b.Security.Message.ClientCredentialType = MessageCredentialType.IssuedToken;
+
+            /*b.Security.Message.ClientCredentialType = MessageCredentialType.IssuedToken;
             b.Security.Transport.ClientCredentialType = TcpClientCredentialType.None;
-            b.Security.Transport.ProtectionLevel = System.Net.Security.ProtectionLevel.None;
+            b.Security.Transport.ProtectionLevel = System.Net.Security.ProtectionLevel.None;*/
         }
 
         public InterfaceType GetServiceInstance<InterfaceType>(string remotePath, IService callbackInstance = null, string remoteHost = null) where InterfaceType : IService
@@ -67,22 +70,25 @@ namespace Thorium_Shared.WCF
             }
 
             EndpointAddress endpointAddress = new EndpointAddress("net.tcp://" + remoteHost + ":" + Port + "/" + remotePath);
+            Logger.Log("getting service on " + endpointAddress);
 
             info = new WCFServiceInfo();
             if(callbackInstance == null)
             {
                 var channelFactory = new ChannelFactory<InterfaceType>(binding, endpointAddress);
+                channelFactory.Open();
                 info.channelFactory = channelFactory;
                 info.serviceInstance = channelFactory.CreateChannel();
             }
             else
             {
                 var channelFactory = new DuplexChannelFactory<InterfaceType>(callbackInstance, binding, endpointAddress);
+                channelFactory.Open();
                 info.channelFactory = channelFactory;
                 info.serviceInstance = channelFactory.CreateChannel();
                 info.callbackInstance = callbackInstance;
             }
-            
+
             return (InterfaceType)info.serviceInstance;
         }
 
@@ -113,7 +119,7 @@ namespace Thorium_Shared.WCF
             }
 
             var address = "net.tcp://localhost:" + Port + "/" + path;
-            Console.WriteLine("hosting " + serviceInstance + " on " + address);
+            Logger.Log("hosting " + serviceInstance + " on " + address);
 
             WCFServiceHostingInfo info = new WCFServiceHostingInfo();
             info.serviceInstance = serviceInstance;
@@ -128,7 +134,7 @@ namespace Thorium_Shared.WCF
             return path;
         }
 
-        public string GetHostedInstancePath(IService serviceInstance)
+        /*public string GetHostedInstancePath(IService serviceInstance)
         {
             WCFServiceHostingInfo info;
             if(serviceHosts.TryGetValue(serviceInstance, out info))
@@ -136,7 +142,7 @@ namespace Thorium_Shared.WCF
                 return info.path;
             }
             return null;
-        }
+        }*/
 
         public void UnhostServiceInstance(IService serviceInstance)
         {

@@ -31,15 +31,23 @@ namespace Thorium_Shared.Jobtypes.SimpleExecution
         {
             get
             {
-                return taskInfos.Count;
+                if(!stopped)
+                {
+                    return taskInfos.Count;
+                }
+                return 0;
             }
         }
 
         public override TaskInformation GetNextTaskInformation()
         {
-            var ti = taskInfos.Dequeue();
-            processing[ti.ID] = ti;
-            return ti;
+            if(RemainingTaskInformationCount > 0)
+            {
+                var ti = taskInfos.Dequeue();
+                processing[ti.ID] = ti;
+                return ti;
+            }
+            return default(TaskInformation);
         }
 
         public override void SignalTaskAborted(string id, string reason)

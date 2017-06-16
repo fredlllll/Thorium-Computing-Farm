@@ -13,6 +13,9 @@ namespace Thorium_Shared
     [DataContract]
     public abstract class ATaskInformationProducer
     {
+        [DataMember]
+        protected bool stopped = false;
+
         public AJob Job
         {
             get;
@@ -48,5 +51,13 @@ namespace Thorium_Shared
         /// <param name="id"></param>
         /// <param name="reason"></param>
         public abstract void SignalTaskAborted(string id, string reason);
+
+        /// <summary>
+        /// gives the producer a signal to not return any more task informations
+        /// </summary>
+        public virtual void Stop()
+        {
+            stopped = true;
+        }
     }
 }

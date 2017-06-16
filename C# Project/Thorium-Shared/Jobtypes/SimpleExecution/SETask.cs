@@ -13,6 +13,11 @@ namespace Thorium_Shared.Jobtypes.SimpleExecution
         {
         }
 
+        public override void Abort()
+        {
+            throw new NotImplementedException();
+        }
+
         public override void Run()
         {
             int index = TaskInformation.Config.Get<int>("index");

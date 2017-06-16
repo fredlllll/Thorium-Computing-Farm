@@ -7,6 +7,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
 using Codolith.Config;
+using Codolith.Serialization;
 
 namespace Thorium_Shared
 {
@@ -30,7 +31,7 @@ namespace Thorium_Shared
         public string Name { get { return name; } protected set { name = value; } }
 
         [DataMember]
-        public ATaskInformationProducer TaskInformationProducer { get; protected set; }
+        protected ATaskInformationProducer TaskInformationProducer { get; set; }
 
         [DataMember]
         protected JobInformation JobInformation { get; set; }
@@ -44,22 +45,46 @@ namespace Thorium_Shared
         /// initialize your task information producer here
         /// </summary>
         public abstract void Initialize();
-        
+
         public void SignalTaskAborted(string id, string reason = default(string))
         {
             TaskAborted?.Invoke(this, id, reason);
             TaskInformationProducer.SignalTaskAborted(id, reason);
         }
-        
+
         public void SignalTaskFinished(string id)
         {
             TaskFinished?.Invoke(this, id);
             TaskInformationProducer.SignalTaskFinished(id);
         }
 
+        MultiDictionary<string, TaskInformation, IThoriumClientInterfaceForServer> currentlyProcessingTasks = new MultiDictionary<string, TaskInformation, IThoriumClientInterfaceForServer>();
+        public TaskInformation GetFreeTask(IThoriumClientInterfaceForServer client)
+        {
+            lock(TaskInformationProducer)
+            {
+                if(TaskInformationProducer.RemainingTaskInformationCount > 0)
+                {
+                    var task = TaskInformationProducer.GetNextTaskInformation();
+                    var mt = new ModTuple<string, TaskInformation, IThoriumClientInterfaceForServer>(task.ID, task, client);
+                    return task;
+                }
+            }
+            return null;
+        }
+
         public static AJob JobFromInformation(JobInformation information)
         {
             return (AJob)Activator.CreateInstance(information.JobType, information);
+        }
+
+        public void Cancel()
+        {
+            TaskInformationProducer.Stop();
+            foreach(var t in currentlyProcessingTasks)
+            {
+                t.Value.Value3.AbortTask(t.Key);
+            }
         }
     }
 }
