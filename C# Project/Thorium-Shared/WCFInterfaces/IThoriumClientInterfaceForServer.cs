@@ -5,9 +5,9 @@ using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
-using Thorium_Shared.Services;
+using Thorium_Shared.WCF;
 
-namespace Thorium_Shared
+namespace Thorium_Shared.WCFInterfaces
 {
     [ServiceContract]
     public interface IThoriumClientInterfaceForServer : IService

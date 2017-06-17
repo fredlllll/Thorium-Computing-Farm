@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Thorium_Shared;
+using Thorium_Shared.WCF;
 
 namespace Thorium_Storage_Slave
 {
-    public class ThoriumStorageInterfaceForServer : IThoriumStorageInterfaceForServer
+    public class ThoriumStorageInterfaceForServer : IService
     {
         public void CreateFile(string JobID, string ID, string extension, byte[] bytes)
         {

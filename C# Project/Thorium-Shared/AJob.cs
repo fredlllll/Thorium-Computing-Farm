@@ -8,6 +8,7 @@ using System.Runtime.Serialization;
 using System.Text;
 using Codolith.Config;
 using Codolith.Serialization;
+using Thorium_Shared.WCFInterfaces;
 
 namespace Thorium_Shared
 {

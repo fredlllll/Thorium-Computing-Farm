@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Ninject;
-using Thorium_Shared.Services;
 
 namespace Thorium_Shared
 {

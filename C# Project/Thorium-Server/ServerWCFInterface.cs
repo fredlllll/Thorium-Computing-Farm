@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Ninject;
 using Thorium_Shared;
 using Thorium_Shared.WCF;
+using Thorium_Shared.WCFInterfaces;
 using static Thorium_Server.ServerStatics;
 using static Thorium_Shared.ConfigKeys.ServerConfigKeys;
 

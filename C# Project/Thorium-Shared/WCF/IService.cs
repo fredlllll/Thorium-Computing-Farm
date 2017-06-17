@@ -5,7 +5,7 @@ using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Thorium_Shared.Services
+namespace Thorium_Shared.WCF
 {
     public interface IService
     {

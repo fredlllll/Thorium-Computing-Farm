@@ -6,7 +6,6 @@ using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.Text;
 using System.Threading.Tasks;
-using Thorium_Shared.Services;
 using static Thorium_Shared.SharedStatics;
 
 namespace Thorium_Shared.WCF

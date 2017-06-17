@@ -11,6 +11,7 @@ using Codolith.Config;
 using Ninject;
 using static Thorium_Server.ServerStatics;
 using Codolith.Logging;
+using Thorium_Shared.WCFInterfaces;
 
 namespace Thorium_Server
 {

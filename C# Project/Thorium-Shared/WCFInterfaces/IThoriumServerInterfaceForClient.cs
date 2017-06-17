@@ -5,9 +5,9 @@ using System.Security.Permissions;
 using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
-using Thorium_Shared.Services;
+using Thorium_Shared.WCF;
 
-namespace Thorium_Shared
+namespace Thorium_Shared.WCFInterfaces
 {
     [ServiceContract(CallbackContract = typeof(IThoriumClientInterfaceForServer), SessionMode = SessionMode.Required)]
     public interface IThoriumServerInterfaceForClient : IService

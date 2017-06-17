@@ -12,6 +12,7 @@ using System.Collections.Concurrent;
 using System.Runtime.Serialization;
 using Codolith.Serialization;
 using Codolith.Serialization.Formatters;
+using Thorium_Shared.WCFInterfaces;
 
 namespace Thorium_Server
 {
