@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Thorium_Shared.Jobtypes.SimpleExecution
 {
-    public class SETaskInformationProducer : ATaskInformationProducer
+    /*public class SETaskInformationProducer : ATaskInformationProducer
     {
         Queue<TaskInformation> taskInfos = new Queue<TaskInformation>();
         Dictionary<string, TaskInformation> processing = new Dictionary<string, TaskInformation>();
@@ -61,5 +61,5 @@ namespace Thorium_Shared.Jobtypes.SimpleExecution
         {
             processing.Remove(id);
         }
-    }
+    }*/
 }

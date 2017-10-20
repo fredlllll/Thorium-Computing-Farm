@@ -11,7 +11,7 @@ using Codolith.Logging.Listeners;
 
 namespace Thorium_Server
 {
-    public static class ServerStatics
+    /*public static class ServerStatics
     {
         public static string ServerConfigFolder
         {
@@ -54,5 +54,5 @@ namespace Thorium_Server
         {
             ServerConfigFolder = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
         }
-    }
+    }*/
 }

@@ -18,7 +18,7 @@ namespace Thorium_Server
 {
     public class JobManager
     {
-        JobInitializator jobInitializator = new JobInitializator();
+        JobInitializer jobInitializer = new JobInitializer();
         Dictionary<string, AJob> jobs = new Dictionary<string, AJob>();
         public IEnumerable<KeyValuePair<string, AJob>> Jobs
         {
@@ -27,27 +27,27 @@ namespace Thorium_Server
 
         public JobManager()
         {
-            jobInitializator.JobInitializationFailed += JobInitializationFailed;
-            jobInitializator.JobInitialized += JobInitialized;
+            jobInitializer.JobInitializationFailed += JobInitializationFailed;
+            jobInitializer.JobInitialized += JobInitialized;
         }
 
-        private void JobInitialized(JobInitializator sender, AJob job)
+        private void JobInitialized(JobInitializer sender, AJob job)
         {
             Logger.LogInfo("Job initialized: " + job.Name);
             jobs[job.ID] = job;
         }
 
-        private void JobInitializationFailed(JobInitializator sender, AJob job, Exception ex)
+        private void JobInitializationFailed(JobInitializer sender, AJob job, Exception ex)
         {
             Logger.LogWarning("Job initialization failed: " + job.Name, ex.ToString());
         }
 
         public void Start()
         {
-            jobInitializator.Start();
+            jobInitializer.Start();
 
             //loading jobs
-            if(File.Exists("jobs.xml"))
+            /*if(File.Exists("jobs.xml"))
             {
                 ReferencingSerializer rs = new ReferencingSerializer();
                 using(FileStream fs = new FileStream("jobs.xml", FileMode.Open))
@@ -71,13 +71,14 @@ namespace Thorium_Server
                     var j = AJob.JobFromInformation(ji);
                     jobInitializator.AddJob(j);
                 }
-            }
+            }*/
+            //TODO: use database
         }
 
         public void Shutdown()
         {
-            //TODO: save jobstate and everything
-            ReferencingSerializer rs = new ReferencingSerializer();
+            //TODO: use database
+            /*ReferencingSerializer rs = new ReferencingSerializer();
             using(FileStream fs = new FileStream("jobs.xml", FileMode.Create))
             {
                 foreach(var kv in jobs)
@@ -86,20 +87,22 @@ namespace Thorium_Server
                 }
                 var formatter = new XMLFormatter(fs);
                 formatter.Write(rs.GetSerializationDataSet());
-            }
+            }*/
+            jobInitializer.Stop();
         }
 
         public void AddJob(AJob job)
         {
-            jobInitializator.AddJob(job);
+            jobInitializer.AddJob(job);
         }
 
         public void CancelJob(AJob job)
         {
-            job.Cancel();
+            //job.Cancel();
+            //TODO:????
         }
 
-        public void CancelJob(string id)
+        /*public void CancelJob(string id)
         {
             CancelJob(GetJobById(id));
         }
@@ -113,9 +116,9 @@ namespace Thorium_Server
             }
             return null;
         }
-
+        */
         
-        public TaskInformation GetFreeTask(IThoriumClientInterfaceForServer client)
+        /*public TaskInformation GetFreeTask(IThoriumClientInterfaceForServer client)
         {
             TaskInformation task = default(TaskInformation);
             foreach(var kv in jobs)
@@ -145,7 +148,7 @@ namespace Thorium_Server
                 job.SignalTaskAborted(id, reason);
             }
         }
-
+        */
 
     }
 }

@@ -33,6 +33,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="Ninject">
       <HintPath>..\..\Dependencies\Ninject-3.2.0.0-release-net-4.5\Ninject.dll</HintPath>
     </Reference>
@@ -42,8 +45,10 @@
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Client.cs" />
     <Compile Include="ClientManager.cs" />
-    <Compile Include="JobInitializator.cs" />
+    <Compile Include="Files.cs" />
+    <Compile Include="JobInitializer.cs" />
     <Compile Include="JobManager.cs" />
     <Compile Include="ServerStatics.cs" />
     <Compile Include="ServerWCFInterface.cs" />
@@ -51,10 +56,13 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ThoriumServer.cs" />
+    <Compile Include="ThoriumServerConfig.cs" />
     <Compile Include="ThoriumServerInterfaceForClient.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="packages.config" />
+    <None Include="thorium_server_config.json.default" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Thorium-Shared\Thorium-Shared.csproj">

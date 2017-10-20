@@ -11,7 +11,7 @@ using static Thorium_Shared.SharedStatics;
 
 namespace Thorium_Server
 {
-    [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single, IncludeExceptionDetailInFaults = true, ConcurrencyMode = ConcurrencyMode.Reentrant)]
+    /*[ServiceBehavior(InstanceContextMode = InstanceContextMode.Single, IncludeExceptionDetailInFaults = true, ConcurrencyMode = ConcurrencyMode.Reentrant)]
     public class ThoriumServerInterfaceForClient : IThoriumServerInterfaceForClient
     {
         ThoriumServer server;
@@ -46,7 +46,7 @@ namespace Thorium_Server
             var service = ServiceManager.Instance.GetService(interfaceType);
             var address = WCFServiceManager.Instance.HostServiceInstance(service);
             return address;
-        }*/
+        }
 
         public void SignalTaskAborted(string jobID, string taskID, string reason)
         {
@@ -58,5 +58,5 @@ namespace Thorium_Server
         {
             server.JobManager.SignalTaskFinished(jobID, taskID);
         }
-    }
+    }*/
 }

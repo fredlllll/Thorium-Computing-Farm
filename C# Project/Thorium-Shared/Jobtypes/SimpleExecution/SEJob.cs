@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Thorium_Shared.Jobtypes.SimpleExecution
 {
-    public class SEJob : AJob
+    /*public class SEJob : AJob
     {
         public SEJob(JobInformation information) : base(information)
         {
@@ -16,5 +16,5 @@ namespace Thorium_Shared.Jobtypes.SimpleExecution
         {
             this.TaskInformationProducer = new SETaskInformationProducer(this,JobInformation);
         }
-    }
+    }*/
 }

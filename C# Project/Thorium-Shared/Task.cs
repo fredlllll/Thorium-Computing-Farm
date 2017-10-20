@@ -7,18 +7,19 @@ using Newtonsoft.Json.Linq;
 
 namespace Thorium_Shared
 {
-    public abstract class AJob
+    public class Task
     {
+        public AJob Job { get; protected set; }
+
         public string ID { get; protected set; }
-        public string Name { get; protected set; }
+
         public JObject Information { get; protected set; }
 
-        public AJob(string id, string name, JObject info)
+        public Task(AJob job, string id, JObject information)
         {
+            Job = job;
             ID = id;
-            Information = info;
+            Information = information;
         }
-
-        public abstract ATaskProducer TaskProducer {get;}
     }
 }

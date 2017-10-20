@@ -10,7 +10,7 @@ namespace Thorium_Shared
     /// <summary>
     /// a task creator whose state can be saved and restored
     /// </summary>
-    [DataContract]
+    /*[DataContract]
     public abstract class ATaskInformationProducer
     {
         [DataMember]
@@ -59,5 +59,5 @@ namespace Thorium_Shared
         {
             stopped = true;
         }
-    }
+    }*/
 }

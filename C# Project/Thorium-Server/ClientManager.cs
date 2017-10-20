@@ -2,15 +2,15 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading;
 using Thorium_Shared;
-using Thorium_Shared.WCFInterfaces;
 using static Thorium_Shared.SharedStatics;
 
 namespace Thorium_Server
 {
-    public class ClientManager
+    public class ClientManager : RestartableThreadClass
     {
         public int ClientCount
         {
@@ -19,81 +19,64 @@ namespace Thorium_Server
                 return clients.Count;
             }
         }
-        Thread pingThread;
-        ConcurrentDictionary<string, IThoriumClientInterfaceForServer> clients = new ConcurrentDictionary<string, IThoriumClientInterfaceForServer>();
+        Dictionary<IPAddress, Client> clients = new Dictionary<IPAddress, Client>();
 
-        public ClientManager()
+        public delegate void ClientStoppedRespondingHandler(Client client);
+        public event ClientStoppedRespondingHandler ClientStoppedResponding;
+
+        public ClientManager() : base(false)
         {
-            pingThread = new Thread(PingRun);
-            pingThread.Start();
         }
 
-        public void RegisterClient(IThoriumClientInterfaceForServer client)
+        public void RegisterClient(Client client)
         {
-            clients[client.GetID()] = client;
-            Logger.Log("Client Registered: " + client.GetID());
-        }
-
-        public void UnregisterClient(IThoriumClientInterfaceForServer client)
-        {
-            string id = GetClientID(client);
-            if(id != default(string))
+            lock(clients)
             {
-                UnregisterClient(clients[id], null);
+                clients[client.IPAddress] = client;
             }
+            Logger.Log("Client Registered: " + client.IPAddress);
         }
 
-        string GetClientID(IThoriumClientInterfaceForServer client)
+        void UnregisterClient(Client client, string reason = null)
         {
-            foreach(var kv in clients)
+            lock(clients)
             {
-                if(kv.Value == client)
+                clients.Remove(client.IPAddress);
+            }
+            Logger.Log("Client Unregistered: " + client.IPAddress + " - " + (reason == null ? "No Reason given" : "Reason: " + reason));
+        }
+
+        protected override void Run()
+        {
+            //TODO: this will be a bottleneck with many clients. have to find a way to make it work without locking the collection
+            try
+            {
+                while(true)
                 {
-                    return kv.Key;
-                }
-            }
-            return default(string);
-        }
-
-        void UnregisterClient(IThoriumClientInterfaceForServer client, string reason)
-        {
-            string id = GetClientID(client);
-            if(id != default(string))
-            {
-                clients.TryRemove(id, out client);
-                Logger.Log("Client Unregistered: " + id + " - " + (reason == null ? "Unregistered" : "Reason: " + reason));
-            }
-        }
-
-        void PingRun()
-        {
-            bool running = true;
-            while(running)
-            {
-                if(clients.Count > 0)
-                {
-                    foreach(var kv in clients)
+                    lock(clients)
                     {
-                        try
+                        if(clients.Count > 0)
                         {
-                            kv.Value.Ping();
+                            foreach(var kv in clients)
+                            {
+                                try
+                                {
+                                    kv.Value.Ping();
+                                }
+                                catch(Exception)//is it socketexception? TODO: find out what exception is thrown if client dies
+                                {
+                                    ClientStoppedResponding?.Invoke(kv.Value);
+                                    UnregisterClient(kv.Value, "Client Died!");
+                                }
+                            }
                         }
-                        catch(ThreadInterruptedException)
-                        {
-                            running = false;
-                            break;
-                        }
-                        catch(Exception)//is it socketexception? TODO: find out what exception is thrown if client dies
-                        {
-                            UnregisterClient(kv.Value, "Client Died!");
-                        }
-                        Thread.Sleep(100);
                     }
+                    Thread.Sleep(30000);
                 }
-                else
-                {
-                    Thread.Sleep(1000);
-                }
+            }
+            catch(ThreadInterruptedException)
+            {
+                //ending
             }
         }
     }

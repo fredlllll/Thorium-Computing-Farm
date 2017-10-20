@@ -14,8 +14,6 @@ namespace Thorium_Server
         static ConsoleMenu menu;
         static void Main(string[] args)
         {
-            
-
             server = new ThoriumServer();
             server.Start();
 
@@ -36,9 +34,9 @@ namespace Thorium_Server
         static void ListJobs(string[] args)
         {
             Console.WriteLine("Jobs:");
-            foreach(var j in server.JobManager.Jobs) {
+            /*foreach(var j in server.JobManager.Jobs) {
                 Console.WriteLine(j.Value.ID);
-            }
+            }*/
         }
 
         static void Help(string[] args)

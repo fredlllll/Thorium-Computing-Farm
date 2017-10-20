@@ -7,12 +7,11 @@ using Ninject;
 using Thorium_Shared;
 using Thorium_Shared.WCF;
 using Thorium_Shared.WCFInterfaces;
-using static Thorium_Server.ServerStatics;
 using static Thorium_Shared.ConfigKeys.ServerConfigKeys;
 
 namespace Thorium_Server
 {
-    public class ServerWCFInterface
+    /*public class ServerWCFInterface
     {
         public ServerWCFInterface()
         {
@@ -29,5 +28,5 @@ namespace Thorium_Server
         {
             WCFServiceManager.Instance.UnhostServiceInstance(DependencyInjection.Kernel.Get<IThoriumServerInterfaceForClient>());
         }
-    }
+    }*/
 }

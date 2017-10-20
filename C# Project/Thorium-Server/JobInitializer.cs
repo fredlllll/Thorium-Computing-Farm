@@ -11,47 +11,33 @@ using static Thorium_Shared.SharedStatics;
 namespace Thorium_Server
 {
     [Serializable]
-    public class JobInitializator
+    public class JobInitializer : RestartableThreadClass
     {
-        public delegate void JobInitializedHandler(JobInitializator sender, AJob job);
-        public delegate void JobInitializationFailedHandler(JobInitializator sender, AJob job, Exception ex);
+        public delegate void JobInitializedHandler(JobInitializer sender, AJob job);
+        public delegate void JobInitializationFailedHandler(JobInitializer sender, AJob job, Exception ex);
         public event JobInitializedHandler JobInitialized;
         public event JobInitializationFailedHandler JobInitializationFailed;
 
         ConcurrentQueue<AJob> initQueue = new ConcurrentQueue<AJob>();
-        Thread initThread;
         bool running = false;
 
-        public JobInitializator()
+        public JobInitializer() : base(false)
         {
-            initThread = new Thread(Run);
         }
 
-        public void Start()
+        public override void Start()
         {
-            lock(initThread)
-            {
-                if(!running)
-                {
-                    initThread.Start();
-                    running = true;
-                }
-            }
+            running = true;
+            base.Start();
         }
 
-        public void Stop()
+        public override void Stop()
         {
-            lock(initThread)
-            {
-                if(running)
-                {
-                    initThread.Interrupt();
-                    running = false;
-                }
-            }
+            running = false;
+            base.Stop();
         }
 
-        void Run()
+        protected override void Run()
         {
             try
             {
@@ -63,7 +49,12 @@ namespace Thorium_Server
                         try
                         {
                             Logger.Log("initializing job " + job.ID);
-                            job.Initialize();
+                            var producer = job.TaskProducer;
+                            Task t;
+                            while((t = producer.GetNextTask()) != null)
+                            {
+                                //TODO: save task to db
+                            }
                             JobInitialized?.Invoke(this, job);
                             Logger.Log("done");
                         }

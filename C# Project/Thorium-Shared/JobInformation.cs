@@ -5,31 +5,28 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using Codolith.Config;
+using Newtonsoft.Json.Linq;
 
 namespace Thorium_Shared
 {
-    [DataContract]
-    public class JobInformation
+    public class JobInformation : Data.DatabaseObject
     {
         [DataMember]
         public string ID { get; set; }
-        [DataMember]
-        public Config Config { get; private set; } = new Config();
 
-        public Type JobType
+        public JObject Information { get; private set; } = new JObject();
+        [DataMember]
+        private string InformationString { get { return Information.ToString(); } set { Information = JObject.Parse(value); } }
+
+        public Type JobType { get; private set; }
+        [DataMember]
+        private string JobTypeString { get { return JobType.AssemblyQualifiedName; } set { JobType = Type.GetType(value); } }
+
+        public JobInformation(AJob job)
         {
-            get
-            {
-                return Type.GetType(Config.Get(nameof(JobType)));
-            }
-            set
-            {
-                if(!value.IsSubclassOf(typeof(AJob)))
-                {
-                    throw new ArgumentException("the type has to be a subclass of " + nameof(AJob));
-                }
-                Config.Set(nameof(JobType), value.AssemblyQualifiedName);
-            }
+            ID = job.ID;
+            Information = job.Information;
+            JobType = job.GetType();
         }
     }
 }
