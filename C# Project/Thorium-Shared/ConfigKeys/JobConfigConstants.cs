@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Thorium_Shared.ConfigKeys
 {
-    public static class JobConfigKeys
+    /*public static class JobConfigKeys
     {
         public static string Key_JobType { get; } = "jobType";
-    }
+    }*/
 }

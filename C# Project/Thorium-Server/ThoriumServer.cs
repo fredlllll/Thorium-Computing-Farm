@@ -5,71 +5,42 @@ namespace Thorium_Server
 {
     public class ThoriumServer
     {
-        JSONObjectServer jsonObjectServer;
-        JSONObjectServer jsonObjectServerClients;
+        /// <summary>
+        /// for control commands
+        /// </summary>
+        ControlServer controlServer;
+        /// <summary>
+        /// for comms between server and clients
+        /// </summary>
+        ClientsServer clientsServer;
+
+        public JobManager JobManager { get; private set; }
+
         ClientManager clientManager;
 
         public ThoriumServer()
         {
-            jsonObjectServer = new JSONObjectServer(ThoriumServerConfig.ListeningPort);
-            jsonObjectServer.ObjectReceived += JsonObjectServer_ObjectReceived;
-            jsonObjectServerClients = new JSONObjectServer(ThoriumServerConfig.ClientListeningPort);
-            jsonObjectServerClients.ObjectReceived += JsonObjectServerClients_ObjectReceived;
+            JobManager = new JobManager();
+
+            controlServer = new ControlServer(this, ThoriumServerConfig.ListeningPort);
+            clientsServer = new ClientsServer(this, ThoriumServerConfig.ClientListeningPort);
 
             clientManager = new ClientManager();
         }
 
-        private void JsonObjectServerClients_ObjectReceived(JObject obj)
-        {
-            string cmd = obj.Get<string>("command", "");
-            switch(cmd)
-            {
-                //TODO: stuff
-                case "getTask":
-                    break;
-            }
-        }
-
-        private void JsonObjectServer_ObjectReceived(JObject obj)
-        {
-            //TODO: parse
-            string cmd = obj.Get<string>("command", "");
-            switch(cmd)
-            {
-                //TODO: stuff
-                case "addJob":
-                    //TODO: create job from info and add tasks to database
-                    break;
-            }
-        }
-
-        /*public ClientManager ClientManager { get; }
-        public JobManager JobManager { get; }
-
-        public ServerWCFInterface ServerWCFInterface { get; }
-
-        public ThoriumServer()
-        {
-            ClientManager = new ClientManager();
-            JobManager = new JobManager();
-
-            ServerWCFInterface = new ServerWCFInterface();
-
-            SharedData.Set(ServerConfigConstants.SharedDataID_ServerConfig, ServerConfig);
-
-            DependencyInjection.Kernel.Bind<IThoriumServerInterfaceForClient>().ToConstant(new ThoriumServerInterfaceForClient(this));
-        }*/
 
         public void Start()
         {
             //TODO: load jobs
-            jsonObjectServer.Start();
+            controlServer.Start();
+            clientsServer.Start();
             clientManager.Start();
         }
 
         public void Stop()
         {
-            jsonObjectServer.Stop();
+            controlServer.Stop();
+            clientsServer.Stop();
             clientManager.Stop();
             //TODO: save jobs
         }

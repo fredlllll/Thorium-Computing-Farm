@@ -67,10 +67,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AExecutioner.cs" />
+    <Compile Include="ClientToServerCommands.cs" />
     <Compile Include="Job.cs" />
     <Compile Include="ArgParse.cs" />
     <Compile Include="ATaskProducer.cs" />
-    <Compile Include="Unused\ClientConfigConstants.cs" />
     <Compile Include="Codolith\Config\Config.cs" />
     <Compile Include="Codolith\Config\ConfigType.cs" />
     <Compile Include="Codolith\Config\IConfigParser.cs" />
@@ -108,7 +108,6 @@
     <Compile Include="Data\Serializer.cs" />
     <Compile Include="Data\SqLiteDatabase.cs" />
     <Compile Include="Data\Util.cs" />
-    <Compile Include="Unused\DependencyInjection.cs" />
     <Compile Include="Directories.cs" />
     <Compile Include="Files.cs" />
     <Compile Include="JobInformation.cs" />
@@ -121,14 +120,11 @@
     <Compile Include="Net\JSONObjectServer.cs" />
     <Compile Include="ProcessUtil.cs" />
     <Compile Include="RestartableThreadClass.cs" />
-    <Compile Include="Unused\SharedStatics.cs" />
-    <Compile Include="Unused\TaskInformation.cs" />
     <Compile Include="Unused\JobTypes\Blender\BlenderEngineConfig.cs" />
     <Compile Include="Unused\JobTypes\Blender\BlenderExecutionInfo.cs" />
     <Compile Include="Unused\JobTypes\Blender\BlenderJob.cs" />
     <Compile Include="Unused\JobTypes\Blender\BlenderRenderEngine.cs" />
     <Compile Include="Unused\JobTypes\Blender\BlenderTask.cs" />
-    <Compile Include="Unused\ClientInstanceRequest.cs" />
     <Compile Include="Codolith\Reflection\ReflectionHelper.cs" />
     <Compile Include="Codolith\Util\IScheduler.cs" />
     <Compile Include="Codolith\Util\IScheduleType.cs" />
@@ -136,35 +132,20 @@
     <Compile Include="Codolith\Util\ScheduledObject.cs" />
     <Compile Include="Codolith\Util\SchedulerThreadSafe.cs" />
     <Compile Include="ConsoleMenu.cs" />
-    <Compile Include="Unused\Constants.cs" />
-    <Compile Include="Unused\ExecutionActions\IExecutionAction.cs" />
-    <Compile Include="Unused\ExecutionActions\RunExecutableAction.cs" />
-    <Compile Include="Unused\ModuleInitializer.cs" />
     <Compile Include="Unused\Services\Client\DataPackageProviderClient.cs" />
     <Compile Include="Unused\Services\Client\IDataPackageProviderClient.cs" />
-    <Compile Include="Unused\WCF\IService.cs" />
     <Compile Include="Unused\Services\IServiceProvider.cs" />
     <Compile Include="Unused\Services\Server\IDataPackageProviderServer.cs" />
     <Compile Include="Unused\Services\Server\IResultsCache.cs" />
-    <Compile Include="Unused\ATaskInformationProducer.cs" />
-    <Compile Include="Unused\WCFInterfaces\IThoriumClientInterfaceForServer.cs" />
-    <Compile Include="Unused\WCFInterfaces\IThoriumServerInterfaceForClient.cs" />
-    <Compile Include="Unused\WCFInterfaces\IThoriumServerInterfaceForConfigurator.cs" />
     <Compile Include="ConfigKeys\JobConfigConstants.cs" />
     <Compile Include="Unused\MachineManager\IMachineManager.cs" />
     <Compile Include="Unused\MachineManager\IMachinePool.cs" />
     <Compile Include="Unused\MachineManager\IMachineType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Unused\ServerConfigConstants.cs" />
     <Compile Include="Unused\Services\ServiceManager.cs" />
     <Compile Include="Unused\Services\Server\DataPackageProviderServer.cs" />
     <Compile Include="Unused\Services\Server\ResultsCache.cs" />
-    <Compile Include="Unused\SharedData.cs" />
-    <Compile Include="Unused\ATask.cs" />
     <Compile Include="Utils.cs" />
-    <Compile Include="Unused\WCF\WCFServiceHostingInfo.cs" />
-    <Compile Include="Unused\WCF\WCFServiceInfo.cs" />
-    <Compile Include="Unused\WCF\WCFServiceManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Unused\JobTypes\Blender\BlenderConfigExample.xml" />

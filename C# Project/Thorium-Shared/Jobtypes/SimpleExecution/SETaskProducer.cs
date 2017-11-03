@@ -20,6 +20,8 @@ namespace Thorium_Shared.Jobtypes.SimpleExecution
             int maxCount = ji.Get<int>("tasksCount");
             if(providedTasks < maxCount)
             {
+                //TODO: additional arguments?
+                
                 JObject info = new JObject
                 {
                     ["index"] = providedTasks.ToString(),

@@ -50,11 +50,11 @@
   <ItemGroup>
     <Compile Include="Client.cs" />
     <Compile Include="ClientManager.cs" />
+    <Compile Include="ClientsServer.cs" />
+    <Compile Include="ControlServer.cs" />
     <Compile Include="Files.cs" />
     <Compile Include="JobInitializer.cs" />
     <Compile Include="JobManager.cs" />
-    <Compile Include="ServerStatics.cs" />
-    <Compile Include="ServerWCFInterface.cs" />
     <Compile Include="TaskManager.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -9,6 +9,8 @@ namespace Thorium_Shared.Net
 {
     public class JSONObjectServer : RestartableThreadClass
     {
+        //TODO: add some mechanism to be able to answer to a command
+
         int port;
         TcpListener listener;
         object clientsLock = new object();
