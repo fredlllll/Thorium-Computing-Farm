@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Thorium_Shared
 {
-    public static class SharedData
+    /*public static class SharedData
     {
         static Dictionary<string, object> dict = new Dictionary<string, object>();
         public static void Set<T>(string name, T obj)
@@ -18,5 +18,5 @@ namespace Thorium_Shared
         {
             return (T)dict[name];
         }
-    }
+    }*/
 }

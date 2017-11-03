@@ -11,7 +11,7 @@ using Codolith.Serialization.Formatters;
 
 namespace Thorium_Shared
 {
-    [DataContract]
+   /* [DataContract]
     public class TaskInformation
     {
         [DataMember]
@@ -72,5 +72,5 @@ namespace Thorium_Shared
                 Config.Set(nameof(TaskType), value.AssemblyQualifiedName);
             }
         }
-    }
+    }*/
 }

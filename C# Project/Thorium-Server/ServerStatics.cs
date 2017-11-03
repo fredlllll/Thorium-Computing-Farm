@@ -6,8 +6,6 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Codolith.Config;
-using Codolith.Logging;
-using Codolith.Logging.Listeners;
 
 namespace Thorium_Server
 {

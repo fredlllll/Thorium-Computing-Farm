@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Thorium_Shared
 {
-    public static class Constants
+   /* public static class Constants
     {
         /// <summary>
         /// thorium server interface for client
@@ -32,5 +32,5 @@ namespace Thorium_Shared
         /// thorium client interface for server
         /// </summary>
         public const string THORIUM_CLIENT_INTERFACE_FOR_SERVER = "ThoriumClientForServer";
-    }
+    }*/
 }

@@ -3,11 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Ninject;
-using Thorium_Shared;
-using Thorium_Shared.WCF;
-using Thorium_Shared.WCFInterfaces;
-using static Thorium_Shared.ConfigKeys.ServerConfigKeys;
 
 namespace Thorium_Server
 {

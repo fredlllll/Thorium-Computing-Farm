@@ -8,7 +8,7 @@ using Codolith.Config;
 
 namespace Thorium_Shared
 {
-    public enum TaskState
+    /*public enum TaskState
     {
         NotStarted,
         Processing,
@@ -34,7 +34,7 @@ namespace Thorium_Shared
             Data = data;
             jobId = parentJobID;
             id = Util.GetRandomID();
-        }*/
+        }
 
         public abstract void Run();
 
@@ -44,5 +44,5 @@ namespace Thorium_Shared
         }
 
         public abstract void Abort();
-    }
+    }*/
 }

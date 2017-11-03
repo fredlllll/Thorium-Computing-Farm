@@ -6,11 +6,10 @@ using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.Text;
 using System.Threading.Tasks;
-using static Thorium_Shared.SharedStatics;
 
 namespace Thorium_Shared.WCF
 {
-    public class WCFServiceManager
+    /*public class WCFServiceManager
     {
         static WCFServiceManager instance = default(WCFServiceManager);
         public static WCFServiceManager Instance
@@ -49,7 +48,7 @@ namespace Thorium_Shared.WCF
 
             /*b.Security.Message.ClientCredentialType = MessageCredentialType.IssuedToken;
             b.Security.Transport.ClientCredentialType = TcpClientCredentialType.None;
-            b.Security.Transport.ProtectionLevel = System.Net.Security.ProtectionLevel.None;*/
+            b.Security.Transport.ProtectionLevel = System.Net.Security.ProtectionLevel.None;
         }
 
         public InterfaceType GetServiceInstance<InterfaceType>(string remotePath, IService callbackInstance = null, string remoteHost = null) where InterfaceType : IService
@@ -108,7 +107,7 @@ namespace Thorium_Shared.WCF
         /*public void ForceDisconnectServiceInstance<(object serviceInstance)
         {
 
-        }*/
+        }
 
         public string HostServiceInstance(IService serviceInstance, string path = null)
         {
@@ -141,7 +140,7 @@ namespace Thorium_Shared.WCF
                 return info.path;
             }
             return null;
-        }*/
+        }
 
         public void UnhostServiceInstance(IService serviceInstance)
         {
@@ -152,5 +151,5 @@ namespace Thorium_Shared.WCF
                 serviceHosts.Remove(serviceInstance);
             }
         }
-    }
+    }*/
 }

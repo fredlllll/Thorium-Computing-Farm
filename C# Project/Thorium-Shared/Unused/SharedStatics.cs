@@ -1,9 +1,7 @@
-﻿using Codolith.Logging;
-using Codolith.Logging.Listeners;
-
+﻿
 namespace Thorium_Shared
 {
-    public static class SharedStatics
+    /*public static class SharedStatics
     {
         private static Logger logger = default(Logger);
         public static Logger Logger
@@ -19,5 +17,5 @@ namespace Thorium_Shared
                 return logger;
             }
         }
-    }
+    }*/
 }

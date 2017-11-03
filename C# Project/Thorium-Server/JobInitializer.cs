@@ -4,21 +4,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
+using NLog;
 using Thorium_Shared;
-using static Thorium_Shared.SharedStatics;
 
 namespace Thorium_Server
 {
     [Serializable]
     public class JobInitializer : RestartableThreadClass
     {
-        public delegate void JobInitializedHandler(JobInitializer sender, AJob job);
-        public delegate void JobInitializationFailedHandler(JobInitializer sender, AJob job, Exception ex);
+        private static Logger logger = LogManager.GetCurrentClassLogger();
+
+        public delegate void JobInitializedHandler(JobInitializer sender, Job job);
+        public delegate void JobInitializationFailedHandler(JobInitializer sender, Job job, Exception ex);
         public event JobInitializedHandler JobInitialized;
         public event JobInitializationFailedHandler JobInitializationFailed;
 
-        ConcurrentQueue<AJob> initQueue = new ConcurrentQueue<AJob>();
+        ConcurrentQueue<Job> initQueue = new ConcurrentQueue<Job>();
         bool running = false;
 
         public JobInitializer() : base(false)
@@ -43,12 +44,11 @@ namespace Thorium_Server
             {
                 while(running)
                 {
-                    AJob job = default(AJob);
-                    if(initQueue.TryDequeue(out job))
+                    if(initQueue.TryDequeue(out Job job))
                     {
                         try
                         {
-                            Logger.Log("initializing job " + job.ID);
+                            logger.Info("initializing job " + job.ID);
                             var producer = job.TaskProducer;
                             Task t;
                             while((t = producer.GetNextTask()) != null)
@@ -56,7 +56,7 @@ namespace Thorium_Server
                                 //TODO: save task to db
                             }
                             JobInitialized?.Invoke(this, job);
-                            Logger.Log("done");
+                            logger.Info("done");
                         }
                         //dont handle thread interrupt here
                         catch(Exception ex) when(!(ex is ThreadInterruptedException))
@@ -76,7 +76,7 @@ namespace Thorium_Server
             }
         }
 
-        internal void AddJob(AJob job)
+        internal void AddJob(Job job)
         {
             initQueue.Enqueue(job);
         }

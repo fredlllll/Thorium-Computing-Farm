@@ -9,13 +9,13 @@ namespace Thorium_Shared
 {
     public class Task
     {
-        public AJob Job { get; protected set; }
+        public Job Job { get; protected set; }
 
         public string ID { get; protected set; }
 
         public JObject Information { get; protected set; }
 
-        public Task(AJob job, string id, JObject information)
+        public Task(Job job, string id, JObject information)
         {
             Job = job;
             ID = id;

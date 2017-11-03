@@ -8,9 +8,9 @@ namespace Thorium_Shared
 {
     public abstract class ATaskProducer
     {
-        public AJob Job { get; protected set; }
+        public Job Job { get; protected set; }
 
-        public ATaskProducer(AJob job)
+        public ATaskProducer(Job job)
         {
             Job = job;
         }

@@ -9,9 +9,6 @@ using System.Threading.Tasks;
 using Ninject;
 using Thorium_Shared;
 using Codolith.Config;
-using Thorium_Shared.WCF;
-using static Thorium_Shared.SharedStatics;
-using Thorium_Shared.WCFInterfaces;
 
 namespace Thorium_Client
 {

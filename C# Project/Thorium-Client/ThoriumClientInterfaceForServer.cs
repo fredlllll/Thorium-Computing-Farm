@@ -1,4 +1,4 @@
-﻿using System;
+﻿/*using System;
 using System.ServiceModel;
 using Thorium_Shared;
 using Thorium_Shared.WCFInterfaces;
@@ -41,3 +41,4 @@ namespace Thorium_Client
         }
     }
 }
+*/

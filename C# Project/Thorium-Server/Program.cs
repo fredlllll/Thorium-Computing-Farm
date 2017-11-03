@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Codolith.Logging;
 using Thorium_Shared;
 
 namespace Thorium_Server

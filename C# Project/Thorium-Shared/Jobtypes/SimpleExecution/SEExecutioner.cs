@@ -7,21 +7,16 @@ using System.Threading.Tasks;
 
 namespace Thorium_Shared.Jobtypes.SimpleExecution
 {
-    public class SETask : ATask
+    public class SEExecutioner : AExecutioner
     {
-        public SETask(TaskInformation info) : base(info)
+        public SEExecutioner(Task t) : base(t)
         {
         }
 
-        public override void Abort()
+        public override void Execute()
         {
-            throw new NotImplementedException();
-        }
-
-        public override void Run()
-        {
-            int index = TaskInformation.Config.Get<int>("index");
-            string program = TaskInformation.Config.Get("program");
+            int index = Task.Information.Get<int>("index");
+            string program = Task.Information.Get<string>("program");
 
             Process p = new Process();
             p.StartInfo.FileName = program;

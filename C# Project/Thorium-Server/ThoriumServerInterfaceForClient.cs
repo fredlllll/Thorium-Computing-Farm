@@ -5,9 +5,6 @@ using System.Net;
 using System.ServiceModel;
 using System.Text;
 using Thorium_Shared;
-using Thorium_Shared.WCF;
-using Thorium_Shared.WCFInterfaces;
-using static Thorium_Shared.SharedStatics;
 
 namespace Thorium_Server
 {

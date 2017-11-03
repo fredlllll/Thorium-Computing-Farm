@@ -5,22 +5,19 @@ using System.Linq;
 using System.Text;
 using Thorium_Shared;
 using Codolith.Config;
-using static Thorium_Shared.ConfigKeys.ServerConfigKeys;
-using static Thorium_Shared.ConfigKeys.JobConfigKeys;
-using static Thorium_Shared.SharedStatics;
 using System.Collections.Concurrent;
 using System.Runtime.Serialization;
-using Codolith.Serialization;
-using Codolith.Serialization.Formatters;
-using Thorium_Shared.WCFInterfaces;
+using NLog;
 
 namespace Thorium_Server
 {
     public class JobManager
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
+
         JobInitializer jobInitializer = new JobInitializer();
-        Dictionary<string, AJob> jobs = new Dictionary<string, AJob>();
-        public IEnumerable<KeyValuePair<string, AJob>> Jobs
+        Dictionary<string, Job> jobs = new Dictionary<string, Job>();
+        public IEnumerable<KeyValuePair<string, Job>> Jobs
         {
             get { return jobs; }
         }
@@ -31,15 +28,15 @@ namespace Thorium_Server
             jobInitializer.JobInitialized += JobInitialized;
         }
 
-        private void JobInitialized(JobInitializer sender, AJob job)
+        private void JobInitialized(JobInitializer sender, Job job)
         {
-            Logger.LogInfo("Job initialized: " + job.Name);
+            logger.Info("Job initialized: " + job.Name);
             jobs[job.ID] = job;
         }
 
-        private void JobInitializationFailed(JobInitializer sender, AJob job, Exception ex)
+        private void JobInitializationFailed(JobInitializer sender, Job job, Exception ex)
         {
-            Logger.LogWarning("Job initialization failed: " + job.Name, ex.ToString());
+            logger.Warn("Job initialization failed: " + job.Name, ex.ToString());
         }
 
         public void Start()
@@ -91,12 +88,12 @@ namespace Thorium_Server
             jobInitializer.Stop();
         }
 
-        public void AddJob(AJob job)
+        public void AddJob(Job job)
         {
             jobInitializer.AddJob(job);
         }
 
-        public void CancelJob(AJob job)
+        public void CancelJob(Job job)
         {
             //job.Cancel();
             //TODO:????

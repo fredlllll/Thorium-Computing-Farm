@@ -5,13 +5,15 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading;
+using NLog;
 using Thorium_Shared;
-using static Thorium_Shared.SharedStatics;
 
 namespace Thorium_Server
 {
     public class ClientManager : RestartableThreadClass
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
+
         public int ClientCount
         {
             get
@@ -19,6 +21,7 @@ namespace Thorium_Server
                 return clients.Count;
             }
         }
+
         Dictionary<IPAddress, Client> clients = new Dictionary<IPAddress, Client>();
 
         public delegate void ClientStoppedRespondingHandler(Client client);
@@ -34,7 +37,7 @@ namespace Thorium_Server
             {
                 clients[client.IPAddress] = client;
             }
-            Logger.Log("Client Registered: " + client.IPAddress);
+            logger.Info("Client Registered: " + client.IPAddress);
         }
 
         void UnregisterClient(Client client, string reason = null)
@@ -43,7 +46,7 @@ namespace Thorium_Server
             {
                 clients.Remove(client.IPAddress);
             }
-            Logger.Log("Client Unregistered: " + client.IPAddress + " - " + (reason == null ? "No Reason given" : "Reason: " + reason));
+            logger.Info("Client Unregistered: " + client.IPAddress + " - " + (reason == null ? "No Reason given" : "Reason: " + reason));
         }
 
         protected override void Run()

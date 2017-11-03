@@ -9,7 +9,7 @@ using Thorium_Shared.WCF;
 
 namespace Thorium_Shared.WCFInterfaces
 {
-    [ServiceContract(CallbackContract = typeof(IThoriumClientInterfaceForServer), SessionMode = SessionMode.Required)]
+    /*[ServiceContract(CallbackContract = typeof(IThoriumClientInterfaceForServer), SessionMode = SessionMode.Required)]
     public interface IThoriumServerInterfaceForClient : IService
     {
         /*[PrincipalPermission(SecurityAction.Demand, Role = "Client")]
@@ -18,7 +18,7 @@ namespace Thorium_Shared.WCFInterfaces
 
         [PrincipalPermission(SecurityAction.Demand, Role = "Client")]
         [OperationContract(IsInitiating = false, IsTerminating = true)]
-        void Deauthenticate();*/
+        void Deauthenticate();
 
         [OperationContract(IsInitiating = true)]
         void RegisterClient();//place for doing client authentication, just so no random people can get access to your data TODO
@@ -32,6 +32,6 @@ namespace Thorium_Shared.WCFInterfaces
         void SignalTaskFinished(string jobID, string taskID);
 
         /*[OperationContract]
-        string GetServicePath(Type interfaceType);*/
-    }
+        string GetServicePath(Type interfaceType);
+    }*/
 }

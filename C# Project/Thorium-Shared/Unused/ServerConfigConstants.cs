@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace Thorium_Shared
 {
-    public static class ServerConfigConstants
+    /*public static class ServerConfigConstants
     {
         public const string SharedDataID_ServerConfig = "ServerConfig";
 
        
-    }
+    }*/
 }
