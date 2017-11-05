@@ -40,7 +40,15 @@ namespace Thorium_Server
             logger.Info("Client Registered: " + client.IPAddress);
         }
 
-        void UnregisterClient(Client client, string reason = null)
+        public void UnregisterClient(IPAddress clientIp, string reason = null)
+        {
+            lock(clients)
+            {
+                UnregisterClient(clients[clientIp], reason);
+            }
+        }
+
+        public void UnregisterClient(Client client, string reason = null)
         {
             lock(clients)
             {

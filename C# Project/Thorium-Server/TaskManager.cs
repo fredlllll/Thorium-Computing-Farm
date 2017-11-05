@@ -1,4 +1,46 @@
-﻿/*using System;
+﻿using System.Collections.Concurrent;
+using Thorium_Shared;
+
+namespace Thorium_Server
+{
+    public class TaskManager
+    {
+        //TODO: add some kind of task holding class that can also keep info about processing like status or the instance its computed on
+
+        ConcurrentBag<Task> waitingTasks = new ConcurrentBag<Task>();
+        ConcurrentDictionary<string, Task> computingTasks = new ConcurrentDictionary<string, Task>();
+        ConcurrentDictionary<string, Task> finishedTasks = new ConcurrentDictionary<string, Task>();
+
+        public Task CheckoutTask()
+        {
+            if(waitingTasks.TryTake(out Task result))
+            {
+                computingTasks[result.ID] = result;
+                return result;
+            }
+            return null;
+        }
+
+        public void CheckinTask(string id)
+        {
+            computingTasks.TryRemove(id, out Task t);
+            finishedTasks[id] = t;
+        }
+
+        public void AbandonTask(string id)
+        {
+            computingTasks.TryRemove(id, out Task t);
+            waitingTasks.Add(t);
+        }
+
+        public void AddTask(Task t)
+        {
+            waitingTasks.Add(t);
+        }
+    }
+}
+
+/*using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;

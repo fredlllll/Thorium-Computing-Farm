@@ -67,7 +67,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AExecutioner.cs" />
-    <Compile Include="ClientToServerCommands.cs" />
+    <Compile Include="Net\ClientToServerCommands.cs" />
     <Compile Include="Job.cs" />
     <Compile Include="ArgParse.cs" />
     <Compile Include="ATaskProducer.cs" />
@@ -113,6 +113,12 @@
     <Compile Include="JobInformation.cs" />
     <Compile Include="Jobtypes\SimpleExecution\SEExecutioner.cs" />
     <Compile Include="Jobtypes\SimpleExecution\SETaskProducer.cs" />
+    <Compile Include="Net\Comms\CommsFactory.cs" />
+    <Compile Include="Net\Comms\IMessageTransceiver.cs" />
+    <Compile Include="Net\Comms\JsonTransceiver.cs" />
+    <Compile Include="Net\Comms\ServiceClient.cs" />
+    <Compile Include="Net\Comms\ServiceServer.cs" />
+    <Compile Include="Net\ServerControlCommands.cs" />
     <Compile Include="Task.cs" />
     <Compile Include="ThoriumSharedJSONExtensions.cs" />
     <Compile Include="LoggedProcessInfo.cs" />

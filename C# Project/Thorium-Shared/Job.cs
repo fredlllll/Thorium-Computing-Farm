@@ -10,6 +10,8 @@ namespace Thorium_Shared
 {
     public class Job
     {
+        public const string TaskProducerType = "taskProducerType";
+
         public string ID { get; protected set; }
         public string Name { get; protected set; }
         public JObject Information { get; protected set; }
@@ -27,7 +29,7 @@ namespace Thorium_Shared
             {
                 if(taskProducer == null)
                 {
-                    string producerClass = Information.Get<string>("taskProducerType");
+                    string producerClass = Information.Get<string>(TaskProducerType);
                     var ci = Type.GetType(producerClass).GetConstructor(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, new Type[] { typeof(Job) }, null);
                     if(ci == null)
                     {

@@ -15,17 +15,18 @@ namespace Thorium_Server
         ClientsServer clientsServer;
 
         public JobManager JobManager { get; private set; }
+        public ClientManager ClientManager { get; private set; }
+        public TaskManager TaskManager { get; private set; }
 
-        ClientManager clientManager;
 
         public ThoriumServer()
         {
             JobManager = new JobManager();
+            TaskManager = new TaskManager();
+            ClientManager = new ClientManager();
 
             controlServer = new ControlServer(this, ThoriumServerConfig.ListeningPort);
             clientsServer = new ClientsServer(this, ThoriumServerConfig.ClientListeningPort);
-
-            clientManager = new ClientManager();
         }
 
 
@@ -34,14 +35,14 @@ namespace Thorium_Server
             //TODO: load jobs
             controlServer.Start();
             clientsServer.Start();
-            clientManager.Start();
+            ClientManager.Start();
         }
 
         public void Stop()
         {
             controlServer.Stop();
             clientsServer.Stop();
-            clientManager.Stop();
+            ClientManager.Stop();
             //TODO: save jobs
         }
     }

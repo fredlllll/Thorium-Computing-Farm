@@ -6,17 +6,19 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace Thorium_Shared.Net
 {
-    public class JSONObjectClient : RestartableThreadClass, IDisposable
+    /*public class JSONObjectClient : RestartableThreadClass, IDisposable
     {
         TcpClient client;
+        public TcpClient TcpClient { get { return client; } }
         string host;
         int port;
 
-        public event Action<JObject> ObjectReceived;
+        public event Action<JSONObjectClient,JObject> ObjectReceived;
         public event Action<JSONObjectClient> Closed;
 
         public JSONObjectClient(string host, int port) : this(new TcpClient())
@@ -104,7 +106,7 @@ namespace Thorium_Shared.Net
                             if(indentationLevel == 0)
                             {
                                 var obj = JObject.Parse(builder.ToString());
-                                ObjectReceived?.Invoke(obj);
+                                ObjectReceived?.Invoke(this, obj);
                                 builder.Clear();
                             }
                             else if(indentationLevel < 0)
@@ -141,5 +143,5 @@ namespace Thorium_Shared.Net
                 client.Close();
             }
         }
-    }
+    }*/
 }

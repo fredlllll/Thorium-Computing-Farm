@@ -7,17 +7,15 @@ using Newtonsoft.Json.Linq;
 
 namespace Thorium_Shared.Net
 {
-    public class JSONObjectServer : RestartableThreadClass
+    /*public class JSONObjectServer : RestartableThreadClass
     {
-        //TODO: add some mechanism to be able to answer to a command
-
         int port;
         TcpListener listener;
         object clientsLock = new object();
         List<JSONObjectClient> clients = new List<JSONObjectClient>();
 
         object receiverLock = new object();
-        public event Action<JObject> ObjectReceived;
+        public event Action<JSONObjectClient, JObject> ObjectReceived;
 
         public JSONObjectServer(int port) : base(false)
         {
@@ -89,11 +87,11 @@ namespace Thorium_Shared.Net
             }
         }
 
-        private void Jc_ObjectReceived(JObject obj)
+        private void Jc_ObjectReceived(JSONObjectClient sender, JObject obj)
         {
             lock(receiverLock) //to make sure the event isnt called from 2 threads at once and potentially screw up non thread safe stuff
             {
-                ObjectReceived?.Invoke(obj);
+                ObjectReceived?.Invoke(sender, obj);
             }
         }
 
@@ -107,5 +105,5 @@ namespace Thorium_Shared.Net
                 }
             }
         }
-    }
+    }*/
 }
