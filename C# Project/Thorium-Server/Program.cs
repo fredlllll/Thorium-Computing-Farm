@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Thorium_Shared;
+using Thorium_Shared.Logging;
 
 namespace Thorium_Server
 {
@@ -13,15 +14,20 @@ namespace Thorium_Server
         static ConsoleMenu menu;
         static void Main(string[] args)
         {
+            Logging.SetupLogging();
+
             server = new ThoriumServer();
             server.Start();
 
-            menu = new ConsoleMenu();
-            menu.AddMethod("stop", Stop);
-            menu.AddMethod("listjobs", ListJobs);
-            menu.AddMethod("help", Help);
-            menu.Run();
-            Help(null);
+            if(args.Contains("-menu"))
+            {
+                menu = new ConsoleMenu();
+                menu.AddMethod("stop", Stop);
+                menu.AddMethod("listjobs", ListJobs);
+                menu.AddMethod("help", Help);
+                Help(null);
+                menu.Run();
+            }
         }
 
         static void Stop(string[] args)

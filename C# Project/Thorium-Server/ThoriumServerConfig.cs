@@ -23,7 +23,7 @@ namespace Thorium_Server
             JObject obj = JObject.Parse(File.ReadAllText(Thorium_Shared.Files.GetIfExistsOrDefault(Thorium_Server.Files.ThoriumServerConfigFile)));
 
             ListeningPort = obj.Get<UInt16>("listeningPort");
-            ListeningPort = obj.Get<UInt16>("clientListeningPort");
+            ClientListeningPort = obj.Get<UInt16>("clientListeningPort");
             DatabaseHost = obj.Get<string>("databaseHost");
             DatabasePort = obj.Get<UInt16>("databasePort");
             DatabaseUser = obj.Get<string>("databaseUser");

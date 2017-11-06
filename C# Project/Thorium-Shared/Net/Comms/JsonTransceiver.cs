@@ -9,13 +9,16 @@ using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using NLog;
 
 namespace Thorium_Shared.Net.Comms
 {
     public class JsonTransceiver : RestartableThreadClass, IMessageTransceiver
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
+
         private readonly TcpClient client;
-        private JsonTextWriter jsonWriter = null;
+        private BinaryWriter binaryWriter = null;
 
         public IPAddress Remote => ((IPEndPoint)client.Client.RemoteEndPoint).Address;
 
@@ -29,40 +32,46 @@ namespace Thorium_Shared.Net.Comms
 
         public override void Start()
         {
-            StreamWriter sw = new StreamWriter(client.GetStream());
-            jsonWriter = new JsonTextWriter(sw);
+            binaryWriter = new BinaryWriter(client.GetStream());
             base.Start();
         }
 
         public override void Stop()
         {
             base.Stop();
-            jsonWriter.CloseOutput = true;
-            jsonWriter.Close();
+            binaryWriter.Close();
         }
 
         public void SendMessage(JObject msg)
         {
-            msg.WriteTo(jsonWriter);
-            jsonWriter.Flush();
+            binaryWriter.Write(msg.ToString());
+            binaryWriter.Flush();
         }
 
         protected override void Run()
         {
             try
             {
-                using(StreamReader sr = new StreamReader(client.GetStream()))
-                using(JsonTextReader jr = new JsonTextReader(sr))
+                using(BinaryReader br = new BinaryReader(client.GetStream()))
                 {
-                    while(!sr.EndOfStream)
+                    try
                     {
-                        JObject jobj = JObject.Load(jr);
-                        MessageReceived?.Invoke(this, jobj);
+                        while(client.Connected)
+                        {
+                            string jsonString = br.ReadString();
+                            JObject jobj = JObject.Parse(jsonString);
+                            MessageReceived?.Invoke(this, jobj);
+                        }
+                    }
+                    catch(IOException)
+                    {
+                        logger.Info("Transceiver stream closed");
                     }
                 }
             }
             catch(ThreadInterruptedException)
             {
+                Console.WriteLine("transceiver interrupted");
                 //exit
             }
             Closed?.Invoke(this);

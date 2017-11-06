@@ -9,7 +9,7 @@ namespace Thorium_Shared.Jobtypes.SimpleExecution
 {
     public class SEExecutioner : AExecutioner
     {
-        public SEExecutioner(Task t) : base(t)
+        public SEExecutioner(LightweightTask t) : base(t)
         {
         }
 

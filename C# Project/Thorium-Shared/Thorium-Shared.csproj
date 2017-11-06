@@ -67,6 +67,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AExecutioner.cs" />
+    <Compile Include="LightweightTask.cs" />
+    <Compile Include="Logging\Logging.cs" />
     <Compile Include="Net\ClientToServerCommands.cs" />
     <Compile Include="Job.cs" />
     <Compile Include="ArgParse.cs" />

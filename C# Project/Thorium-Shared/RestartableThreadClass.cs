@@ -35,7 +35,10 @@ namespace Thorium_Shared
                 if(runThread != null)
                 {
                     runThread.Interrupt();
-                    runThread.Join();
+                    if(Thread.CurrentThread != runThread)
+                    {
+                        runThread.Join();
+                    }
                     runThread = null;
                 }
             }

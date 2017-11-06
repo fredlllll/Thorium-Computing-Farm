@@ -21,11 +21,12 @@ namespace Thorium_Shared.Jobtypes.SimpleExecution
             if(providedTasks < maxCount)
             {
                 //TODO: additional arguments?
-                
+
                 JObject info = new JObject
                 {
                     ["index"] = providedTasks.ToString(),
                     ["program"] = Job.Information["program"],
+                    ["executioner"] = typeof(SEExecutioner).AssemblyQualifiedName
                 };
 
                 providedTasks++;

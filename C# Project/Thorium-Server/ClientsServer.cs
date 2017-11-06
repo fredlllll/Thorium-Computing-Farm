@@ -46,7 +46,12 @@ namespace Thorium_Server
                 case GetTask:
                     {
                         Task t = server.TaskManager.CheckoutTask();
-                        JObject retval = new JObject(t);
+                        if(t != null)
+                        {
+                            LightweightTask lt = new LightweightTask(t);
+                            JObject retval = new JObject(lt);
+                            return retval;
+                        }
                     }
                     break;
                 case FinishTask:

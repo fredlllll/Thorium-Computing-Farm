@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Thorium_Shared;
+using Thorium_Shared.Logging;
 
 namespace Thorium_Client
 {
@@ -12,12 +13,17 @@ namespace Thorium_Client
     {
         static void Main(string[] args)
         {
-            ConsoleMenu menu = new ConsoleMenu();
+            Logging.SetupLogging();
 
             var client = new ThoriumClient();
             client.Start();
 
-            menu.Run();
+            if(args.Contains("-menu"))
+            {
+                ConsoleMenu menu = new ConsoleMenu();
+                //TODO?
+                menu.Run();
+            }
         }
     }
 }

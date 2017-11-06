@@ -8,9 +8,9 @@ namespace Thorium_Shared
 {
     public abstract class AExecutioner
     {
-        public Task Task { get; protected set; }
+        public LightweightTask Task { get; protected set; }
 
-        public AExecutioner(Task t) {
+        public AExecutioner(LightweightTask t) {
             Task = t;
         }
 

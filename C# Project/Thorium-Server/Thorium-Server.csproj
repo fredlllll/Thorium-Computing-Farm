@@ -65,7 +65,9 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
-    <None Include="thorium_server_config.json.default" />
+    <None Include="thorium_server_config.json.default">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Thorium-Shared\Thorium-Shared.csproj">

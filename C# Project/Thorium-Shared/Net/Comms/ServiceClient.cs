@@ -56,9 +56,16 @@ namespace Thorium_Shared.Net.Comms
         private void Transceiver_MessageReceived(IMessageTransceiver sender, JObject msg)
         {
             long invokID = msg.Get<long>("invokationID");
-            JObject response = (JObject)msg["response"];
-
-            responses[invokID] = response;
+            var resp = msg["response"];
+            if(resp != null && !resp.IsNull())
+            {
+                JObject response = (JObject)resp;
+                responses[invokID] = response;
+            }
+            else
+            {
+                responses[invokID] = null;
+            }
             responseWaiters[invokID].Set();
         }
     }
