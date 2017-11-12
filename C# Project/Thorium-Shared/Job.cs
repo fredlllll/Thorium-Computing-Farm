@@ -1,17 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
+using static Thorium_Shared.JobProperties;
 
 namespace Thorium_Shared
 {
     public class Job
     {
-        public const string TaskProducerType = "taskProducerType";
-
         public string ID { get; protected set; }
         public string Name { get; protected set; }
         public JObject Information { get; protected set; }

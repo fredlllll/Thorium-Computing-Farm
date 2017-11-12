@@ -1,12 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
 using Thorium_Shared;
-using Codolith.Config;
-using System.Collections.Concurrent;
-using System.Runtime.Serialization;
 using NLog;
 
 namespace Thorium_Server
@@ -15,15 +9,16 @@ namespace Thorium_Server
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();
 
-        JobInitializer jobInitializer = new JobInitializer();
+        private readonly JobInitializer jobInitializer;
         Dictionary<string, Job> jobs = new Dictionary<string, Job>();
         public IEnumerable<KeyValuePair<string, Job>> Jobs
         {
             get { return jobs; }
         }
 
-        public JobManager()
+        public JobManager(ThoriumServer server)
         {
+            jobInitializer = new JobInitializer(server);
             jobInitializer.JobInitializationFailed += JobInitializationFailed;
             jobInitializer.JobInitialized += JobInitialized;
         }
@@ -72,7 +67,7 @@ namespace Thorium_Server
             //TODO: use database
         }
 
-        public void Shutdown()
+        public void Stop()
         {
             //TODO: use database
             /*ReferencingSerializer rs = new ReferencingSerializer();
@@ -90,6 +85,7 @@ namespace Thorium_Server
 
         public void AddJob(Job job)
         {
+            logger.Info("Adding Job to initializer: " + job.ID);
             jobInitializer.AddJob(job);
         }
 

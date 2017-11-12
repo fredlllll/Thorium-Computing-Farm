@@ -49,7 +49,7 @@ namespace Thorium_Server
                         if(t != null)
                         {
                             LightweightTask lt = new LightweightTask(t);
-                            JObject retval = new JObject(lt);
+                            JObject retval = JObject.FromObject(lt);
                             return retval;
                         }
                     }

@@ -7,11 +7,14 @@ using Thorium_Shared;
 using Thorium_Shared.Net.Comms;
 using Thorium_Shared.Net;
 using static Thorium_Shared.Net.ClientToServerCommands;
+using NLog;
 
 namespace Thorium_Client
 {
     public class ServerInterface
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
+
         ServiceClient serviceClient;
         public ServerInterface(string host, ushort port)
         {
@@ -25,7 +28,15 @@ namespace Thorium_Client
 
         public void Unregister()
         {
-            serviceClient.Invoke(ClientToServerCommands.Unregister, null);
+            try
+            {
+                serviceClient.Invoke(ClientToServerCommands.Unregister, null);
+            }
+            catch(Exception ex)
+            {
+                logger.Info("exception when unregistering:");
+                logger.Info(ex);
+            }
         }
 
         public LightweightTask CheckoutTask()
@@ -40,14 +51,22 @@ namespace Thorium_Client
 
         public void CheckinTask(LightweightTask task)
         {
-            JObject obj = new JObject(task);
-            serviceClient.Invoke(FinishTask, obj);
+            //JObject obj = JObject.FromObject(task);
+            JObject arg = new JObject
+            {
+                ["id"] = task.ID
+            };
+            serviceClient.Invoke(FinishTask, arg);
         }
 
         public void AbandonTask(LightweightTask task)
         {
-            JObject obj = new JObject(task);
-            serviceClient.Invoke(ClientToServerCommands.AbandonTask, obj);
+            //JObject obj = JObject.FromObject(task);
+            JObject arg = new JObject
+            {
+                ["id"] = task.ID
+            };
+            serviceClient.Invoke(ClientToServerCommands.AbandonTask, arg);
         }
     }
 }

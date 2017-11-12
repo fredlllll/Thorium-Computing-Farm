@@ -22,6 +22,20 @@ namespace Thorium_Server
             }
         }
 
+        /// <summary>
+        /// returns a snapshot of the registered clients
+        /// </summary>
+        public IEnumerable<Client> ClientsSnapshot
+        {
+            get
+            {
+                lock(clients)
+                {
+                    return clients.Select((x) => x.Value);
+                }
+            }
+        }
+
         Dictionary<IPAddress, Client> clients = new Dictionary<IPAddress, Client>();
 
         public delegate void ClientStoppedRespondingHandler(Client client);

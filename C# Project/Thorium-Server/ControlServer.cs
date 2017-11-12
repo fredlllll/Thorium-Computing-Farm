@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
+using NLog;
+using Thorium_Shared;
 using Thorium_Shared.Net;
 using Thorium_Shared.Net.Comms;
 using static Thorium_Shared.Net.ServerControlCommands;
@@ -12,6 +14,8 @@ namespace Thorium_Server
 {
     public class ControlServer
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
+
         ThoriumServer server;
 
         ServiceServer serviceServer;
@@ -40,7 +44,9 @@ namespace Thorium_Server
             {
                 //TODO: stuff
                 case AddJob:
-                    //TODO: create job from info and add tasks to database
+                    Job j = new Job(Utils.GetRandomID(), arg.Get<string>("jobName"), (JObject)arg["jobInformation"]);
+                    logger.Info("new Job Added: " + j.ID + ", " + j.Name + ", " + j.Information);
+                    server.JobManager.AddJob(j);
                     break;
             }
             return null;

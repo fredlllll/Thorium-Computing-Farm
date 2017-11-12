@@ -21,7 +21,7 @@ namespace Thorium_Server
 
         public ThoriumServer()
         {
-            JobManager = new JobManager();
+            JobManager = new JobManager(this);
             TaskManager = new TaskManager();
             ClientManager = new ClientManager();
 
@@ -33,6 +33,8 @@ namespace Thorium_Server
         public void Start()
         {
             //TODO: load jobs
+            JobManager.Start();
+            ClientManager.Start();
             controlServer.Start();
             clientsServer.Start();
             ClientManager.Start();
@@ -40,6 +42,8 @@ namespace Thorium_Server
 
         public void Stop()
         {
+            JobManager.Stop();
+            ClientManager.Stop();
             controlServer.Stop();
             clientsServer.Stop();
             ClientManager.Stop();

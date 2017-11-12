@@ -67,6 +67,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AExecutioner.cs" />
+    <Compile Include="JobAndTaskProperties.cs" />
+    <Compile Include="JobProperties.cs" />
+    <Compile Include="Jobtypes\Blender\BlenderExecutioner.cs" />
+    <Compile Include="Jobtypes\Blender\BlenderTaskProducer.cs" />
+    <Compile Include="Jobtypes\Blender\Interval.cs" />
     <Compile Include="LightweightTask.cs" />
     <Compile Include="Logging\Logging.cs" />
     <Compile Include="Net\ClientToServerCommands.cs" />
@@ -121,6 +126,7 @@
     <Compile Include="Net\Comms\ServiceClient.cs" />
     <Compile Include="Net\Comms\ServiceServer.cs" />
     <Compile Include="Net\ServerControlCommands.cs" />
+    <Compile Include="RunExecutableAction.cs" />
     <Compile Include="Task.cs" />
     <Compile Include="ThoriumSharedJSONExtensions.cs" />
     <Compile Include="LoggedProcessInfo.cs" />

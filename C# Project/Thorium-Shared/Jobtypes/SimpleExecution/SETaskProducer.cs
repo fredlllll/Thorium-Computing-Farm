@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
+using static Thorium_Shared.JobAndTaskProperties;
 
 namespace Thorium_Shared.Jobtypes.SimpleExecution
 {
@@ -26,7 +27,7 @@ namespace Thorium_Shared.Jobtypes.SimpleExecution
                 {
                     ["index"] = providedTasks.ToString(),
                     ["program"] = Job.Information["program"],
-                    ["executioner"] = typeof(SEExecutioner).AssemblyQualifiedName
+                    [ExecutionerType] = typeof(SEExecutioner).AssemblyQualifiedName
                 };
 
                 providedTasks++;

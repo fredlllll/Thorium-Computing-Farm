@@ -16,7 +16,7 @@ namespace Thorium_Test
         {
             NetTcpBinding b = new NetTcpBinding();
 
-            var s = new service();
+            var s = new Service();
 
             var address = "net.tcp://localhost:8100/test";
             Console.WriteLine("hosting " + s + " on " + address);
@@ -28,46 +28,46 @@ namespace Thorium_Test
 
             EndpointAddress endpointAddress = new EndpointAddress("net.tcp://localhost:8100/test");
 
-            var cb = new callback();
-            var channelFactory = new DuplexChannelFactory<iservice>(cb, new NetTcpBinding(), endpointAddress);
+            var cb = new Callback();
+            var channelFactory = new DuplexChannelFactory<IService>(cb, new NetTcpBinding(), endpointAddress);
             var serviceInstance = channelFactory.CreateChannel();
 
-            serviceInstance.doMe();
+            serviceInstance.DoMe();
 
             Thread.Sleep(5000);
         }
 
-        [ServiceContract(CallbackContract = typeof(icallback), SessionMode = SessionMode.Required)]
-        interface iservice
+        [ServiceContract(CallbackContract = typeof(ICallback), SessionMode = SessionMode.Required)]
+        interface IService
         {
             [OperationContract(IsInitiating = true, IsOneWay = true)]
-            void doMe();
+            void DoMe();
         }
 
         [ServiceContract]
-        interface icallback
+        interface ICallback
         {
             [OperationContract]
-            void didMe();
+            void DidMe();
         }
 
-        class callback : icallback
+        class Callback : ICallback
         {
-            public void didMe()
+            public void DidMe()
             {
                 Console.WriteLine("didme");
             }
         }
 
         [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single, IncludeExceptionDetailInFaults = true, ConcurrencyMode = ConcurrencyMode.Reentrant)]
-        class service :iservice
+        class Service :IService
         {
             
-            public void doMe()
+            public void DoMe()
             {
                 Console.WriteLine("dome");
-                var client = OperationContext.Current.GetCallbackChannel<icallback>();
-                client.didMe();
+                var client = OperationContext.Current.GetCallbackChannel<ICallback>();
+                client.DidMe();
             }
         }
 

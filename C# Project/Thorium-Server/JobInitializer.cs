@@ -21,9 +21,11 @@ namespace Thorium_Server
 
         ConcurrentQueue<Job> initQueue = new ConcurrentQueue<Job>();
         bool running = false;
+        private readonly ThoriumServer server;
 
-        public JobInitializer() : base(false)
+        public JobInitializer(ThoriumServer server) : base(false)
         {
+            this.server = server;
         }
 
         public override void Start()
@@ -40,6 +42,7 @@ namespace Thorium_Server
 
         protected override void Run()
         {
+            logger.Info("Initializer started");
             try
             {
                 while(running)
@@ -53,6 +56,8 @@ namespace Thorium_Server
                             Task t;
                             while((t = producer.GetNextTask()) != null)
                             {
+                                logger.Debug("got task: " + t.ID);
+                                server.TaskManager.AddTask(t); //TODO: if you leave this in the release im going to murder you (thats me)
                                 //TODO: save task to db
                             }
                             JobInitialized?.Invoke(this, job);
@@ -74,6 +79,7 @@ namespace Thorium_Server
             {
                 //exiting thread
             }
+            logger.Info("Initializer exited");
         }
 
         internal void AddJob(Job job)
