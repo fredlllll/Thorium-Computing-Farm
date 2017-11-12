@@ -69,9 +69,6 @@
     <Compile Include="AExecutioner.cs" />
     <Compile Include="JobAndTaskProperties.cs" />
     <Compile Include="JobProperties.cs" />
-    <Compile Include="Jobtypes\Blender\BlenderExecutioner.cs" />
-    <Compile Include="Jobtypes\Blender\BlenderTaskProducer.cs" />
-    <Compile Include="Jobtypes\Blender\Interval.cs" />
     <Compile Include="LightweightTask.cs" />
     <Compile Include="Logging\Logging.cs" />
     <Compile Include="Net\ClientToServerCommands.cs" />
