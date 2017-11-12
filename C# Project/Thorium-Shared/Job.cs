@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Reflection;
 using Newtonsoft.Json.Linq;
 using static Thorium_Shared.JobProperties;
@@ -14,6 +15,7 @@ namespace Thorium_Shared
         public Job(string id, string name, JObject info)
         {
             ID = id;
+            Name = name;
             Information = info;
         }
 
@@ -25,7 +27,13 @@ namespace Thorium_Shared
                 if(taskProducer == null)
                 {
                     string producerClass = Information.Get<string>(TaskProducerType);
-                    var ci = Type.GetType(producerClass).GetConstructor(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, new Type[] { typeof(Job) }, null);
+                    Type.GetType("");
+                    Type producerType = ReflectionHelper.GetType(producerClass);
+                    if(producerType == null)
+                    {
+                        throw new Exception("Could not find type for producer: " + producerClass);
+                    }
+                    var ci = producerType.GetConstructor(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, new Type[] { typeof(Job) }, null);
                     if(ci == null)
                     {
                         throw new Exception("the type " + producerClass + " does not have a constructor that takes a job object");

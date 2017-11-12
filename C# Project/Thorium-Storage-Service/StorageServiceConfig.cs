@@ -14,7 +14,7 @@ namespace Thorium_Storage_Service
 
         public static void Load()
         {
-            JObject obj = JObject.Parse(File.ReadAllText(Thorium_Shared.Files.GetIfExistsOrDefault(Files.ThoriumStorageServiceConfigFile)));
+            JObject obj = JObject.Parse(File.ReadAllText(Thorium_Shared.Files.ResolveFileOrDefault(Files.ThoriumStorageServiceConfigFile)));
 
             StorageBackend = obj.Get<string>("storageBackend");
         }

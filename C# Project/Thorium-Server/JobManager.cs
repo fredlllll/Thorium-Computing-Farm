@@ -31,7 +31,8 @@ namespace Thorium_Server
 
         private void JobInitializationFailed(JobInitializer sender, Job job, Exception ex)
         {
-            logger.Warn("Job initialization failed: " + job.Name, ex.ToString());
+            logger.Warn("Job initialization failed: " + job.Name);
+            logger.Warn(ex);
         }
 
         public void Start()

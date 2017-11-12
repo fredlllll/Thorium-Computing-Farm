@@ -20,7 +20,7 @@ namespace Thorium_Server
 
         public static void Load()
         {
-            JObject obj = JObject.Parse(File.ReadAllText(Thorium_Shared.Files.GetIfExistsOrDefault(Thorium_Server.Files.ThoriumServerConfigFile)));
+            JObject obj = JObject.Parse(File.ReadAllText(Thorium_Shared.Files.ResolveFileOrDefault(Thorium_Server.Files.ThoriumServerConfigFile)));
 
             ListeningPort = obj.Get<UInt16>("listeningPort");
             ClientListeningPort = obj.Get<UInt16>("clientListeningPort");

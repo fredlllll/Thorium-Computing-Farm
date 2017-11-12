@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Thorium_Shared;
 
 namespace Thorium_Storage_Service
 {
@@ -14,7 +15,7 @@ namespace Thorium_Storage_Service
 
         static StorageService()
         {
-            Type t = Type.GetType(StorageServiceConfig.StorageBackend);
+            Type t = ReflectionHelper.GetType(StorageServiceConfig.StorageBackend);
             ConstructorInfo ci = t.GetConstructor(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, Type.EmptyTypes, null);
             storageBackend = (IStorageBackend)ci.Invoke(new Type[] { });
         }
@@ -67,11 +68,11 @@ namespace Thorium_Storage_Service
             foreach(var file in files)
             {
                 string key = file.Replace(sourceDirectory, "");
-                key = key.TrimStart(Path.PathSeparator);
+                key = key.TrimStart(Path.DirectorySeparatorChar);
                 key = Path.Combine(taskID, key);
-                if(Path.PathSeparator != '/')
+                if(Path.DirectorySeparatorChar != '/')
                 {
-                    key = key.Replace(Path.PathSeparator, '/');
+                    key = key.Replace(Path.DirectorySeparatorChar, '/');
                 }
                 storageBackend.CreateFile(jobID, key, file);
             }

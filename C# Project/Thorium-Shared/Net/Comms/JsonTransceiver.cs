@@ -66,7 +66,7 @@ namespace Thorium_Shared.Net.Comms
             }
             catch(ThreadInterruptedException)
             {
-                Console.WriteLine("transceiver interrupted");
+                logger.Info("transceiver interrupted");
                 //exit
             }
             Closed?.Invoke(this);

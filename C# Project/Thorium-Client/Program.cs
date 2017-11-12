@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using Thorium_Shared;
 using Thorium_Shared.Logging;
 
@@ -14,6 +9,8 @@ namespace Thorium_Client
         static void Main(string[] args)
         {
             Logging.SetupLogging();
+
+            PluginLoader.LoadPlugins();
 
             var client = new ThoriumClient();
             client.Start();

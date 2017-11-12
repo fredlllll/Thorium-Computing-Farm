@@ -20,7 +20,7 @@ namespace Thorium_Shared
 
         public Type JobType { get; private set; }
         [DataMember]
-        private string JobTypeString { get { return JobType.AssemblyQualifiedName; } set { JobType = Type.GetType(value); } }
+        private string JobTypeString { get { return JobType.AssemblyQualifiedName; } set { JobType = ReflectionHelper.GetType(value); } }
 
         public JobInformation(Job job)
         {

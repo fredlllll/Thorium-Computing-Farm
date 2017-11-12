@@ -51,7 +51,6 @@ namespace Thorium_Client
 
         public void CheckinTask(LightweightTask task)
         {
-            //JObject obj = JObject.FromObject(task);
             JObject arg = new JObject
             {
                 ["id"] = task.ID
@@ -61,7 +60,6 @@ namespace Thorium_Client
 
         public void AbandonTask(LightweightTask task)
         {
-            //JObject obj = JObject.FromObject(task);
             JObject arg = new JObject
             {
                 ["id"] = task.ID

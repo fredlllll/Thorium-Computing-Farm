@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using Thorium_Shared;
-using Thorium_Shared.Jobtypes.Blender;
 using Thorium_Shared.Logging;
 using Thorium_Shared.Net;
 using Thorium_Shared.Net.Comms;
@@ -20,6 +16,8 @@ namespace Thorium_Server
         static void Main(string[] args)
         {
             Logging.SetupLogging();
+
+            PluginLoader.LoadPlugins();
 
             server = new ThoriumServer();
             server.Start();
@@ -45,8 +43,8 @@ namespace Thorium_Server
 
             JObject info = new JObject
             {
-                [JobProperties.TaskProducerType] = typeof(BlenderTaskProducer).AssemblyQualifiedName,
-                [JobAndTaskProperties.ExecutionerType] = typeof(BlenderExecutioner).AssemblyQualifiedName,
+                [JobProperties.TaskProducerType] = "Thorium_Blender.BlenderTaskProducer",//typeof(BlenderTaskProducer).AssemblyQualifiedName,
+                [JobAndTaskProperties.ExecutionerType] = "Thorium_Blender.BlenderExecutioner",//typeof(BlenderExecutioner).AssemblyQualifiedName,
                 ["filename"] = @"C:\Users\Freddy\Desktop\sarfis_test.blend",
                 ["blenderExecutable"] = @"E:\Program Files (x86)\Steam\SteamApps\common\Blender\blender.exe",
                 ["framesStart"] = 34,

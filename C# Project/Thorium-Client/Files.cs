@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Thorium_Shared;
+﻿using System.IO;
 
 namespace Thorium_Client
 {
@@ -12,7 +6,7 @@ namespace Thorium_Client
     {
         public static string ThoriumClientConfigFile
         {
-            get { return Path.Combine(Directories.ProgramDir, "thorium_client_config.json"); }
+            get { return "thorium_client_config.json"; }
         }
     }
 }

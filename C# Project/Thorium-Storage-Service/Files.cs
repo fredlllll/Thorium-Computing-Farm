@@ -14,7 +14,7 @@ namespace Thorium_Storage_Service
         {
             get
             {
-                return Path.Combine(Directories.ProgramDir, "thorium_storage_service_config.json");
+                return "thorium_storage_service_config.json";
             }
         }
 
@@ -22,7 +22,7 @@ namespace Thorium_Storage_Service
         {
             get
             {
-                return Path.Combine(Directories.ProgramDir, "file_system_storage_backend_config.json");
+                return "file_system_storage_backend_config.json";
             }
         }
     }

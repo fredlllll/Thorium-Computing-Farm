@@ -25,7 +25,7 @@ namespace Thorium_Shared
         public AExecutioner GetExecutioner()
         {
             string typeName = GetInfo<string>(ExecutionerType);
-            Type t = Type.GetType(typeName);
+            Type t = ReflectionHelper.GetType(typeName);
             var ci = t.GetConstructor(new Type[] { typeof(LightweightTask) });
             return (AExecutioner)ci.Invoke(new object[] { this });
         }

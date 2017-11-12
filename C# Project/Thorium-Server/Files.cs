@@ -12,7 +12,7 @@ namespace Thorium_Server
     {
         public static string ThoriumServerConfigFile
         {
-            get { return Path.Combine(Directories.ProgramDir, "thorium_server_config.json"); }
+            get { return "thorium_server_config.json"; }
         }
     }
 }
