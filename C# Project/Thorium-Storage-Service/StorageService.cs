@@ -11,6 +11,8 @@ namespace Thorium_Storage_Service
 {
     public static class StorageService
     {
+        static Dictionary<string, string> cachedPackages = new Dictionary<string, string>();
+
         private static IStorageBackend storageBackend;
 
         static StorageService()
@@ -20,13 +22,39 @@ namespace Thorium_Storage_Service
             storageBackend = (IStorageBackend)ci.Invoke(new Type[] { });
         }
 
-        public static void MakeDataPackageAvailable(string id, string targetDirectory)
+        /// <summary>
+        /// makes a datapackage available in the targetdirectory. optionally it takes a <paramref name="postprocessingAction"/> that is called once to post process the download
+        /// </summary>
+        /// <param name="id">package id</param>
+        /// <param name="targetDirectory">target directory</param>
+        /// <param name="postprocessingAction">optional action that is used to process the downloaded package contents</param>
+        public static void MakeDataPackageAvailable(string id, string targetDirectory, Action<string,string> postprocessingAction = null)
         {
-            var keys = storageBackend.GetDataPackageKeys(id);
-            foreach(var key in keys)
+            if(!cachedPackages.TryGetValue(id,out string packageCacheDir))
             {
-                storageBackend.MakeFileAvailable(id, key, Path.Combine(targetDirectory, key));
+                packageCacheDir = Path.Combine(Directories.TempDir, id + "_cache");
+                string downloadTarget = packageCacheDir;
+                if(postprocessingAction != null)
+                {
+                    downloadTarget = Path.Combine(Directories.TempDir, id + "_download");
+                }
+
+                var keys = storageBackend.GetDataPackageKeys(id);
+                foreach(var key in keys)
+                {
+                    storageBackend.MakeFileAvailable(id, key, Path.Combine(downloadTarget, key));
+                }
+
+                if(postprocessingAction != null)
+                {
+                    postprocessingAction?.Invoke(downloadTarget, packageCacheDir);
+                    Directory.Delete(downloadTarget);
+                }
+
+                cachedPackages[id] = packageCacheDir;
             }
+
+            Utils.CopyDirectory(packageCacheDir, targetDirectory);
         }
 
         public static void CreateDataPackage(string id, string sourceDirectory, bool deleteSourceAfterUpload = false)

@@ -41,7 +41,7 @@ namespace Thorium_Client
 
         public LightweightTask CheckoutTask()
         {
-            JObject obj = serviceClient.Invoke(GetTask, null);
+            JObject obj = serviceClient.Invoke(ClientToServerCommands.CheckoutTask, null);
             if(obj != null)
             {
                 return obj.ToObject<LightweightTask>();
@@ -49,13 +49,13 @@ namespace Thorium_Client
             return null;
         }
 
-        public void CheckinTask(LightweightTask task)
+        public void TurnInTask(LightweightTask task)
         {
             JObject arg = new JObject
             {
                 ["id"] = task.ID
             };
-            serviceClient.Invoke(FinishTask, arg);
+            serviceClient.Invoke(ClientToServerCommands.TurnInTask, arg);
         }
 
         public void AbandonTask(LightweightTask task)

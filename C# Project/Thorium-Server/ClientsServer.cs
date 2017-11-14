@@ -43,7 +43,7 @@ namespace Thorium_Server
                         server.ClientManager.UnregisterClient(sender.Remote);
                     }
                     break;
-                case GetTask:
+                case CheckoutTask:
                     {
                         Task t = server.TaskManager.CheckoutTask();
                         if(t != null)
@@ -54,9 +54,9 @@ namespace Thorium_Server
                         }
                     }
                     break;
-                case FinishTask:
+                case TurnInTask:
                     {
-                        server.TaskManager.CheckinTask(arg.Get<string>("id"));
+                        server.TaskManager.TurnInTask(arg.Get<string>("id"));
                     }
                     break;
                 case AbandonTask:

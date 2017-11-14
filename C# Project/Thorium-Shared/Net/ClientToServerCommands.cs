@@ -5,8 +5,8 @@
         public const string Register = "register";
         public const string Unregister = "unregister";
 
-        public const string GetTask = "getTask";
-        public const string FinishTask = "finishTask";
+        public const string CheckoutTask = "checkoutTask";
+        public const string TurnInTask = "turnInTask";
         public const string AbandonTask = "abandonTask";
     }
 }

@@ -50,7 +50,6 @@
     <Compile Include="Files.cs" />
     <Compile Include="ServerInterface.cs" />
     <Compile Include="ThoriumClientConfig.cs" />
-    <Compile Include="ThoriumClientInterfaceForServer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ThoriumClient.cs" />

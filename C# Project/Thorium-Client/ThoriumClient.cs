@@ -48,7 +48,7 @@ namespace Thorium_Client
                         {
                             logger.Info("executing task");
                             executioner.Execute();
-                            serverInterface.CheckinTask(lightweightTask);
+                            serverInterface.TurnInTask(lightweightTask);
                             logger.Info("done task");
                         }
                         catch(Exception execEx) when(!(execEx is ThreadInterruptedException))

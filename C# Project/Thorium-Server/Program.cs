@@ -24,7 +24,7 @@ namespace Thorium_Server
 
             Thread.Sleep(1000);
 
-            AddBlenderJob();
+            //AddBlenderJob();
 
             if(args.Contains("-menu"))
             {
@@ -45,8 +45,7 @@ namespace Thorium_Server
             {
                 [JobProperties.TaskProducerType] = "Thorium_Blender.BlenderTaskProducer",//typeof(BlenderTaskProducer).AssemblyQualifiedName,
                 [JobAndTaskProperties.ExecutionerType] = "Thorium_Blender.BlenderExecutioner",//typeof(BlenderExecutioner).AssemblyQualifiedName,
-                ["filename"] = @"C:\Users\Freddy\Desktop\sarfis_test.blend",
-                ["blenderExecutable"] = @"E:\Program Files (x86)\Steam\SteamApps\common\Blender\blender.exe",
+                ["fileName"] = "sarfis_test.blend",
                 ["framesStart"] = 34,
                 ["framesEnd"] = 90,
             };

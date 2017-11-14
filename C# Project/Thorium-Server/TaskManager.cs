@@ -1,10 +1,13 @@
 ﻿using System.Collections.Concurrent;
+using NLog;
 using Thorium_Shared;
 
 namespace Thorium_Server
 {
     public class TaskManager
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
+
         //TODO: add some kind of task holding class that can also keep info about processing like status or the instance its computed on
 
         ConcurrentBag<Task> waitingTasks = new ConcurrentBag<Task>();
@@ -16,19 +19,22 @@ namespace Thorium_Server
             if(waitingTasks.TryTake(out Task result))
             {
                 computingTasks[result.ID] = result;
+                logger.Info("Task checked out: " + result.ID);
                 return result;
             }
             return null;
         }
 
-        public void CheckinTask(string id)
+        public void TurnInTask(string id)
         {
             computingTasks.TryRemove(id, out Task t);
+            logger.Info("Task turned in: " + id);
             finishedTasks[id] = t;
         }
 
         public void AbandonTask(string id)
         {
+            logger.Info("Task abandoned: " + id);
             computingTasks.TryRemove(id, out Task t);
             waitingTasks.Add(t);
         }
