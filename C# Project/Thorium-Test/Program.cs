@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.ServiceModel;
 using System.Threading;
-using Codolith.Serialization;
-using Codolith.Serialization.Formatters;
 using Thorium_Shared;
 using Thorium_Shared.Jobtypes.SimpleExecution;
 
