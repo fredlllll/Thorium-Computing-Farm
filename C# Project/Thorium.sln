@@ -7,11 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Thorium-Server", "Thorium-S
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Thorium-Client", "Thorium-Client\Thorium-Client.csproj", "{736545C5-DBBC-45F2-818B-6F2E79251D46}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Thorium-Storage-Slave", "Thorium-Storage-Slave\Thorium-Storage-Slave.csproj", "{D471C77B-C05D-40C2-9969-D8974C374B17}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Thorium-Shared", "Thorium-Shared\Thorium-Shared.csproj", "{FE33D9C9-43CA-4EC3-AB9F-154611627BFF}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AWS", "AWS\AWS.csproj", "{2ECCA326-DA2E-4B3E-8152-459FF716B7FC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Thorium-Monitor", "Thorium-Monitor\Thorium-Monitor.csproj", "{1701A4EB-99F8-4D7D-B471-A738AD83C83B}"
 EndProject
@@ -33,18 +29,10 @@ Global
 		{736545C5-DBBC-45F2-818B-6F2E79251D46}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{736545C5-DBBC-45F2-818B-6F2E79251D46}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{736545C5-DBBC-45F2-818B-6F2E79251D46}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D471C77B-C05D-40C2-9969-D8974C374B17}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D471C77B-C05D-40C2-9969-D8974C374B17}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D471C77B-C05D-40C2-9969-D8974C374B17}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D471C77B-C05D-40C2-9969-D8974C374B17}.Release|Any CPU.Build.0 = Release|Any CPU
 		{FE33D9C9-43CA-4EC3-AB9F-154611627BFF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{FE33D9C9-43CA-4EC3-AB9F-154611627BFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FE33D9C9-43CA-4EC3-AB9F-154611627BFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FE33D9C9-43CA-4EC3-AB9F-154611627BFF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2ECCA326-DA2E-4B3E-8152-459FF716B7FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2ECCA326-DA2E-4B3E-8152-459FF716B7FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2ECCA326-DA2E-4B3E-8152-459FF716B7FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2ECCA326-DA2E-4B3E-8152-459FF716B7FC}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1701A4EB-99F8-4D7D-B471-A738AD83C83B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1701A4EB-99F8-4D7D-B471-A738AD83C83B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1701A4EB-99F8-4D7D-B471-A738AD83C83B}.Release|Any CPU.ActiveCfg = Release|Any CPU
