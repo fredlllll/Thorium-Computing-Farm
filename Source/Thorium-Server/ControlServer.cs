@@ -47,7 +47,11 @@ namespace Thorium_Server
                     Job j = new Job(Utils.GetRandomID(), arg.Get<string>("jobName"), (JObject)arg["jobInformation"]);
                     logger.Info("new Job Added: " + j.ID + ", " + j.Name + ", " + j.Information);
                     server.JobManager.AddJob(j);
-                    break;
+                    JObject retval = new JObject
+                    {
+                        ["id"] = j.ID
+                    };
+                    return retval;
             }
             return null;
         }
