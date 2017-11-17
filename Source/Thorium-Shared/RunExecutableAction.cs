@@ -23,7 +23,6 @@ namespace Thorium_Shared
 
         public void CreateProcess()
         {
-            //TODO: add unix support
             if(Process != null)
             {
                 return;
@@ -42,6 +41,7 @@ namespace Thorium_Shared
                 {
                     FileName = FileName,
                     Arguments = argsBuilder.ToString(),
+                    UseShellExecute = false,
                 }
             };
 
