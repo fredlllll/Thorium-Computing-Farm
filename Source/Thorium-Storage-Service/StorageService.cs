@@ -59,7 +59,7 @@ namespace Thorium_Storage_Service
                 {
                     Directory.CreateDirectory(packageCacheDir);
                     postprocessingAction?.Invoke(downloadTarget, packageCacheDir);
-                    Directory.Delete(downloadTarget);
+                    Directory.Delete(downloadTarget, true);
                 }
 
                 cachedPackages[id] = packageCacheDir;
