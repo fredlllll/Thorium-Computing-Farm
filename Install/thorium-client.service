@@ -1,0 +1,12 @@
+[Unit]
+Description=Thorium Client
+
+[Service]
+User=thorium
+Group=thorium
+WorkingDirectory=/srv/thorium/Thorium-Computing-Farm/Source/Thorium-Client/bin/Debug
+ExecStart=/usr/bin/mono /srv/thorium/Thorium-Computing-Farm/Source/Thorium-Client/bin/Debug/Thorium-Client.exe
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

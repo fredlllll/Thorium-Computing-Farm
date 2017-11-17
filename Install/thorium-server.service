@@ -1,0 +1,12 @@
+[Unit]
+Description=Thorium Server
+
+[Service]
+User=thorium
+Group=thorium
+WorkingDirectory=/srv/thorium/Thorium-Computing-Farm/Source/Thorium-Server/bin/Debug
+ExecStart=/usr/bin/mono /srv/thorium/Thorium-Computing-Farm/Source/Thorium-Server/bin/Debug/Thorium-Server.exe
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
