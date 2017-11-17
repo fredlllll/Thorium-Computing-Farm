@@ -38,7 +38,15 @@ namespace Thorium_Client
                 while(true)
                 {
                     logger.Info("getting job...");
-                    LightweightTask lightweightTask = serverInterface.CheckoutTask();
+                    LightweightTask lightweightTask = null;
+                    try
+                    {
+                        lightweightTask = serverInterface.CheckoutTask();
+                    }
+                    catch(TimeoutException)
+                    {
+                        logger.Info("timeout when checking out task...");
+                    }
                     if(lightweightTask != null)
                     {
                         logger.Info("got task: " + lightweightTask.ID);
