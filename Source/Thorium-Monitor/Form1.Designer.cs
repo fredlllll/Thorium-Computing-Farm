@@ -241,7 +241,7 @@
             this.txtServerHost.Name = "txtServerHost";
             this.txtServerHost.Size = new System.Drawing.Size(211, 20);
             this.txtServerHost.TabIndex = 12;
-            this.txtServerHost.Text = "35.193.229.244";
+            this.txtServerHost.Text = "35.184.234.72";
             // 
             // label6
             // 
