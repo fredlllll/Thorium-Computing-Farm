@@ -10,6 +10,7 @@ namespace Thorium_Shared
     public class RunExecutableAction
     {
         public List<string> Arguments { get; } = new List<string>();
+        public Dictionary<string, string> Environment { get; } = new Dictionary<string, string>();
         public string FileName { get; set; }
 
         public Process Process { get; protected set; }
@@ -43,6 +44,11 @@ namespace Thorium_Shared
                     Arguments = argsBuilder.ToString(),
                 }
             };
+
+            foreach(var kv in Environment)
+            {
+                Process.StartInfo.Environment.Add(kv.Key, kv.Value);
+            }
         }
 
         public void Start()
