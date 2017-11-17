@@ -5,12 +5,15 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using NLog;
 using Thorium_Shared;
 
 namespace Thorium_Storage_Service
 {
     public static class StorageService
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
+
         static Dictionary<string, string> cachedPackages = new Dictionary<string, string>();
 
         private static IStorageBackend storageBackend;
@@ -18,6 +21,11 @@ namespace Thorium_Storage_Service
         static StorageService()
         {
             Type t = ReflectionHelper.GetType(StorageServiceConfig.StorageBackend);
+            if(t == null)
+            {
+                logger.Error("could not find type: " + StorageServiceConfig.StorageBackend);
+                throw new Exception("could not find type: " + StorageServiceConfig.StorageBackend);
+            }
             ConstructorInfo ci = t.GetConstructor(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, Type.EmptyTypes, null);
             storageBackend = (IStorageBackend)ci.Invoke(new Type[] { });
         }
@@ -28,9 +36,9 @@ namespace Thorium_Storage_Service
         /// <param name="id">package id</param>
         /// <param name="targetDirectory">target directory</param>
         /// <param name="postprocessingAction">optional action that is used to process the downloaded package contents</param>
-        public static void MakeDataPackageAvailable(string id, string targetDirectory, Action<string,string> postprocessingAction = null)
+        public static void MakeDataPackageAvailable(string id, string targetDirectory, Action<string, string> postprocessingAction = null)
         {
-            if(!cachedPackages.TryGetValue(id,out string packageCacheDir))
+            if(!cachedPackages.TryGetValue(id, out string packageCacheDir))
             {
                 packageCacheDir = Path.Combine(Directories.TempDir, id + "_cache");
                 string downloadTarget = packageCacheDir;

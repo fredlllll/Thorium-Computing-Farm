@@ -14,6 +14,10 @@ namespace Thorium_Monitor
         [STAThread]
         static void Main()
         {
+            Thorium_Shared.Logging.Logging.SetupLogging();
+
+            Thorium_Shared.PluginLoader.LoadPlugins();
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Form1());

@@ -17,6 +17,12 @@ namespace Thorium_Monitor
 
         private void BtnStartJob_Click(object sender, System.EventArgs e)
         {
+            string dataPackage = Utils.GetRandomID();
+            string tmpDir = Path.Combine(Directories.TempDir, "datapackage");
+            Directory.CreateDirectory(tmpDir);
+            File.Copy(txtDataPackagePath.Text, Path.Combine(tmpDir, Path.GetFileName(txtDataPackagePath.Text)), true);
+            Thorium_Storage_Service.StorageService.CreateDataPackage(dataPackage, tmpDir, true);
+
             JObject info = new JObject
             {
                 [JobProperties.TaskProducerType] = "Thorium_Blender.BlenderTaskProducer",//typeof(BlenderTaskProducer).AssemblyQualifiedName,
@@ -24,6 +30,7 @@ namespace Thorium_Monitor
                 ["fileName"] = "sarfis_test.blend",
                 ["framesStart"] = 34,
                 ["framesEnd"] = 90,
+                ["dataPackage"] = dataPackage,
             };
 
             JObject arg = new JObject

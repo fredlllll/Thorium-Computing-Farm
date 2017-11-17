@@ -44,10 +44,10 @@
             this.ofd = new System.Windows.Forms.OpenFileDialog();
             this.btnStartJob = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.label6 = new System.Windows.Forms.Label();
-            this.txtServerHost = new System.Windows.Forms.TextBox();
-            this.label7 = new System.Windows.Forms.Label();
             this.numServerPort = new System.Windows.Forms.NumericUpDown();
+            this.label7 = new System.Windows.Forms.Label();
+            this.txtServerHost = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numEndFrame)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numStartFrame)).BeginInit();
@@ -81,6 +81,7 @@
             this.txtJobName.Name = "txtJobName";
             this.txtJobName.Size = new System.Drawing.Size(211, 20);
             this.txtJobName.TabIndex = 11;
+            this.txtJobName.Text = "asdasdsa";
             // 
             // label5
             // 
@@ -102,6 +103,11 @@
             this.numEndFrame.Name = "numEndFrame";
             this.numEndFrame.Size = new System.Drawing.Size(120, 20);
             this.numEndFrame.TabIndex = 9;
+            this.numEndFrame.Value = new decimal(new int[] {
+            90,
+            0,
+            0,
+            0});
             // 
             // numStartFrame
             // 
@@ -114,6 +120,11 @@
             this.numStartFrame.Name = "numStartFrame";
             this.numStartFrame.Size = new System.Drawing.Size(120, 20);
             this.numStartFrame.TabIndex = 8;
+            this.numStartFrame.Value = new decimal(new int[] {
+            34,
+            0,
+            0,
+            0});
             // 
             // label4
             // 
@@ -198,32 +209,6 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Thorium Server";
             // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(6, 16);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(66, 13);
-            this.label6.TabIndex = 12;
-            this.label6.Text = "Server Host:";
-            // 
-            // txtServerHost
-            // 
-            this.txtServerHost.Location = new System.Drawing.Point(6, 32);
-            this.txtServerHost.Name = "txtServerHost";
-            this.txtServerHost.Size = new System.Drawing.Size(211, 20);
-            this.txtServerHost.TabIndex = 12;
-            this.txtServerHost.Text = "localhost";
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(6, 55);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(63, 13);
-            this.label7.TabIndex = 13;
-            this.label7.Text = "Server Port:";
-            // 
             // numServerPort
             // 
             this.numServerPort.Location = new System.Drawing.Point(6, 72);
@@ -240,6 +225,32 @@
             0,
             0,
             0});
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(6, 55);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(63, 13);
+            this.label7.TabIndex = 13;
+            this.label7.Text = "Server Port:";
+            // 
+            // txtServerHost
+            // 
+            this.txtServerHost.Location = new System.Drawing.Point(6, 32);
+            this.txtServerHost.Name = "txtServerHost";
+            this.txtServerHost.Size = new System.Drawing.Size(211, 20);
+            this.txtServerHost.TabIndex = 12;
+            this.txtServerHost.Text = "35.193.229.244";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(6, 16);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(66, 13);
+            this.label6.TabIndex = 12;
+            this.label6.Text = "Server Host:";
             // 
             // Form1
             // 
