@@ -47,6 +47,8 @@ namespace Thorium_Storage_Service
                     downloadTarget = Path.Combine(Directories.TempDir, id + "_download");
                 }
 
+                Directory.CreateDirectory(downloadTarget);
+
                 var keys = storageBackend.GetDataPackageKeys(id);
                 foreach(var key in keys)
                 {
@@ -55,6 +57,7 @@ namespace Thorium_Storage_Service
 
                 if(postprocessingAction != null)
                 {
+                    Directory.CreateDirectory(packageCacheDir);
                     postprocessingAction?.Invoke(downloadTarget, packageCacheDir);
                     Directory.Delete(downloadTarget);
                 }
@@ -73,10 +76,10 @@ namespace Thorium_Storage_Service
             foreach(var file in files)
             {
                 string key = file.Replace(sourceDirectory, "");
-                key = key.TrimStart(Path.PathSeparator);
-                if(Path.PathSeparator != '/')
+                key = key.TrimStart(Path.DirectorySeparatorChar);
+                if(Path.DirectorySeparatorChar != '/')
                 {
-                    key = key.Replace(Path.PathSeparator, '/');
+                    key = key.Replace(Path.DirectorySeparatorChar, '/');
                 }
                 storageBackend.CreateFile(id, key, file);
             }
