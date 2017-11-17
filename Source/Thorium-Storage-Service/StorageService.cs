@@ -52,7 +52,9 @@ namespace Thorium_Storage_Service
                 var keys = storageBackend.GetDataPackageKeys(id);
                 foreach(var key in keys)
                 {
-                    storageBackend.MakeFileAvailable(id, key, Path.Combine(downloadTarget, key));
+                    string fileTarget = Path.Combine(downloadTarget, key);
+                    logger.Debug("making " + key + " available at " + fileTarget);
+                    storageBackend.MakeFileAvailable(id, key, fileTarget);
                 }
 
                 if(postprocessingAction != null)
@@ -64,7 +66,7 @@ namespace Thorium_Storage_Service
 
                 cachedPackages[id] = packageCacheDir;
             }
-
+            Directory.CreateDirectory(targetDirectory);
             Utils.CopyDirectory(packageCacheDir, targetDirectory);
         }
 
