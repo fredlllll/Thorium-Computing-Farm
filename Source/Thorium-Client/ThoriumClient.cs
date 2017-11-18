@@ -69,11 +69,11 @@ namespace Thorium_Client
                     }
                     else
                     {
-                        logger.Info("no task available, waiting 5 seconds");
-                        if((DateTime.UtcNow - lastTimeJobCompleted).TotalSeconds > 180) //if idle for x seconds we shutdown
+                        /*if((DateTime.UtcNow - lastTimeJobCompleted).TotalSeconds > 180) //if idle for x seconds we shutdown
                         {
                             break;
-                        }
+                        }*/
+                        logger.Info("no task available, waiting 5 seconds");
                         Thread.Sleep(5000);
                     }
                 }
@@ -88,6 +88,7 @@ namespace Thorium_Client
                 logger.Info("exception");
                 logger.Info(ex);
             }
+            logger.Info("leaving worker thread");
             Stop();
         }
     }
