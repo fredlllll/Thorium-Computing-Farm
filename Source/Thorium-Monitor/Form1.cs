@@ -28,8 +28,9 @@ namespace Thorium_Monitor
                 [JobProperties.TaskProducerType] = "Thorium_Blender.BlenderTaskProducer",//typeof(BlenderTaskProducer).AssemblyQualifiedName,
                 [JobAndTaskProperties.ExecutionerType] = "Thorium_Blender.BlenderExecutioner",//typeof(BlenderExecutioner).AssemblyQualifiedName,
                 ["fileName"] = "sarfis_test.blend",
-                ["framesStart"] = 34,
-                ["framesEnd"] = 90,
+                ["startFrame"] = (long)numStartFrame.Value,
+                ["startFrame"] = (long)numEndFrame.Value,
+                ["framesPerTask"]=(long)numFramesPerTask.Value,
                 ["dataPackage"] = dataPackage,
             };
 
