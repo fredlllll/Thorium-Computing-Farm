@@ -62,15 +62,6 @@
       <Project>{FE33D9C9-43CA-4EC3-AB9F-154611627BFF}</Project>
       <Name>Thorium-Shared</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Thorium-Storage-Service\Thorium-Storage-Service.csproj">
-      <Project>{60ce86de-d3eb-4052-b3f7-3950ba29bb63}</Project>
-      <Name>Thorium-Storage-Service</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="clientconfig.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

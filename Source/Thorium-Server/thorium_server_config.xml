@@ -1,6 +1,0 @@
-﻿<?xml version="1.0" standalone="yes" ?>
-<config>
-  <element key="wcfPort" value="8100"/>
-  <element key="tmpFolder" value="temp"/>
-  <element key="jobsFolder" value="jobs"/>
-</config>
