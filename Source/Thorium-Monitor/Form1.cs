@@ -27,16 +27,17 @@ namespace Thorium_Monitor
             {
                 [JobProperties.TaskProducerType] = "Thorium_Blender.BlenderTaskProducer",//typeof(BlenderTaskProducer).AssemblyQualifiedName,
                 [JobAndTaskProperties.ExecutionerType] = "Thorium_Blender.BlenderExecutioner",//typeof(BlenderExecutioner).AssemblyQualifiedName,
-                ["fileName"] = "sarfis_test.blend",
+                ["fileName"] = txtBlendFileName.Text,
                 ["startFrame"] = (long)numStartFrame.Value,
                 ["endFrame"] = (long)numEndFrame.Value,
-                ["framesPerTask"]=(long)numFramesPerTask.Value,
+                ["framesPerTask"] = (long)numFramesPerTask.Value,
                 ["dataPackage"] = dataPackage,
+                ["uploadType"] = "Async",
             };
 
             JObject arg = new JObject
             {
-                ["jobName"] = "test blender job",
+                ["jobName"] = txtJobName.Text,
                 ["jobInformation"] = info
             };
 
@@ -67,6 +68,11 @@ namespace Thorium_Monitor
                 }
             }
             ofd.Filter = oldFilter;
+        }
+
+        private void Form1_Load(object sender, System.EventArgs e)
+        {
+
         }
     }
 }

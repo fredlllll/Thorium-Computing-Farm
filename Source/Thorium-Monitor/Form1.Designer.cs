@@ -30,6 +30,8 @@
         {
             this.sfd = new System.Windows.Forms.SaveFileDialog();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.numFramesPerTask = new System.Windows.Forms.NumericUpDown();
+            this.label8 = new System.Windows.Forms.Label();
             this.txtJobName = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.numEndFrame = new System.Windows.Forms.NumericUpDown();
@@ -48,14 +50,12 @@
             this.label7 = new System.Windows.Forms.Label();
             this.txtServerHost = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
-            this.numFramesPerTask = new System.Windows.Forms.NumericUpDown();
-            this.label8 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numFramesPerTask)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numEndFrame)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numStartFrame)).BeginInit();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numServerPort)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numFramesPerTask)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -81,6 +81,32 @@
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Blender Job";
+            // 
+            // numFramesPerTask
+            // 
+            this.numFramesPerTask.Location = new System.Drawing.Point(6, 229);
+            this.numFramesPerTask.Maximum = new decimal(new int[] {
+            1000000000,
+            0,
+            0,
+            0});
+            this.numFramesPerTask.Name = "numFramesPerTask";
+            this.numFramesPerTask.Size = new System.Drawing.Size(120, 20);
+            this.numFramesPerTask.TabIndex = 13;
+            this.numFramesPerTask.Value = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(6, 213);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(89, 13);
+            this.label8.TabIndex = 12;
+            this.label8.Text = "Frames per Task:";
             // 
             // txtJobName
             // 
@@ -263,32 +289,6 @@
             this.label6.TabIndex = 12;
             this.label6.Text = "Server Host:";
             // 
-            // numFramesPerTask
-            // 
-            this.numFramesPerTask.Location = new System.Drawing.Point(6, 229);
-            this.numFramesPerTask.Maximum = new decimal(new int[] {
-            1000000000,
-            0,
-            0,
-            0});
-            this.numFramesPerTask.Name = "numFramesPerTask";
-            this.numFramesPerTask.Size = new System.Drawing.Size(120, 20);
-            this.numFramesPerTask.TabIndex = 13;
-            this.numFramesPerTask.Value = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(6, 213);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(89, 13);
-            this.label8.TabIndex = 12;
-            this.label8.Text = "Frames per Task:";
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -299,14 +299,15 @@
             this.Controls.Add(this.groupBox1);
             this.Name = "Form1";
             this.Text = "Form1";
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numFramesPerTask)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numEndFrame)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numStartFrame)).EndInit();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numServerPort)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numFramesPerTask)).EndInit();
             this.ResumeLayout(false);
 
         }
