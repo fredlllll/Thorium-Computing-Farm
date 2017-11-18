@@ -46,6 +46,9 @@ namespace Thorium_Monitor
 
         private void BtnSearchDataPackage_Click(object sender, System.EventArgs e)
         {
+            string oldFilter = ofd.Filter;
+
+            ofd.Filter = "datapackage.zip|datapackage.zip";
             if(ofd.ShowDialog() == DialogResult.OK)
             {
                 txtDataPackagePath.Text = ofd.FileName;
@@ -62,6 +65,7 @@ namespace Thorium_Monitor
                     }
                 }
             }
+            ofd.Filter = oldFilter;
         }
     }
 }
