@@ -1,21 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Net;
 
 namespace Thorium_Server
 {
     public class Client
     {
         public IPAddress IPAddress { get; protected set; }
+        public string ID { get; protected set; }
 
         public string CurrentTask { get; set; }
 
-        public Client(IPAddress address)
+        public Client(IPAddress address,string id)
         {
             IPAddress = address;
+            ID = id;
         }
 
         public void Ping()

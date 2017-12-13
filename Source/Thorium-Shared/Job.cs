@@ -27,7 +27,6 @@ namespace Thorium_Shared
                 if(taskProducer == null)
                 {
                     string producerClass = Information.Get<string>(TaskProducerType);
-                    Type.GetType("");
                     Type producerType = ReflectionHelper.GetType(producerClass);
                     if(producerType == null)
                     {

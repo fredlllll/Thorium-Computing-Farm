@@ -20,13 +20,13 @@ namespace Thorium_Client
 
         public override void Start()
         {
-            serverInterface.Register();
+            serverInterface.Register(ID);
             base.Start();
         }
 
         public override void Stop()
         {
-            serverInterface.Unregister();
+            serverInterface.Unregister(ID);
             base.Stop();
         }
 

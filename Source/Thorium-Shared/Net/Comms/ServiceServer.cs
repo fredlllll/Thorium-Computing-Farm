@@ -8,7 +8,7 @@ using Newtonsoft.Json.Linq;
 
 namespace Thorium_Shared.Net.Comms
 {
-    public delegate JObject InvokationReceivedHandler(IMessageTransceiver sender, string command, JObject arg);
+    public delegate JToken InvokationReceivedHandler(IMessageTransceiver sender, string command, JToken arg);
 
     public class ServiceServer : RestartableThreadClass
     {
@@ -58,9 +58,9 @@ namespace Thorium_Shared.Net.Comms
         {
             long invokID = msg.Get<long>("invokationID");
             String command = msg.Get<string>("command");
-            JObject arg = (JObject)msg["arg"];
+            JToken arg = (JToken)msg["arg"];
 
-            JObject response = null;
+            JToken response = null;
             if(InvokationReceived != null)
             {
                 response = InvokationReceived(sender, command, arg);

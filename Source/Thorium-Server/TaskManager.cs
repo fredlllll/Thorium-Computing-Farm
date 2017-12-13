@@ -1,4 +1,6 @@
 ﻿using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Linq;
 using NLog;
 using Thorium_Shared;
 
@@ -9,10 +11,13 @@ namespace Thorium_Server
         private static Logger logger = LogManager.GetCurrentClassLogger();
 
         //TODO: add some kind of task holding class that can also keep info about processing like status or the instance its computed on
+        //best use a task state instead of different lists. then create an extra class that is allowed to change task state and manages the different collections for speed increase
 
         ConcurrentBag<Task> waitingTasks = new ConcurrentBag<Task>();
         ConcurrentDictionary<string, Task> computingTasks = new ConcurrentDictionary<string, Task>();
         ConcurrentDictionary<string, Task> finishedTasks = new ConcurrentDictionary<string, Task>();
+
+        public IEnumerable<Task> Tasks { get { return waitingTasks.Concat(computingTasks.Concat(finishedTasks).Select((x) => x.Value)); } }
 
         public Task CheckoutTask()
         {
@@ -43,86 +48,10 @@ namespace Thorium_Server
         {
             waitingTasks.Add(t);
         }
-    }
-}
 
-/*using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Codolith.Util.Concurrent;
-using Thorium_Shared;
-
-namespace Thorium_Server
-{
-    public class TaskManager
-    {
-        public JobManager JobManager
+        public void AbortTask(string iD)
         {
-            get;
-            set;
-        }
-
-        public ClientManager ClientManager
-        {
-            get;
-            set;
-        }
-
-        public IEnumerable<Task> Tasks { get { return tasks; } }
-        ConcurrentPriorityList<Task> tasks = new ConcurrentPriorityList<Task>();
-        public IEnumerable<Task> ProcessingTasks { get { return processingTasks.Values; } }
-        ConcurrentDictionary<string, Task> processingTasks = new ConcurrentDictionary<string, Task>();
-        public IEnumerable<Task> FinishedTasks { get { return finishedTasks.Values; } }
-        ConcurrentDictionary<string, Task> finishedTasks = new ConcurrentDictionary<string, Task>();
-
-        public ITask GetTask(IThoriumClientInterfaceForServer client)
-        {
-            var clientID = client.GetID();
-            Task t = tasks.RemoveFirst();
-            if(t != null)
-            {
-                t.SetState(TaskState.Processing);
-                t.SetProcessingClientID(clientID);
-                client.SetCurrentTaskID(t.GetID());
-                processingTasks[t.GetID()] = t;
-            }
-            return t;
-        }
-
-        public void TurnInTask(ITask task)
-        {
-            Task tsk;
-            processingTasks.TryRemove(task.GetID(), out tsk);
-            finishedTasks[task.GetID()] = tsk;
-            task.FinalizeTask();
-            task.SetState(TaskState.Finished);
-            //Job job = JobManager.GetJobById(task.JobID);
-            //gotta somehow check if a job is done now
-        }
-
-        public void ReturnUnfinishedTask(ITask task)
-        {
-            task.SetState(TaskState.NotStarted);
-            Task tsk;
-            processingTasks.TryRemove(task.GetID(), out tsk);
-            tasks.Add(tsk, 0);
-        }
-
-        /// <summary>
-        /// registers a task, so it can be given out to clients. 
-        /// </summary>
-        /// <param name="task"></param>
-        public void RegisterTask(Task task, int priority = 0)
-        {
-            tasks.Add(task, priority);
-        }
-
-        public void UnregisterTask(Task task)
-        {
-            tasks.Remove(task);
+            //TODO: abort task on its machine and put in finished?
         }
     }
 }
-*/

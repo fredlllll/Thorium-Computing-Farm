@@ -28,13 +28,14 @@ namespace Thorium_Server
             serviceServer.Stop();
         }
 
-        private JObject ServiceServer_InvokationReceived(IMessageTransceiver sender, string command, JObject arg)
+        private JToken ServiceServer_InvokationReceived(IMessageTransceiver sender, string command, JToken arg)
         {
+            JObject argObject = arg as JObject;
             switch(command)
             {
                 case Register:
                     {
-                        Client client = new Client(sender.Remote);
+                        Client client = new Client(sender.Remote, argObject.Get<string>("id"));
                         server.ClientManager.RegisterClient(client);
                     }
                     break;
@@ -56,12 +57,12 @@ namespace Thorium_Server
                     break;
                 case TurnInTask:
                     {
-                        server.TaskManager.TurnInTask(arg.Get<string>("id"));
+                        server.TaskManager.TurnInTask(argObject.Get<string>("id"));
                     }
                     break;
                 case AbandonTask:
                     {
-                        server.TaskManager.AbandonTask(arg.Get<string>("id"));
+                        server.TaskManager.AbandonTask(argObject.Get<string>("id"));
                     }
                     break;
             }

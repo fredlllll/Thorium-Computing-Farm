@@ -21,16 +21,16 @@ namespace Thorium_Client
             serviceClient = CommsFactory.CreateClient(host, port);
         }
 
-        public void Register()
+        public void Register(string id)
         {
-            serviceClient.Invoke(ClientToServerCommands.Register, null);
+            serviceClient.Invoke(ClientToServerCommands.Register, new JObject() { ["id"] = id });
         }
 
-        public void Unregister()
+        public void Unregister(string id)
         {
             try
             {
-                serviceClient.Invoke(ClientToServerCommands.Unregister, null);
+                serviceClient.Invoke(ClientToServerCommands.Unregister, new JObject() { ["id"] = id });
             }
             catch(Exception ex)
             {

@@ -37,21 +37,70 @@ namespace Thorium_Server
             serviceServer.Stop();
         }
 
-        private JObject ServiceServer_InvokationReceived(IMessageTransceiver sender, string command, JObject arg)
+        private JToken ServiceServer_InvokationReceived(IMessageTransceiver sender, string command, JToken arg)
         {
+            JObject argObject = arg as JObject;
+
             //TODO: parse
             switch(command)
             {
                 //TODO: stuff
                 case AddJob:
-                    Job j = new Job(Utils.GetRandomID(), arg.Get<string>("jobName"), (JObject)arg["jobInformation"]);
-                    logger.Info("new Job Added: " + j.ID + ", " + j.Name + ", " + j.Information);
-                    server.JobManager.AddJob(j);
-                    JObject retval = new JObject
                     {
-                        ["id"] = j.ID
-                    };
-                    return retval;
+                        Job j = new Job(Utils.GetRandomID(), argObject.Get<string>("jobName"), (JObject)argObject["jobInformation"]);
+                        logger.Info("new Job Added: " + j.ID + ", " + j.Name + ", " + j.Information);
+                        server.JobManager.AddJob(j);
+                        JObject retval = new JObject
+                        {
+                            ["id"] = j.ID
+                        };
+                        return retval;
+                    }
+                case ListClients:
+                    {
+                        JArray retval = new JArray();
+                        foreach(var c in server.ClientManager.ClientsSnapshot)
+                        {
+                            retval.Add(c.ID);
+                        }
+                        return retval;
+                    }
+                case ListJobs:
+                    {
+                        JArray retval = new JArray();
+                        foreach(var j in server.JobManager.Jobs)
+                        {
+                            retval.Add(j.Key);
+                        }
+                        return retval;
+                    }
+                case ListTasks:
+                    {
+                        JArray retval = new JArray();
+                        foreach(var t in server.TaskManager.Tasks)
+                        {
+                            retval.Add(t.ID);
+                        }
+                        return retval;
+                    }
+                case AbortJob:
+                    {
+                        string id = argObject.Get<string>("id");
+                        foreach(var t in server.TaskManager.Tasks)
+                        {
+                            if(t.Job.ID == id)
+                            {
+                                server.TaskManager.AbortTask(t.ID);
+                            }
+                        }
+                    }
+                    break;
+                case AbortTask:
+                    {
+                        string id = argObject.Get<string>("id");
+                        server.TaskManager.AbortTask(id);
+                    }
+                    break;
             }
             return null;
         }
