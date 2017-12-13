@@ -55,6 +55,13 @@
     <Compile Include="Job.cs" />
     <Compile Include="ArgParse.cs" />
     <Compile Include="ATaskProducer.cs" />
+    <Compile Include="ServicePoint\HttpServiceInvokationReceiver.cs" />
+    <Compile Include="ServicePoint\HttpServiceInvoker.cs" />
+    <Compile Include="ServicePoint\InvokationResult.cs" />
+    <Compile Include="ServicePoint\IServiceInvokationReceiver.cs" />
+    <Compile Include="ServicePoint\IServiceInvoker.cs" />
+    <Compile Include="ServicePoint\Routine.cs" />
+    <Compile Include="ServicePoint\ServicePoint.cs" />
     <Compile Include="Unused\Data\AutoIncrementAttribute.cs" />
     <Compile Include="Unused\Data\DatabaseObject.cs" />
     <Compile Include="Unused\Data\DataMemberAttribute.cs" />

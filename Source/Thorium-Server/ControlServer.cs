@@ -12,7 +12,7 @@ using static Thorium_Shared.Net.ServerControlCommands;
 
 namespace Thorium_Server
 {
-    public class ControlServer
+    /*public class ControlServer
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();
 
@@ -104,5 +104,5 @@ namespace Thorium_Server
             }
             return null;
         }
-    }
+    }*/
 }

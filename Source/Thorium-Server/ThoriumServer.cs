@@ -8,7 +8,7 @@ namespace Thorium_Server
         /// <summary>
         /// for control commands
         /// </summary>
-        ControlServer controlServer;
+        ServerController serverController;
         /// <summary>
         /// for comms between server and clients
         /// </summary>
@@ -25,7 +25,8 @@ namespace Thorium_Server
             TaskManager = new TaskManager();
             ClientManager = new ClientManager();
 
-            controlServer = new ControlServer(this, ThoriumServerConfig.ListeningPort);
+            //TODO remove ThoriumServerConfig.ListeningPort from config
+            serverController = new ServerController(this);
             clientsServer = new ClientsServer(this, ThoriumServerConfig.ClientListeningPort);
         }
 
@@ -35,7 +36,7 @@ namespace Thorium_Server
             //TODO: load jobs
             JobManager.Start();
             ClientManager.Start();
-            controlServer.Start();
+            serverController.Start();
             clientsServer.Start();
             ClientManager.Start();
         }
@@ -44,7 +45,7 @@ namespace Thorium_Server
         {
             JobManager.Stop();
             ClientManager.Stop();
-            controlServer.Stop();
+            serverController.Stop();
             clientsServer.Stop();
             ClientManager.Stop();
             //TODO: save jobs
