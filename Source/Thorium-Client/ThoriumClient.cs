@@ -15,18 +15,18 @@ namespace Thorium_Client
 
         public ThoriumClient() : base(false)
         {
-            serverInterface = new ServerInterface(ThoriumClientConfig.ServerHost, ThoriumClientConfig.ServerListeningPort);
+            serverInterface = new ServerInterface(ThoriumClientConfig.ServerHost, ThoriumClientConfig.ServerListeningPort, this);
         }
 
         public override void Start()
         {
-            serverInterface.InvokeRegister(ID);
+            serverInterface.InvokeRegister();
             base.Start();
         }
 
         public override void Stop()
         {
-            serverInterface.InvokeUnregister(ID);
+            serverInterface.InvokeUnregister();
             base.Stop();
         }
 
@@ -62,7 +62,7 @@ namespace Thorium_Client
                         catch(Exception execEx) when(!(execEx is ThreadInterruptedException))
                         {
                             logger.Info("task failed: " + execEx);
-                            serverInterface.InvokeAbandonTask(lightweightTask);
+                            serverInterface.InvokeFailTask(lightweightTask, execEx.ToString());
                         }
 
                         lastTimeJobCompleted = DateTime.UtcNow;

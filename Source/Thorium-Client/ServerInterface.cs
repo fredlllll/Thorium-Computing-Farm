@@ -11,22 +11,26 @@ namespace Thorium_Client
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();
 
-        TCPServiceInvoker serviceClient;
-        public ServerInterface(string host, ushort port)
+        private readonly TCPServiceInvoker serviceClient;
+
+        public ThoriumClient Client { get; }
+
+        public ServerInterface(string host, ushort port, ThoriumClient client)
         {
             serviceClient = new TCPServiceInvoker(host, port);
+            Client = client;
         }
 
-        public void InvokeRegister(string id)
+        public void InvokeRegister()
         {
-            serviceClient.Invoke(Register, new JObject() { ["ip"] = Utils.GetExternalIP(), ["id"] = id });
+            serviceClient.Invoke(Register, new JObject() { ["ip"] = Utils.GetExternalIP(), ["clientId"] = Client.ID });
         }
 
-        public void InvokeUnregister(string id)
+        public void InvokeUnregister()
         {
             try
             {
-                serviceClient.Invoke(Unregister, new JObject() { ["id"] = id });
+                serviceClient.Invoke(Unregister, new JObject() { ["clientId"] = Client.ID });
             }
             catch(Exception ex)
             {
@@ -37,7 +41,7 @@ namespace Thorium_Client
 
         public LightweightTask InvokeCheckoutTask()
         {
-            JToken result = serviceClient.Invoke(CheckoutTask, null);
+            JToken result = serviceClient.Invoke(CheckoutTask, new JObject { ["clientId"] = Client.ID });
             if(result is JObject obj)
             {
                 return obj.ToObject<LightweightTask>();
@@ -49,18 +53,38 @@ namespace Thorium_Client
         {
             JObject arg = new JObject
             {
-                ["id"] = task.ID
+                ["clientId"] = Client.ID,
+                ["taskId"] = task.ID
             };
             serviceClient.Invoke(TurnInTask, arg);
         }
 
-        public void InvokeAbandonTask(LightweightTask task)
+        public void InvokeAbandonTask(LightweightTask task, string reason = null)
         {
             JObject arg = new JObject
             {
-                ["id"] = task.ID
+                ["clientId"] = Client.ID,
+                ["taskId"] = task.ID
             };
+            if(reason != null)
+            {
+                arg["reason"] = reason;
+            }
             serviceClient.Invoke(AbandonTask, arg);
+        }
+
+        public void InvokeFailTask(LightweightTask task, string reason = null)
+        {
+            JObject arg = new JObject
+            {
+                ["clientId"] = Client.ID,
+                ["taskId"] = task.ID
+            };
+            if(reason != null)
+            {
+                arg["reason"] = reason;
+            }
+            serviceClient.Invoke(FailTask, arg);
         }
     }
 }

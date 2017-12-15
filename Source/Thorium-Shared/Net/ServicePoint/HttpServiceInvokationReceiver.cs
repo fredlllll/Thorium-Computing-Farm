@@ -16,6 +16,10 @@ namespace Thorium_Shared.Net.ServicePoint
         {
             listener = new HttpListener();
 
+            int port = 80;
+
+            listener.Prefixes.Add(string.Format("http://*:{0}/", port));
+
             listener.Start();
             listener.BeginGetContext(GetContext, null);
         }

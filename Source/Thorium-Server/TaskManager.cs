@@ -16,8 +16,9 @@ namespace Thorium_Server
         ConcurrentBag<Task> waitingTasks = new ConcurrentBag<Task>();
         ConcurrentDictionary<string, Task> computingTasks = new ConcurrentDictionary<string, Task>();
         ConcurrentDictionary<string, Task> finishedTasks = new ConcurrentDictionary<string, Task>();
+        ConcurrentDictionary<string, Task> failedTasks = new ConcurrentDictionary<string, Task>();
 
-        public IEnumerable<Task> Tasks { get { return waitingTasks.Concat(computingTasks.Concat(finishedTasks).Select((x) => x.Value)); } }
+        public IEnumerable<Task> Tasks { get { return waitingTasks.Concat(computingTasks.Concat(finishedTasks.Concat(failedTasks)).Select((x) => x.Value)); } }
 
         public Task CheckoutTask()
         {
@@ -37,11 +38,18 @@ namespace Thorium_Server
             finishedTasks[id] = t;
         }
 
-        public void AbandonTask(string id)
+        public void AbandonTask(string id, string reason = null)
         {
-            logger.Info("Task abandoned: " + id);
+            logger.Info("Task abandoned: " + id + (reason != null ? " reason: " + reason : ""));
             computingTasks.TryRemove(id, out Task t);
             waitingTasks.Add(t);
+        }
+
+        public void FailTask(string id, string reason = null)
+        {
+            logger.Info("Task failed: " + id + (reason != null ? " reason: " + reason : ""));
+            computingTasks.TryRemove(id, out Task t);
+            failedTasks[id] = t;
         }
 
         public void AddTask(Task t)

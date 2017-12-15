@@ -39,7 +39,7 @@ namespace Thorium_Server
         {
             JObject argObject = arg as JObject;
 
-            Client client = new Client(IPAddress.Parse(argObject.Get<string>("ip")), argObject.Get<string>("id"));
+            Client client = new Client(IPAddress.Parse(argObject.Get<string>("ip")), argObject.Get<string>("clientId"));
             server.ClientManager.RegisterClient(client);
 
             return null;
@@ -49,7 +49,7 @@ namespace Thorium_Server
         {
             JObject argObject = arg as JObject;
 
-            server.ClientManager.UnregisterClient(argObject.Get<string>("id"));
+            server.ClientManager.UnregisterClient(argObject.Get<string>("clientId"));
 
             return null;
         }
@@ -62,6 +62,8 @@ namespace Thorium_Server
             if(t != null)
             {
                 //TODO: keep track of what client processes what task
+                string clientId = argObject.Get<string>("clientId");
+
                 LightweightTask lt = new LightweightTask(t);
                 JObject retval = JObject.FromObject(lt);
                 return retval;
@@ -73,7 +75,7 @@ namespace Thorium_Server
         {
             JObject argObject = arg as JObject;
 
-            server.TaskManager.TurnInTask(argObject.Get<string>("id"));
+            server.TaskManager.TurnInTask(argObject.Get<string>("taskId"));
 
             return null;
         }
@@ -82,7 +84,16 @@ namespace Thorium_Server
         {
             JObject argObject = arg as JObject;
 
-            server.TaskManager.AbandonTask(argObject.Get<string>("id"));
+            server.TaskManager.AbandonTask(argObject.Get<string>("taskId"), argObject.Get<string>("reason"));
+
+            return null;
+        }
+
+        JToken HandleFailTask(JToken arg)
+        {
+            JObject argObject = arg as JObject;
+
+            server.TaskManager.FailTask(argObject.Get<string>("taskId"), argObject.Get<string>("reason"));
 
             return null;
         }
