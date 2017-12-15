@@ -4,7 +4,7 @@ using System.Windows.Forms;
 using Newtonsoft.Json.Linq;
 using Thorium_Shared;
 using Thorium_Shared.Net;
-using Thorium_Shared.Net.Comms;
+using Thorium_Shared.Net.ServicePoint;
 
 namespace Thorium_Monitor
 {
@@ -41,8 +41,8 @@ namespace Thorium_Monitor
                 ["jobInformation"] = info
             };
 
-            var client = CommsFactory.CreateClient(txtServerHost.Text, (ushort)numServerPort.Value);
-            JObject answer = client.Invoke(ServerControlCommands.AddJob, arg);
+            var client = new TCPServiceInvoker(txtServerHost.Text, (ushort)numServerPort.Value);
+            JObject answer = client.Invoke(ServerControlCommands.AddJob, arg) as JObject;
             MessageBox.Show("The jobs id is: " + answer.Get<string>("id"));
         }
 

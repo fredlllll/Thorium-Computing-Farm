@@ -1,4 +1,4 @@
-﻿using System;
+﻿/*using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -11,7 +11,7 @@ using Newtonsoft.Json.Linq;
 
 namespace Thorium_Shared.Net
 {
-    /*public class JSONObjectClient : RestartableThreadClass, IDisposable
+    public class JSONObjectClient : RestartableThreadClass, IDisposable
     {
         TcpClient client;
         public TcpClient TcpClient { get { return client; } }
@@ -143,5 +143,6 @@ namespace Thorium_Shared.Net
                 client.Close();
             }
         }
-    }*/
+    }
 }
+*/

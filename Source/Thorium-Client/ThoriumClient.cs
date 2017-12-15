@@ -20,13 +20,13 @@ namespace Thorium_Client
 
         public override void Start()
         {
-            serverInterface.Register(ID);
+            serverInterface.InvokeRegister(ID);
             base.Start();
         }
 
         public override void Stop()
         {
-            serverInterface.Unregister(ID);
+            serverInterface.InvokeUnregister(ID);
             base.Stop();
         }
 
@@ -41,7 +41,7 @@ namespace Thorium_Client
                     LightweightTask lightweightTask = null;
                     try
                     {
-                        lightweightTask = serverInterface.CheckoutTask();
+                        lightweightTask = serverInterface.InvokeCheckoutTask();
                     }
                     catch(TimeoutException)
                     {
@@ -56,13 +56,13 @@ namespace Thorium_Client
                         {
                             logger.Info("executing task");
                             executioner.Execute();
-                            serverInterface.TurnInTask(lightweightTask);
+                            serverInterface.InvokeTurnInTask(lightweightTask);
                             logger.Info("done task");
                         }
                         catch(Exception execEx) when(!(execEx is ThreadInterruptedException))
                         {
                             logger.Info("task failed: " + execEx);
-                            serverInterface.AbandonTask(lightweightTask);
+                            serverInterface.InvokeAbandonTask(lightweightTask);
                         }
 
                         lastTimeJobCompleted = DateTime.UtcNow;

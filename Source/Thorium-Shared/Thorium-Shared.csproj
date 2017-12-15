@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AExecutioner.cs" />
+    <Compile Include="ConcurrentList.cs" />
     <Compile Include="JobAndTaskProperties.cs" />
     <Compile Include="JobProperties.cs" />
     <Compile Include="LightweightTask.cs" />
@@ -55,13 +56,15 @@
     <Compile Include="Job.cs" />
     <Compile Include="ArgParse.cs" />
     <Compile Include="ATaskProducer.cs" />
-    <Compile Include="ServicePoint\HttpServiceInvokationReceiver.cs" />
-    <Compile Include="ServicePoint\HttpServiceInvoker.cs" />
-    <Compile Include="ServicePoint\InvokationResult.cs" />
-    <Compile Include="ServicePoint\IServiceInvokationReceiver.cs" />
-    <Compile Include="ServicePoint\IServiceInvoker.cs" />
-    <Compile Include="ServicePoint\Routine.cs" />
-    <Compile Include="ServicePoint\ServicePoint.cs" />
+    <Compile Include="Net\ServicePoint\HttpServiceInvokationReceiver.cs" />
+    <Compile Include="Net\ServicePoint\HttpServiceInvoker.cs" />
+    <Compile Include="Net\ServicePoint\InvokationResult.cs" />
+    <Compile Include="Net\ServicePoint\IServiceInvokationReceiver.cs" />
+    <Compile Include="Net\ServicePoint\IServiceInvoker.cs" />
+    <Compile Include="Net\ServicePoint\Routine.cs" />
+    <Compile Include="Net\ServicePoint\ServicePoint.cs" />
+    <Compile Include="Net\ServicePoint\TCPServiceInvokationReceiver.cs" />
+    <Compile Include="Net\ServicePoint\TCPServiceInvoker.cs" />
     <Compile Include="Unused\Data\AutoIncrementAttribute.cs" />
     <Compile Include="Unused\Data\DatabaseObject.cs" />
     <Compile Include="Unused\Data\DataMemberAttribute.cs" />

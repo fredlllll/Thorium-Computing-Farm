@@ -7,7 +7,6 @@ using Newtonsoft.Json.Linq;
 using NLog;
 using Thorium_Shared;
 using Thorium_Shared.Net;
-using Thorium_Shared.Net.Comms;
 using static Thorium_Shared.Net.ServerControlCommands;
 
 namespace Thorium_Server

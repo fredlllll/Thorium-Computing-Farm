@@ -1,4 +1,4 @@
-﻿using System.Net.Sockets;
+﻿/*using System.Net.Sockets;
 
 namespace Thorium_Shared.Net.Comms
 {
@@ -32,4 +32,4 @@ namespace Thorium_Shared.Net.Comms
             return serviceClient;
         }
     }
-}
+}*/

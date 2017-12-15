@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 
-namespace Thorium_Shared.ServicePoint
+namespace Thorium_Shared.Net.ServicePoint
 {
     public delegate InvokationResult InvokationHandler(IServiceInvokationReceiver sender, string routine, JToken arg);
 

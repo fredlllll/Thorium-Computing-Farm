@@ -1,4 +1,4 @@
-﻿using System;
+﻿/*using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
@@ -7,7 +7,7 @@ using Newtonsoft.Json.Linq;
 
 namespace Thorium_Shared.Net
 {
-    /*public class JSONObjectServer : RestartableThreadClass
+    public class JSONObjectServer : RestartableThreadClass
     {
         int port;
         TcpListener listener;
@@ -105,5 +105,6 @@ namespace Thorium_Shared.Net
                 }
             }
         }
-    }*/
+    }
 }
+*/

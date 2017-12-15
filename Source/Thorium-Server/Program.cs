@@ -5,7 +5,7 @@ using Newtonsoft.Json.Linq;
 using Thorium_Shared;
 using Thorium_Shared.Logging;
 using Thorium_Shared.Net;
-using Thorium_Shared.Net.Comms;
+using Thorium_Shared.Net.ServicePoint;
 
 namespace Thorium_Server
 {
@@ -39,7 +39,7 @@ namespace Thorium_Server
 
         static void AddBlenderJob()
         {
-            var client = CommsFactory.CreateClient("localhost", ThoriumServerConfig.ListeningPort);
+            var client = new TCPServiceInvoker("localhost", ThoriumServerConfig.ListeningPort);
 
             JObject info = new JObject
             {
@@ -57,7 +57,6 @@ namespace Thorium_Server
             };
 
             client.Invoke(ServerControlCommands.AddJob, arg);
-
         }
 
         static void Stop(string[] args)

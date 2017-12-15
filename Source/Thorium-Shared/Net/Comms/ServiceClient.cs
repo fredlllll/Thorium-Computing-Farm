@@ -1,4 +1,4 @@
-﻿using System;
+﻿/*using System;
 using System.Collections.Concurrent;
 using System.Threading;
 using Newtonsoft.Json.Linq;
@@ -70,3 +70,4 @@ namespace Thorium_Shared.Net.Comms
         }
     }
 }
+*/

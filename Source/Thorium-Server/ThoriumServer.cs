@@ -1,7 +1,4 @@
-﻿using Thorium_Shared.Net;
-using Newtonsoft.Json.Linq;
-
-namespace Thorium_Server
+﻿namespace Thorium_Server
 {
     public class ThoriumServer
     {
@@ -12,7 +9,7 @@ namespace Thorium_Server
         /// <summary>
         /// for comms between server and clients
         /// </summary>
-        ClientsServer clientsServer;
+        ClientsServicePoint clientsServer;
 
         public JobManager JobManager { get; private set; }
         public ClientManager ClientManager { get; private set; }
@@ -27,7 +24,7 @@ namespace Thorium_Server
 
             //TODO remove ThoriumServerConfig.ListeningPort from config
             serverController = new ServerController(this);
-            clientsServer = new ClientsServer(this, ThoriumServerConfig.ClientListeningPort);
+            clientsServer = new ClientsServicePoint(this, ThoriumServerConfig.ClientListeningPort);
         }
 
 

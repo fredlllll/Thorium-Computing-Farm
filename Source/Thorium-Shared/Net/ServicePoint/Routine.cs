@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json.Linq;
 
-namespace Thorium_Shared.ServicePoint
+namespace Thorium_Shared.Net.ServicePoint
 {
     public class Routine
     {

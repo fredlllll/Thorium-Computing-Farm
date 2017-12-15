@@ -45,7 +45,7 @@
   <ItemGroup>
     <Compile Include="Client.cs" />
     <Compile Include="ClientManager.cs" />
-    <Compile Include="ClientsServer.cs" />
+    <Compile Include="ClientsServicePoint.cs" />
     <Compile Include="ControlServer.cs" />
     <Compile Include="Files.cs" />
     <Compile Include="JobInitializer.cs" />

@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 
-namespace Thorium_Shared.ServicePoint
+namespace Thorium_Shared.Net.ServicePoint
 {
     public class ServicePoint
     {

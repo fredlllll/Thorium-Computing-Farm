@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json.Linq;
 using NLog;
 using Thorium_Shared;
-using Thorium_Shared.ServicePoint;
+using Thorium_Shared.Net.ServicePoint;
 using static Thorium_Shared.Net.ServerControlCommands;
 
 namespace Thorium_Server
@@ -14,13 +14,12 @@ namespace Thorium_Server
 
         private ServicePoint servicePoint = new ServicePoint();
 
-        HttpServiceInvokationReceiver httpReceiver = new HttpServiceInvokationReceiver();
-
         public ServerController(ThoriumServer server)
         {
             this.server = server;
 
-            servicePoint.RegisterInvokationReceiver(httpReceiver);
+            servicePoint.RegisterInvokationReceiver(new HttpServiceInvokationReceiver());
+            servicePoint.RegisterInvokationReceiver(new TCPServiceInvokationReceiver(ThoriumServerConfig.ListeningPort));
 
             servicePoint.RegisterRoutine(new Routine(AddJob, AddJobHandler));
             servicePoint.RegisterRoutine(new Routine(ListClients, ListClientsHandler));

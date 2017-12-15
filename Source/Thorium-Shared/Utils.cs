@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
 
 namespace Thorium_Shared
 {
@@ -67,6 +68,20 @@ namespace Thorium_Shared
                     stack.Push(new Tuple<string, string>(folder, Path.Combine(folders.Item2, Path.GetFileName(folder))));
                 }
             }
+        }
+
+        //TODO: this isnt optimal, but works for now...
+        public static string GetExternalIP()
+        {
+            WebClient wc = new WebClient();
+
+            string response = wc.DownloadString("http://checkip.dyndns.org");
+
+            string[] partsAroundColon = response.Split(':');
+            string secondPartTrimmed = partsAroundColon[1].Trim();
+            string[] splitByTagStart = secondPartTrimmed.Split('<');
+            string ip = splitByTagStart[0];
+            return ip;
         }
     }
 }

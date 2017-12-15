@@ -36,7 +36,7 @@ namespace Thorium_Server
             }
         }
 
-        Dictionary<IPAddress, Client> clients = new Dictionary<IPAddress, Client>();
+        Dictionary<string, Client> clients = new Dictionary<string, Client>();
 
         public delegate void ClientStoppedRespondingHandler(Client client);
         public event ClientStoppedRespondingHandler ClientStoppedResponding;
@@ -49,24 +49,21 @@ namespace Thorium_Server
         {
             lock(clients)
             {
-                clients[client.IPAddress] = client;
+                clients[client.ID] = client;
             }
             logger.Info("Client Registered: " + client.IPAddress);
         }
 
-        public void UnregisterClient(IPAddress clientIp, string reason = null)
+        public void UnregisterClient(string id, string reason = null)
         {
-            lock(clients)
-            {
-                UnregisterClient(clients[clientIp], reason);
-            }
+            UnregisterClient(clients[id], reason);
         }
 
         public void UnregisterClient(Client client, string reason = null)
         {
             lock(clients)
             {
-                clients.Remove(client.IPAddress);
+                clients.Remove(client.ID);
             }
             logger.Info("Client Unregistered: " + client.IPAddress + " - " + (reason == null ? "No Reason given" : "Reason: " + reason));
         }

@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Newtonsoft.Json.Linq;
 using Thorium_Shared;
-using Thorium_Shared.Net.Comms;
-using Thorium_Shared.Net;
 using static Thorium_Shared.Net.ClientToServerCommands;
 using NLog;
+using Thorium_Shared.Net.ServicePoint;
 
 namespace Thorium_Client
 {
@@ -15,22 +11,22 @@ namespace Thorium_Client
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();
 
-        ServiceClient serviceClient;
+        TCPServiceInvoker serviceClient;
         public ServerInterface(string host, ushort port)
         {
-            serviceClient = CommsFactory.CreateClient(host, port);
+            serviceClient = new TCPServiceInvoker(host, port);
         }
 
-        public void Register(string id)
+        public void InvokeRegister(string id)
         {
-            serviceClient.Invoke(ClientToServerCommands.Register, new JObject() { ["id"] = id });
+            serviceClient.Invoke(Register, new JObject() { ["ip"] = Utils.GetExternalIP(), ["id"] = id });
         }
 
-        public void Unregister(string id)
+        public void InvokeUnregister(string id)
         {
             try
             {
-                serviceClient.Invoke(ClientToServerCommands.Unregister, new JObject() { ["id"] = id });
+                serviceClient.Invoke(Unregister, new JObject() { ["id"] = id });
             }
             catch(Exception ex)
             {
@@ -39,32 +35,32 @@ namespace Thorium_Client
             }
         }
 
-        public LightweightTask CheckoutTask()
+        public LightweightTask InvokeCheckoutTask()
         {
-            JObject obj = serviceClient.Invoke(ClientToServerCommands.CheckoutTask, null);
-            if(obj != null)
+            JToken result = serviceClient.Invoke(CheckoutTask, null);
+            if(result is JObject obj)
             {
                 return obj.ToObject<LightweightTask>();
             }
             return null;
         }
 
-        public void TurnInTask(LightweightTask task)
+        public void InvokeTurnInTask(LightweightTask task)
         {
             JObject arg = new JObject
             {
                 ["id"] = task.ID
             };
-            serviceClient.Invoke(ClientToServerCommands.TurnInTask, arg);
+            serviceClient.Invoke(TurnInTask, arg);
         }
 
-        public void AbandonTask(LightweightTask task)
+        public void InvokeAbandonTask(LightweightTask task)
         {
             JObject arg = new JObject
             {
                 ["id"] = task.ID
             };
-            serviceClient.Invoke(ClientToServerCommands.AbandonTask, arg);
+            serviceClient.Invoke(AbandonTask, arg);
         }
     }
 }
