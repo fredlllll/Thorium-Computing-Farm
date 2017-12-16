@@ -41,12 +41,17 @@
       <HintPath>..\packages\NLog.4.4.12\lib\net45\NLog.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Data" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Client.cs" />
     <Compile Include="ClientManager.cs" />
     <Compile Include="ClientsServicePoint.cs" />
+    <Compile Include="ClientTaskRelation.cs" />
+    <Compile Include="ClientTaskRelationManager.cs" />
     <Compile Include="ControlServer.cs" />
+    <Compile Include="Data\Serializers\ClientSerializer.cs" />
+    <Compile Include="Data\Serializers\ClientTaskRelationSerializer.cs" />
     <Compile Include="Files.cs" />
     <Compile Include="JobInitializer.cs" />
     <Compile Include="JobManager.cs" />

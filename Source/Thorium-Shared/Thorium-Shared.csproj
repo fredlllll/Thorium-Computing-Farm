@@ -34,6 +34,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="MySql.Data, Version=6.10.5.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <HintPath>..\packages\MySql.Data.6.10.5\lib\net452\MySql.Data.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -41,13 +44,28 @@
       <HintPath>..\packages\NLog.4.4.12\lib\net45\NLog.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Configuration.Install" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Drawing.Design" />
     <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Runtime" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AExecutioner.cs" />
     <Compile Include="ConcurrentList.cs" />
+    <Compile Include="Data\BaseDataBase.cs" />
+    <Compile Include="Data\ISerializer.cs" />
+    <Compile Include="Data\Serializers\BaseSerializer.cs" />
+    <Compile Include="Data\Serializers\JobSerializer.cs" />
+    <Compile Include="Data\MySqlDatabase.cs" />
+    <Compile Include="Data\Serializers\TaskSerializer.cs" />
     <Compile Include="JobAndTaskProperties.cs" />
     <Compile Include="JobProperties.cs" />
     <Compile Include="LightweightTask.cs" />
@@ -65,10 +83,11 @@
     <Compile Include="Net\ServicePoint\ServicePoint.cs" />
     <Compile Include="Net\ServicePoint\TCPServiceInvokationReceiver.cs" />
     <Compile Include="Net\ServicePoint\TCPServiceInvoker.cs" />
+    <Compile Include="TaskStatus.cs" />
     <Compile Include="Unused\Data\AutoIncrementAttribute.cs" />
     <Compile Include="Unused\Data\DatabaseObject.cs" />
     <Compile Include="Unused\Data\DataMemberAttribute.cs" />
-    <Compile Include="Unused\Data\IDatabase.cs" />
+    <Compile Include="Data\IDatabase.cs" />
     <Compile Include="Unused\Data\PreviouslyKnownAsAttribute.cs" />
     <Compile Include="Unused\Data\PrimaryKeyAttribute.cs" />
     <Compile Include="Unused\Data\Serializer.cs" />
@@ -104,6 +123,17 @@
     <Compile Include="Utils.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="docs\MySqlCommand.xml" />
+    <Content Include="docs\MySqlCommandBuilder.xml" />
+    <Content Include="docs\MySqlConnection.xml" />
+    <Content Include="docs\MySqlConnectionStringBuilder.xml" />
+    <Content Include="docs\MySqlDataAdapter.xml" />
+    <Content Include="docs\MySqlDataReader.xml" />
+    <Content Include="docs\MySqlException.xml" />
+    <Content Include="docs\MySqlHelper.xml" />
+    <Content Include="docs\MySqlParameter.xml" />
+    <Content Include="docs\MySqlParameterCollection.xml" />
+    <Content Include="docs\MySqlTransaction.xml" />
     <Content Include="Unused\JobTypes\Blender\BlenderConfigExample.xml" />
   </ItemGroup>
   <ItemGroup>

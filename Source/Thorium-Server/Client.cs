@@ -7,8 +7,6 @@ namespace Thorium_Server
         public IPAddress IPAddress { get; protected set; }
         public string ID { get; protected set; }
 
-        public string CurrentTask { get; set; }
-
         public Client(IPAddress address,string id)
         {
             IPAddress = address;

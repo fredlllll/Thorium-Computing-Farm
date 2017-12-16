@@ -64,7 +64,7 @@ namespace Thorium_Shared.Data
             {
                 sql += prop.Name;
                 sql += " ";
-                sql += Util.TypeAffinityMap[prop.PropertyType];
+                //sql += Util.TypeAffinityMap[prop.PropertyType]; //TODO: commented due to code changes
                 if(Attribute.IsDefined(prop, typeof(PrimaryKeyAttribute)))
                 {
                     sql += " PRIMARY KEY";
@@ -130,7 +130,9 @@ namespace Thorium_Shared.Data
             sql = sql.TrimEnd(',');
             sql += ");";
 
-            long newId = database.ExecuteNonQueryTransaction(sql, propertyValues.Values.ToArray());
+            //long newId = database.ExecuteNonQueryTransaction(sql, propertyValues.Values.ToArray());
+            //commented cause of code changes
+            long newId = -1;//TODO: find better way than relying on sqlites implementation to give back last insert id
 
             if(id < 0)
             { //only set id if it was -1 before

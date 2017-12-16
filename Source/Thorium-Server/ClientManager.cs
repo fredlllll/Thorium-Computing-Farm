@@ -45,6 +45,18 @@ namespace Thorium_Server
         {
         }
 
+        public override void Start()
+        {
+            //load
+            base.Start();
+        }
+
+        public override void Stop()
+        {
+            base.Stop();
+            //save
+        }
+
         public void RegisterClient(Client client)
         {
             lock(clients)

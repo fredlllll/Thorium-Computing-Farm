@@ -37,6 +37,8 @@ namespace Thorium_Server
 
         public void Start()
         {
+            //load
+
             jobInitializer.Start();
 
             //loading jobs
@@ -82,6 +84,8 @@ namespace Thorium_Server
                 formatter.Write(rs.GetSerializationDataSet());
             }*/
             jobInitializer.Stop();
+
+            //save
         }
 
         public void AddJob(Job job)
