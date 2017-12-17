@@ -11,35 +11,29 @@ namespace Thorium_Server
         private static Logger logger = LogManager.GetCurrentClassLogger();
 
         private readonly JobInitializer jobInitializer;
-        Dictionary<string, Job> jobs = new Dictionary<string, Job>();
-        private readonly JobSerializer serializer;
 
-        public IEnumerable<KeyValuePair<string, Job>> Jobs
-        {
-            get { return jobs; }
-        }
+        private readonly JobSerializer jobSerializer;
+        private readonly TaskSerializer taskSerializer;
 
-        public JobManager(ThoriumServer server, JobSerializer serializer)
+        public JobManager(ThoriumServer server, JobSerializer serializer, TaskSerializer taskSerializer)
         {
             jobInitializer = new JobInitializer(server);
             jobInitializer.JobInitializationFailed += JobInitializationFailed;
             jobInitializer.JobInitialized += JobInitialized;
-            this.serializer = serializer;
+
+            this.jobSerializer = serializer;
+            this.taskSerializer = taskSerializer;
         }
 
         private void JobInitialized(JobInitializer sender, Job job)
         {
             logger.Info("Job initialized: " + job.Name);
-            serializer.Save(job.ID, job);
-            lock(jobs)
-            {
-                jobs[job.ID] = job;
-            }
+            jobSerializer.Save(job.ID, job);
         }
 
         private void JobInitializationFailed(JobInitializer sender, Job job, Exception ex)
         {
-            serializer.Save(job.ID, job);
+            jobSerializer.Save(job.ID, job);
             logger.Warn("Job initialization failed: " + job.Name);
             logger.Warn(ex);
         }
@@ -47,19 +41,10 @@ namespace Thorium_Server
         public void Start()
         {
             //load
-            lock(jobs)
+            foreach(var j in jobSerializer.LoadWhere("status", JobStatus.Initializing.ToString()))
             {
-                foreach(var j in serializer.LoadAll())
-                {
-                    if(j.Status == JobStatus.Initializing)
-                    {
-                        jobInitializer.AddJob(j);
-                    }
-                    else
-                    {
-                        jobs[j.ID] = j;
-                    }
-                }
+                taskSerializer.DeleteWhere("job_id", j.ID);//delete tasks that were saved previously, but job init wasnt completed
+                jobInitializer.AddJob(j);
             }
 
             jobInitializer.Start();
@@ -107,21 +92,12 @@ namespace Thorium_Server
                 formatter.Write(rs.GetSerializationDataSet());
             }*/
             jobInitializer.Stop();
-
-            //save
-            lock(jobs)
-            {
-                foreach(var j in jobs)
-                {
-                    serializer.Save(j.Key, j.Value);
-                }
-            }
         }
 
         public void AddJob(Job job)
         {
             logger.Info("Adding Job to initializer: " + job.ID);
-            serializer.Save(job.ID, job);
+            jobSerializer.Save(job.ID, job);
             jobInitializer.AddJob(job);
         }
 

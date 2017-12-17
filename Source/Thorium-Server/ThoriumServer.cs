@@ -1,4 +1,6 @@
-﻿namespace Thorium_Server
+﻿using Thorium_Server.Data;
+
+namespace Thorium_Server
 {
     public class ThoriumServer
     {
@@ -12,15 +14,21 @@
         ClientsServicePoint clientsServer;
 
         public JobManager JobManager { get; private set; }
-        public ClientManager ClientManager { get; private set; }
         public TaskManager TaskManager { get; private set; }
+        public ClientManager ClientManager { get; private set; }
+        public ClientTaskRelationManager ClientTaskRelationManager { get; private set; }
+
+        public DataManager DataManager { get; private set; }
 
 
         public ThoriumServer()
         {
-            JobManager = new JobManager(this);
-            TaskManager = new TaskManager();
-            ClientManager = new ClientManager();
+            DataManager = new DataManager(MySqlConfig.DatabaseHost, MySqlConfig.DatabasePort, MySqlConfig.DatabaseUser, MySqlConfig.DatabasePassword, MySqlConfig.DatabaseName, MySqlConfig.TablePrefix);
+
+            JobManager = new JobManager(this, DataManager.JobSerializer, DataManager.TaskSerializer);
+            TaskManager = new TaskManager(DataManager.TaskSerializer);
+            ClientManager = new ClientManager(DataManager.ClientSerializer);
+            ClientTaskRelationManager = new ClientTaskRelationManager(DataManager.ClientTaskRelationSerializer);
 
             //TODO remove ThoriumServerConfig.ListeningPort from config
             serverController = new ServerController(this);
@@ -33,6 +41,7 @@
             //TODO: load jobs
             JobManager.Start();
             ClientManager.Start();
+            ClientTaskRelationManager.Start();
             serverController.Start();
             clientsServer.Start();
             ClientManager.Start();
@@ -42,6 +51,7 @@
         {
             JobManager.Stop();
             ClientManager.Stop();
+            ClientTaskRelationManager.Stop();
             serverController.Stop();
             clientsServer.Stop();
             ClientManager.Stop();

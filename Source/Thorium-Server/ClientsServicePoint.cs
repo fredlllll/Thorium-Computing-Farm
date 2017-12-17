@@ -58,13 +58,16 @@ namespace Thorium_Server
         {
             JObject argObject = arg as JObject;
 
-            Task t = server.TaskManager.CheckoutTask();
-            if(t != null)
+            Task task = server.TaskManager.CheckoutTask();
+            if(task != null)
             {
                 //TODO: keep track of what client processes what task
                 string clientId = argObject.Get<string>("clientId");
+                var relation = new ClientTaskRelation(clientId, task.ID);
+                server.ClientTaskRelationManager.Add(relation);
 
-                LightweightTask lt = new LightweightTask(t);
+                var job = server.DataManager.JobSerializer.Load(task.JobID);
+                LightweightTask lt = new LightweightTask(task, job);
                 JObject retval = JObject.FromObject(lt);
                 return retval;
             }
@@ -75,7 +78,9 @@ namespace Thorium_Server
         {
             JObject argObject = arg as JObject;
 
-            server.TaskManager.TurnInTask(argObject.Get<string>("taskId"));
+            string id = argObject.Get<string>("taskId");
+            server.TaskManager.TurnInTask(id);
+            server.ClientTaskRelationManager.RemoveByTask(id);
 
             return null;
         }
@@ -84,7 +89,9 @@ namespace Thorium_Server
         {
             JObject argObject = arg as JObject;
 
-            server.TaskManager.AbandonTask(argObject.Get<string>("taskId"), argObject.Get<string>("reason"));
+            string taskId = argObject.Get<string>("taskId");
+            server.TaskManager.AbandonTask(taskId, argObject.Get<string>("reason"));
+            server.ClientTaskRelationManager.RemoveByTask(taskId);
 
             return null;
         }
@@ -93,7 +100,9 @@ namespace Thorium_Server
         {
             JObject argObject = arg as JObject;
 
-            server.TaskManager.FailTask(argObject.Get<string>("taskId"), argObject.Get<string>("reason"));
+            string taskId = argObject.Get<string>("taskId");
+            server.TaskManager.FailTask(taskId, argObject.Get<string>("reason"));
+            server.ClientTaskRelationManager.RemoveByTask(taskId);
 
             return null;
         }

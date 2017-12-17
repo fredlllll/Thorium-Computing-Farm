@@ -8,10 +8,7 @@ namespace Thorium_Server
     {
         public static UInt16 ListeningPort { get; private set; }
         public static UInt16 ClientListeningPort { get; private set; }
-        public static string DatabaseHost { get; private set; }
-        public static UInt16 DatabasePort { get; private set; }
-        public static string DatabaseUser { get; private set; }
-        public static string DatabasePassword { get; private set; }
+       
 
         static ThoriumServerConfig()
         {
@@ -24,10 +21,6 @@ namespace Thorium_Server
 
             ListeningPort = obj.Get<UInt16>("listeningPort");
             ClientListeningPort = obj.Get<UInt16>("clientListeningPort");
-            DatabaseHost = obj.Get<string>("databaseHost");
-            DatabasePort = obj.Get<UInt16>("databasePort");
-            DatabaseUser = obj.Get<string>("databaseUser");
-            DatabasePassword = obj.Get<string>("databasePassword");
         }
     }
 }

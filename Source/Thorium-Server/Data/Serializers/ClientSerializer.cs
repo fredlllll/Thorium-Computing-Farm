@@ -14,6 +14,11 @@ namespace Thorium_Shared.Data.Serializers
         public override string Table => Database.GetTableName("clients");
         public override string KeyColumn => "id";
 
+        public ClientSerializer(IDatabase database)
+        {
+            Database = database;
+        }
+
         public override Client Load(string key)
         {
             var reader = SelectStarWhereKey(key);

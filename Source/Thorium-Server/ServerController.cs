@@ -22,9 +22,6 @@ namespace Thorium_Server
             servicePoint.RegisterInvokationReceiver(new TCPServiceInvokationReceiver(ThoriumServerConfig.ListeningPort));
 
             servicePoint.RegisterRoutine(new Routine(AddJob, AddJobHandler));
-            servicePoint.RegisterRoutine(new Routine(ListClients, ListClientsHandler));
-            servicePoint.RegisterRoutine(new Routine(ListJobs, ListJobsHandler));
-            servicePoint.RegisterRoutine(new Routine(ListTasks, ListTasksHandler));
             servicePoint.RegisterRoutine(new Routine(AbortJob, AbortJobHandler));
             servicePoint.RegisterRoutine(new Routine(AbortTask, AbortTaskHandler));
         }
@@ -43,7 +40,7 @@ namespace Thorium_Server
         {
             JObject argObject = (JObject)arg;
 
-            Job j = new Job(Utils.GetRandomID(), argObject.Get<string>("jobName"), (JObject)argObject["jobInformation"]);
+            Job j = new Job(Utils.GetRandomID(), argObject.Get<string>("jobName"), (JObject)argObject["jobInformation"], JobStatus.Initializing);
             logger.Info("new Job Added: " + j.ID + ", " + j.Name + ", " + j.Information);
             server.JobManager.AddJob(j);
             JObject retval = new JObject
@@ -53,47 +50,14 @@ namespace Thorium_Server
             return retval;
         }
 
-        JToken ListClientsHandler(JToken arg)
-        {
-            JArray retval = new JArray();
-            foreach(var c in server.ClientManager.ClientsSnapshot)
-            {
-                retval.Add(c.ID);
-            }
-            return retval;
-        }
-
-        JToken ListJobsHandler(JToken arg)
-        {
-            JArray retval = new JArray();
-            foreach(var j in server.JobManager.Jobs)
-            {
-                retval.Add(j.Key);
-            }
-            return retval;
-        }
-
-        JToken ListTasksHandler(JToken arg)
-        {
-            JArray retval = new JArray();
-            foreach(var t in server.TaskManager.Tasks)
-            {
-                retval.Add(t.ID);
-            }
-            return retval;
-        }
-
         JToken AbortJobHandler(JToken arg)
         {
             JObject argObject = (JObject)arg;
 
             string id = argObject.Get<string>("id");
-            foreach(var t in server.TaskManager.Tasks)
+            foreach(var t in server.DataManager.TaskSerializer.LoadWhere("job_id", id))
             {
-                if(t.Job.ID == id)
-                {
-                    server.TaskManager.AbortTask(t.ID);
-                }
+                server.TaskManager.AbortTask(t.ID);
             }
             return null;
         }

@@ -57,8 +57,7 @@ namespace Thorium_Server
                             while((t = producer.GetNextTask()) != null)
                             {
                                 logger.Debug("got task: " + t.ID);
-                                server.TaskManager.AddTask(t); //TODO: if you leave this in the release im going to murder you (thats me)
-                                //TODO: save task to db
+                                server.DataManager.TaskSerializer.Save(t.ID, t);
                             }
                             job.Status = JobStatus.Initialized;
                             JobInitialized?.Invoke(this, job);

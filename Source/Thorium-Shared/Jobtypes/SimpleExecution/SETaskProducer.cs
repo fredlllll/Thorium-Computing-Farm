@@ -31,7 +31,7 @@ namespace Thorium_Shared.Jobtypes.SimpleExecution
                 };
 
                 providedTasks++;
-                return new Task(Job, Utils.GetRandomID(), info);
+                return new Task(Job.ID, Utils.GetRandomID(), info);
             }
             return null;
         }

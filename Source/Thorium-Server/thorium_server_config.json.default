@@ -1,8 +1,4 @@
 ﻿{
   "listeningPort": 8000,
-  "clientListeningPort": 8001,
-  "databaseHost": "localhost",
-  "databasePort": 3367,
-  "databaseUser": "root",
-  "databasePassword": ""
+  "clientListeningPort": 8001
 }

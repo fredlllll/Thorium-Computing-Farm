@@ -16,7 +16,7 @@ namespace Thorium_Shared.Data.Serializers
         public TaskSerializer(IDatabase database, JobSerializer jobSerializer)
         {
             Database = database;
-            this.jobSer = jobSerializer;
+            jobSer = jobSerializer;
         }
 
         public override string Table => Database.GetTableName("tasks");
@@ -31,16 +31,39 @@ namespace Thorium_Shared.Data.Serializers
             string informationString = (string)reader["information"];
             string status = (string)reader["status"];
 
-            Job job = jobSer.LoadOrCached(jobId);
+            //Job job = jobSer.LoadOrCached(jobId);
 
-            return new Task(job, key, JObject.Parse(informationString), (TaskStatus)Enum.Parse(typeof(TaskStatus), status));
+            return new Task(jobId, key, JObject.Parse(informationString), (TaskStatus)Enum.Parse(typeof(TaskStatus), status));
         }
 
         public override void Save(string key, Task value)
         {
             string sql = "INSERT INTO " + Table + "(" + KeyColumn + ",job_id,information,status) VALUES(@0,@1,@2,@3) ON DUPLICATE KEY UPDATE job_id=@4, information=@5, status=@6";
             string informationString = value.Information.ToString(Newtonsoft.Json.Formatting.None);
-            Database.ExecuteNonQueryTransaction(sql, key, value.Job.ID, informationString, value.Status.ToString(), value.Job.ID, informationString, value.Status.ToString());
+            Database.ExecuteNonQueryTransaction(sql, key, value.JobID, informationString, value.Status.ToString(), value.JobID, informationString, value.Status.ToString());
+        }
+
+        public Task CheckoutTask()
+        {
+            string sql = "SET @update_id:='';" +
+                "UPDATE " + Table + " SET status='" + TaskStatus.Processing.ToString() + "', " + KeyColumn + "=(SELECT @update_id:=" + KeyColumn + ") WHERE status='" + TaskStatus.Waiting.ToString() + "' LIMIT 1;" +
+                "SELECT @update_id;";
+            var reader = Database.ExecuteQuery(sql);
+            if(reader.Read())
+            {
+                string id = (string)reader[0];
+                if(!string.IsNullOrWhiteSpace(id))
+                {
+                    return Load(id);
+                }
+            }
+            return null;
+        }
+
+        public void UpdateStatus(string key, TaskStatus status)
+        {
+            string sql = "UPDATE " + Table + " SET status=@0 WHERE " + KeyColumn + "=@1";
+            Database.ExecuteNonQueryTransaction(sql, status.ToString(), key);
         }
 
         public override void CreateTable()

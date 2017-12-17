@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Thorium_Shared.Data;
+﻿using Thorium_Shared.Data;
 using Thorium_Shared.Data.Serializers;
 
 namespace Thorium_Server.Data.Serializers
@@ -17,8 +12,9 @@ namespace Thorium_Server.Data.Serializers
         public override string Table => Database.GetTableName("client_task_relations");
         public override string KeyColumn => "client_id";
 
-        public ClientTaskRelationSerializer(ClientSerializer clientSer, TaskSerializer taskSer)
+        public ClientTaskRelationSerializer(IDatabase database, ClientSerializer clientSer, TaskSerializer taskSer)
         {
+            Database = database;
             this.clientSer = clientSer;
             this.taskSer = taskSer;
         }

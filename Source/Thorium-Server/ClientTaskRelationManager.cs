@@ -23,7 +23,8 @@ namespace Thorium_Server
                 {
                     foreach(var ctr in serializer.LoadAll())
                     {
-                        Add(ctr);
+                        byClient[ctr.Client] = ctr;
+                        byTask[ctr.Task] = ctr;
                     }
                 }
             }
@@ -46,13 +47,12 @@ namespace Thorium_Server
 
         public void Add(ClientTaskRelation relation)
         {
+            serializer.Save(relation.Client, relation);
             lock(byClient)
             {
                 lock(byTask)
                 {
                     byClient[relation.Client] = relation;
-
-
                     byTask[relation.Task] = relation;
                 }
             }
@@ -60,6 +60,7 @@ namespace Thorium_Server
 
         public void Remove(ClientTaskRelation relation)
         {
+            serializer.Delete(relation.Client);
             lock(byClient)
             {
                 lock(byTask)

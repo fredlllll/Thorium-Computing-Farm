@@ -1,70 +1,45 @@
-﻿using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using NLog;
+﻿using NLog;
 using Thorium_Shared;
+using Thorium_Shared.Data.Serializers;
 
 namespace Thorium_Server
 {
     public class TaskManager
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();
+        private readonly TaskSerializer serializer;
 
-        //TODO: add some kind of task holding class that can also keep info about processing like status or the instance its computed on
-        //best use a task state instead of different lists. then create an extra class that is allowed to change task state and manages the different collections for speed increase
-
-        ConcurrentBag<Task> waitingTasks = new ConcurrentBag<Task>();
-        ConcurrentDictionary<string, Task> computingTasks = new ConcurrentDictionary<string, Task>();
-        ConcurrentDictionary<string, Task> finishedTasks = new ConcurrentDictionary<string, Task>();
-        ConcurrentDictionary<string, Task> failedTasks = new ConcurrentDictionary<string, Task>();
-
-        public IEnumerable<Task> Tasks { get { return waitingTasks.Concat(computingTasks.Concat(finishedTasks.Concat(failedTasks)).Select((x) => x.Value)); } }
-
-        public void Start()
+        public TaskManager(TaskSerializer serializer)
         {
-            //load
-        }
-
-        public void Stop()
-        {
-            //save
+            this.serializer = serializer;
         }
 
         public Task CheckoutTask()
         {
-            if(waitingTasks.TryTake(out Task result))
+            Task t = serializer.CheckoutTask();
+            if(t != null)
             {
-                computingTasks[result.ID] = result;
-                logger.Info("Task checked out: " + result.ID);
-                return result;
+                logger.Info("Task checked out: " + t.ID);
             }
-            return null;
+            return t;
         }
 
         public void TurnInTask(string id)
         {
-            computingTasks.TryRemove(id, out Task t);
+            serializer.UpdateStatus(id, TaskStatus.Finished);
             logger.Info("Task turned in: " + id);
-            finishedTasks[id] = t;
         }
 
         public void AbandonTask(string id, string reason = null)
         {
+            serializer.UpdateStatus(id, TaskStatus.Waiting);
             logger.Info("Task abandoned: " + id + (reason != null ? " reason: " + reason : ""));
-            computingTasks.TryRemove(id, out Task t);
-            waitingTasks.Add(t);
         }
 
         public void FailTask(string id, string reason = null)
         {
+            serializer.UpdateStatus(id, TaskStatus.Failed);
             logger.Info("Task failed: " + id + (reason != null ? " reason: " + reason : ""));
-            computingTasks.TryRemove(id, out Task t);
-            failedTasks[id] = t;
-        }
-
-        public void AddTask(Task t)
-        {
-            waitingTasks.Add(t);
         }
 
         public void AbortTask(string iD)

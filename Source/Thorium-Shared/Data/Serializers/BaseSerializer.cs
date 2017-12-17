@@ -80,5 +80,11 @@ namespace Thorium_Shared.Data.Serializers
                 yield return Load(key);
             }
         }
+
+        public void DeleteWhere<TWhere>(string column, TWhere whereis)
+        {
+            string sql = "DELETE FROM " + Table + " WHERE " + column + " = @0";
+            Database.ExecuteNonQueryTransaction(sql, whereis);
+        }
     }
 }

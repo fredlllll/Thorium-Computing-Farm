@@ -12,10 +12,10 @@ namespace Thorium_Shared
         public string ID { get; set; }
         public JObject Information { get; set; }
 
-        public LightweightTask(Task t)
+        public LightweightTask(Task t, Job job)
         {
-            JobID = t.Job.ID;
-            JobInformation = t.Job.Information;
+            JobID = job.ID;
+            JobInformation = job.Information;
             ID = t.ID;
             Information = t.Information;
         }

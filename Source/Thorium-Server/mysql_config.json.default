@@ -1,0 +1,8 @@
+﻿{
+  "databaseHost": "localhost",
+  "databasePort": 3367,
+  "databaseUser": "root",
+  "databasePassword": "",
+  "databaseName": "thorium",
+  "tablePrefix": "tho"
+}
