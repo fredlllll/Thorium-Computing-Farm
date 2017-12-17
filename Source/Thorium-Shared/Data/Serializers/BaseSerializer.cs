@@ -5,8 +5,6 @@ namespace Thorium_Shared.Data.Serializers
 {
     public abstract class BaseSerializer<TKey, TValue> : ISerializer<TKey, TValue>
     {
-        protected Dictionary<TKey, TValue> instances = new Dictionary<TKey, TValue>();
-
         public abstract IDatabase Database { get; }
         public abstract string Table { get; }
         public abstract string KeyColumn { get; }
@@ -20,33 +18,6 @@ namespace Thorium_Shared.Data.Serializers
         {
             string sql = "DELETE FROM " + Table + " WHERE " + KeyColumn + "=@0;";
             Database.ExecuteNonQueryTransaction(sql, key);
-            lock(instances)
-            {
-                instances.Remove(key);
-            }
-        }
-
-        public TValue LoadOrCached(TKey key)
-        {
-            lock(instances)
-            {
-                if(instances.TryGetValue(key, out TValue retval))
-                {
-                    return retval;
-                }
-                retval = Load(key);
-                instances[key] = retval;
-                return retval;
-            }
-        }
-
-        public void SaveAndCache(TKey key, TValue value)
-        {
-            lock(instances)
-            {
-                instances[key] = value;
-            }
-            Save(key, value);
         }
 
         public DbDataReader SelectStarWhereKey(TKey key)
