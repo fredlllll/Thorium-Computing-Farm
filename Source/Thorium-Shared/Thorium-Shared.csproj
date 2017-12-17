@@ -68,6 +68,7 @@
     <Compile Include="Data\Serializers\TaskSerializer.cs" />
     <Compile Include="JobAndTaskProperties.cs" />
     <Compile Include="JobProperties.cs" />
+    <Compile Include="JobStatus.cs" />
     <Compile Include="LightweightTask.cs" />
     <Compile Include="Logging\Logging.cs" />
     <Compile Include="Net\ClientToServerCommands.cs" />

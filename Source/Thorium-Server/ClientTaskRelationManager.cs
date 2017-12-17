@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using Thorium_Server.Data.Serializers;
 
 namespace Thorium_Server
 {
@@ -10,27 +7,67 @@ namespace Thorium_Server
     {
         Dictionary<string, ClientTaskRelation> byClient = new Dictionary<string, ClientTaskRelation>();
         Dictionary<string, ClientTaskRelation> byTask = new Dictionary<string, ClientTaskRelation>();
+        private readonly ClientTaskRelationSerializer serializer;
+
+        public ClientTaskRelationManager(ClientTaskRelationSerializer serializer)
+        {
+            this.serializer = serializer;
+        }
 
         public void Start()
         {
             //load
+            lock(byClient)
+            {
+                lock(byTask)
+                {
+                    foreach(var ctr in serializer.LoadAll())
+                    {
+                        Add(ctr);
+                    }
+                }
+            }
         }
 
         public void Stop()
         {
             //save
+            lock(byClient)
+            {
+                lock(byTask)
+                {
+                    foreach(var ctr in byClient)
+                    {
+                        serializer.Save(ctr.Key, ctr.Value);
+                    }
+                }
+            }
         }
 
         public void Add(ClientTaskRelation relation)
         {
-            byClient[relation.Client] = relation;
-            byTask[relation.Task] = relation;
+            lock(byClient)
+            {
+                lock(byTask)
+                {
+                    byClient[relation.Client] = relation;
+
+
+                    byTask[relation.Task] = relation;
+                }
+            }
         }
 
         public void Remove(ClientTaskRelation relation)
         {
-            byClient.Remove(relation.Client);
-            byTask.Remove(relation.Task);
+            lock(byClient)
+            {
+                lock(byTask)
+                {
+                    byClient.Remove(relation.Client);
+                    byTask.Remove(relation.Task);
+                }
+            }
         }
 
         public void RemoveByClient(string client)

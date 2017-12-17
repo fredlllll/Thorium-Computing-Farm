@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Thorium_Shared;
 using NLog;
+using Thorium_Shared.Data.Serializers;
 
 namespace Thorium_Server
 {
@@ -11,26 +12,34 @@ namespace Thorium_Server
 
         private readonly JobInitializer jobInitializer;
         Dictionary<string, Job> jobs = new Dictionary<string, Job>();
+        private readonly JobSerializer serializer;
+
         public IEnumerable<KeyValuePair<string, Job>> Jobs
         {
             get { return jobs; }
         }
 
-        public JobManager(ThoriumServer server)
+        public JobManager(ThoriumServer server, JobSerializer serializer)
         {
             jobInitializer = new JobInitializer(server);
             jobInitializer.JobInitializationFailed += JobInitializationFailed;
             jobInitializer.JobInitialized += JobInitialized;
+            this.serializer = serializer;
         }
 
         private void JobInitialized(JobInitializer sender, Job job)
         {
             logger.Info("Job initialized: " + job.Name);
-            jobs[job.ID] = job;
+            serializer.Save(job.ID, job);
+            lock(jobs)
+            {
+                jobs[job.ID] = job;
+            }
         }
 
         private void JobInitializationFailed(JobInitializer sender, Job job, Exception ex)
         {
+            serializer.Save(job.ID, job);
             logger.Warn("Job initialization failed: " + job.Name);
             logger.Warn(ex);
         }
@@ -38,6 +47,20 @@ namespace Thorium_Server
         public void Start()
         {
             //load
+            lock(jobs)
+            {
+                foreach(var j in serializer.LoadAll())
+                {
+                    if(j.Status == JobStatus.Initializing)
+                    {
+                        jobInitializer.AddJob(j);
+                    }
+                    else
+                    {
+                        jobs[j.ID] = j;
+                    }
+                }
+            }
 
             jobInitializer.Start();
 
@@ -86,11 +109,19 @@ namespace Thorium_Server
             jobInitializer.Stop();
 
             //save
+            lock(jobs)
+            {
+                foreach(var j in jobs)
+                {
+                    serializer.Save(j.Key, j.Value);
+                }
+            }
         }
 
         public void AddJob(Job job)
         {
             logger.Info("Adding Job to initializer: " + job.ID);
+            serializer.Save(job.ID, job);
             jobInitializer.AddJob(job);
         }
 
@@ -99,54 +130,5 @@ namespace Thorium_Server
             //job.Cancel();
             //TODO:????
         }
-
-        /*public void CancelJob(string id)
-        {
-            CancelJob(GetJobById(id));
-        }
-
-        public AJob GetJobById(string jobID)
-        {
-            AJob j;
-            if(jobs.TryGetValue(jobID, out j))
-            {
-                return j;
-            }
-            return null;
-        }
-        */
-        
-        /*public TaskInformation GetFreeTask(IThoriumClientInterfaceForServer client)
-        {
-            TaskInformation task = default(TaskInformation);
-            foreach(var kv in jobs)
-            {
-                if((task = kv.Value.GetFreeTask(client)) != default(TaskInformation))
-                {
-                    break;
-                }
-            }
-            return task;
-        }
-
-        public void SignalTaskFinished(string jobID, string id)
-        {
-            AJob job = default(AJob);
-            if(jobs.TryGetValue(jobID, out job))
-            {
-                job.SignalTaskFinished(id);
-            }
-        }
-
-        public void SignalTaskAborted(string jobID, string id, string reason)
-        {
-            AJob job = default(AJob);
-            if(jobs.TryGetValue(jobID, out job))
-            {
-                job.SignalTaskAborted(id, reason);
-            }
-        }
-        */
-
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
 
 namespace Thorium_Shared.Data.Serializers
@@ -23,24 +24,26 @@ namespace Thorium_Shared.Data.Serializers
 
             string name = (string)reader["name"];
             string informationString = (string)reader["information"];
+            JobStatus jobStatus = (JobStatus)Enum.Parse(typeof(JobStatus), (string)reader["status"]);
 
-            return new Job(key, name, JObject.Parse(informationString));
+            return new Job(key, name, JObject.Parse(informationString), jobStatus);
         }
 
         public override void Save(string key, Job value)
         {
-            string sql = "INSERT INTO " + Table + "(" + KeyColumn + ",name,information) VALUES(@0,@1,@2) ON DUPLICATE KEY UPDATE name=@3, information=@4";
+            string sql = "INSERT INTO " + Table + "(" + KeyColumn + ",name,information,status) VALUES(@0,@1,@2,@3) ON DUPLICATE KEY UPDATE name=@4, information=@5, status=@6";
             string informationString = value.Information.ToString(Newtonsoft.Json.Formatting.None);
-            Database.ExecuteNonQueryTransaction(sql, key, value.Name, informationString, value.Name, informationString);
+            Database.ExecuteNonQueryTransaction(sql, key, value.Name, informationString, value.Status.ToString(), value.Name, informationString, value.Status.ToString());
         }
 
         public override void CreateTable()
         {
-            string sql = @"CREATE TABLE IF NOT EXISTS `"+Table+ @"` (
+            string sql = @"CREATE TABLE IF NOT EXISTS `" + Table + @"` (
   `" + KeyColumn + @"` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `information` mediumtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  PRIMARY KEY (`" + KeyColumn+@"`)
+  `status` enum('Initializing','Initialized') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Initializing',
+  PRIMARY KEY (`" + KeyColumn + @"`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;";
             Database.ExecuteNonQueryTransaction(sql);
         }

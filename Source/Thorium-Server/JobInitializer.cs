@@ -60,12 +60,14 @@ namespace Thorium_Server
                                 server.TaskManager.AddTask(t); //TODO: if you leave this in the release im going to murder you (thats me)
                                 //TODO: save task to db
                             }
+                            job.Status = JobStatus.Initialized;
                             JobInitialized?.Invoke(this, job);
                             logger.Info("done");
                         }
                         //dont handle thread interrupt here
                         catch(Exception ex) when(!(ex is ThreadInterruptedException))
                         {
+                            job.Status = JobStatus.InitializationFailed;
                             JobInitializationFailed?.Invoke(this, job, ex);
                         }
                     }

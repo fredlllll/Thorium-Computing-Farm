@@ -10,12 +10,14 @@ namespace Thorium_Shared
         public string ID { get; protected set; }
         public string Name { get; protected set; }
         public JObject Information { get; protected set; }
+        public JobStatus Status { get; set; }
 
-        public Job(string id, string name, JObject info)
+        public Job(string id, string name, JObject info, JobStatus status)
         {
             ID = id;
             Name = name;
             Information = info;
+            Status = status;
         }
 
         protected ATaskProducer taskProducer = null;

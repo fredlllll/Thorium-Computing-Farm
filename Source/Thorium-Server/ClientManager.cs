@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading;
 using NLog;
 using Thorium_Shared;
+using Thorium_Shared.Data.Serializers;
 
 namespace Thorium_Server
 {
@@ -37,28 +38,47 @@ namespace Thorium_Server
         }
 
         Dictionary<string, Client> clients = new Dictionary<string, Client>();
+        private readonly ClientSerializer serializer;
 
         public delegate void ClientStoppedRespondingHandler(Client client);
         public event ClientStoppedRespondingHandler ClientStoppedResponding;
 
-        public ClientManager() : base(false)
+        public ClientManager(ClientSerializer serializer) : base(false)
         {
+            this.serializer = serializer;
         }
 
         public override void Start()
         {
             //load
+            lock(clients)
+            {
+                foreach(var c in serializer.LoadAll())
+                {
+                    clients.Add(c.ID, c);
+                }
+            }
+
             base.Start();
         }
 
         public override void Stop()
         {
             base.Stop();
+
             //save
+            lock(clients)
+            {
+                foreach(var c in clients)
+                {
+                    serializer.Save(c.Key, c.Value);
+                }
+            }
         }
 
         public void RegisterClient(Client client)
         {
+            serializer.Save(client.ID, client);
             lock(clients)
             {
                 clients[client.ID] = client;
@@ -77,7 +97,8 @@ namespace Thorium_Server
             {
                 clients.Remove(client.ID);
             }
-            logger.Info("Client Unregistered: " + client.IPAddress + " - " + (reason == null ? "No Reason given" : "Reason: " + reason));
+            serializer.Delete(client.ID);
+            logger.Info("Client " + client.ID + " Unregistered: " + client.IPAddress + " - " + (reason == null ? "No Reason given" : "Reason: " + reason));
         }
 
         protected override void Run()

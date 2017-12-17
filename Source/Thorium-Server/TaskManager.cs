@@ -20,6 +20,16 @@ namespace Thorium_Server
 
         public IEnumerable<Task> Tasks { get { return waitingTasks.Concat(computingTasks.Concat(finishedTasks.Concat(failedTasks)).Select((x) => x.Value)); } }
 
+        public void Start()
+        {
+            //load
+        }
+
+        public void Stop()
+        {
+            //save
+        }
+
         public Task CheckoutTask()
         {
             if(waitingTasks.TryTake(out Task result))
