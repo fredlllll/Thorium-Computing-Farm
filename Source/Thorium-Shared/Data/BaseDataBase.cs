@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Data;
 using System.Data.Common;
 
 namespace Thorium_Shared.Data
@@ -30,7 +29,7 @@ namespace Thorium_Shared.Data
             return Connection.BeginTransaction();
         }
 
-        public abstract DbParameter GetParameter(int index, DbType type, object value);
+        public abstract DbParameter GetParameter(int index, object value);
         /*
         var sqlParam = new SQLiteParameter("@" + i.ToString(), Util.TypeMap[param.GetType()])
         {
@@ -59,9 +58,10 @@ namespace Thorium_Shared.Data
                     for(int i = 0; i < parameters.Length; i++)
                     {
                         var paramValue = parameters[i];
-                        var param = GetParameter(i, Util.TypeMap[paramValue.GetType()], paramValue);
+                        var param = GetParameter(i, paramValue);
                         cmd.Parameters.Add(param);
                     }
+                    cmd.Prepare();
                     cmd.ExecuteNonQuery();
                     transaction.Commit();
                 }
@@ -75,17 +75,17 @@ namespace Thorium_Shared.Data
 
         public DbDataReader ExecuteQuery(string sql, params object[] parameters)
         {
-            using(var cmd = GetCommand())
+            var cmd = GetCommand(); //cmd is closed from reader
+            cmd.CommandText = sql;
+            for(int i = 0; i < parameters.Length; i++)
             {
-                cmd.CommandText = sql;
-                for(int i = 0; i < parameters.Length; i++)
-                {
-                    var paramValue = parameters[i];
-                    var param = GetParameter(i, Util.TypeMap[paramValue.GetType()], paramValue);
-                    cmd.Parameters.Add(param);
-                }
-                return cmd.ExecuteReader();
+                var paramValue = parameters[i];
+                var param = GetParameter(i, paramValue);
+                cmd.Parameters.Add(param);
             }
+            cmd.Prepare();
+            var reader = cmd.ExecuteReader();
+            return reader;
         }
 
         #region IDisposable Support

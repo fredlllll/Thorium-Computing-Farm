@@ -150,17 +150,22 @@ namespace Thorium_Shared.Data
 
             string sql = "SELECT * FROM " + tableName;
 
-            var reader = database.ExecuteQuery(sql);
-            while(reader.Read())
+            using(var reader = database.ExecuteQuery(sql))
             {
-                DatabaseObject instance = GetInstance(t);
-                foreach(var prop in properties)
+                if(reader.HasRows)
                 {
-                    var tmp = Convert.ChangeType(reader[prop.Name], prop.PropertyType);
-                    prop.SetValue(instance, tmp);
+                    while(reader.Read())
+                    {
+                        DatabaseObject instance = GetInstance(t);
+                        foreach(var prop in properties)
+                        {
+                            var tmp = Convert.ChangeType(reader[prop.Name], prop.PropertyType);
+                            prop.SetValue(instance, tmp);
+                        }
+                        instance.Serializer = this;
+                        objects[(long)reader[nameof(DatabaseObject.___Id___)]] = instance;
+                    }
                 }
-                instance.Serializer = this;
-                objects[(long)reader[nameof(DatabaseObject.___Id___)]] = instance;
             }
             return objects;
         }
@@ -172,16 +177,19 @@ namespace Thorium_Shared.Data
             var properties = GetDataProperties(t);
             string sql = "SELECT * FROM " + tableName + " WHERE " + nameof(DatabaseObject.___Id___) + " = " + id;
 
-            var reader = database.ExecuteQuery(sql);
-            if(reader.Read())
+            using(var reader = database.ExecuteQuery(sql))
             {
-                DatabaseObject instance = GetInstance(t);
-                foreach(var prop in properties)
+                if(reader.HasRows)
                 {
-                    prop.SetValue(instance, reader[prop.Name]);
+                    reader.Read();
+                    DatabaseObject instance = GetInstance(t);
+                    foreach(var prop in properties)
+                    {
+                        prop.SetValue(instance, reader[prop.Name]);
+                    }
+                    instance.Serializer = this;
+                    return instance;
                 }
-                instance.Serializer = this;
-                return instance;
             }
             return null;
         }

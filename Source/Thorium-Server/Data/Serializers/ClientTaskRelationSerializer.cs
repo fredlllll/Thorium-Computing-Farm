@@ -21,13 +21,15 @@ namespace Thorium_Server.Data.Serializers
 
         public override ClientTaskRelation Load(string key)
         {
-            var reader = SelectStarWhereKey(key);
-            reader.Read();
+            using(var reader = SelectStarWhereKey(key))
+            {
+                reader.Read();
 
-            string client = (string)reader["client_id"];
-            string task = (string)reader["task_id"];
+                string client = (string)reader["client_id"];
+                string task = (string)reader["task_id"];
 
-            return new ClientTaskRelation(client, task);
+                return new ClientTaskRelation(client, task);
+            }
         }
 
         public override void Save(string key, ClientTaskRelation value)

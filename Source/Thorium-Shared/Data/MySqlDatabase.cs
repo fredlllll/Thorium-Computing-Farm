@@ -10,12 +10,14 @@ namespace Thorium_Shared.Data
         {
         }
 
-        public override DbParameter GetParameter(int index, DbType type, object value)
+        public override DbParameter GetParameter(int index, object value)
         {
-            return new MySqlParameter("@" + index, type)
+            return new MySqlParameter("@" + index, value);
+            //DbType type = Util.ResolveType(value);
+            /*return new MySqlParameter("@" + index, type)
             {
                 Value = value
-            };
+            };*/
         }
     }
 }

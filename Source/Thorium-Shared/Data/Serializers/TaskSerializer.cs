@@ -24,16 +24,18 @@ namespace Thorium_Shared.Data.Serializers
 
         public override Task Load(string key)
         {
-            var reader = SelectStarWhereKey(key);
-            reader.Read();
+            using(var reader = SelectStarWhereKey(key))
+            {
+                reader.Read();
 
-            string jobId = (string)reader["job_id"];
-            string informationString = (string)reader["information"];
-            string status = (string)reader["status"];
+                string jobId = (string)reader["job_id"];
+                string informationString = (string)reader["information"];
+                string status = (string)reader["status"];
 
-            //Job job = jobSer.LoadOrCached(jobId);
+                //Job job = jobSer.LoadOrCached(jobId);
 
-            return new Task(jobId, key, JObject.Parse(informationString), (TaskStatus)Enum.Parse(typeof(TaskStatus), status));
+                return new Task(jobId, key, JObject.Parse(informationString), (TaskStatus)Enum.Parse(typeof(TaskStatus), status));
+            }
         }
 
         public override void Save(string key, Task value)
@@ -48,13 +50,16 @@ namespace Thorium_Shared.Data.Serializers
             string sql = "SET @update_id:='';" +
                 "UPDATE " + Table + " SET status='" + TaskStatus.Processing.ToString() + "', " + KeyColumn + "=(SELECT @update_id:=" + KeyColumn + ") WHERE status='" + TaskStatus.Waiting.ToString() + "' LIMIT 1;" +
                 "SELECT @update_id;";
-            var reader = Database.ExecuteQuery(sql);
-            if(reader.Read())
+            using(var reader = Database.ExecuteQuery(sql))
             {
-                string id = (string)reader[0];
-                if(!string.IsNullOrWhiteSpace(id))
+                if(reader.HasRows)
                 {
-                    return Load(id);
+                    reader.Read();
+                    string id = (string)reader[0];
+                    if(!string.IsNullOrWhiteSpace(id))
+                    {
+                        return Load(id);
+                    }
                 }
             }
             return null;

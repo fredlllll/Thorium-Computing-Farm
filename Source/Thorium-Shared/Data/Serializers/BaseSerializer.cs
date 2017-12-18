@@ -34,20 +34,40 @@ namespace Thorium_Shared.Data.Serializers
         public IEnumerable<TValue> LoadAll()
         {
             string sql = "SELECT " + KeyColumn + " FROM " + Table;
-            var reader = Database.ExecuteQuery(sql);
-            while(reader.Read())
+            List<TKey> keys = new List<TKey>();
+            using(var reader = Database.ExecuteQuery(sql))
             {
-                yield return Load((TKey)reader[KeyColumn]);
+                if(reader.HasRows)
+                {
+                    while(reader.Read())
+                    {
+                        keys.Add((TKey)reader[KeyColumn]);
+                    }
+                }
+            }
+            foreach(var key in keys)
+            {
+                yield return Load(key);
             }
         }
 
         public IEnumerable<TValue> LoadWhere<TWhere>(string column, TWhere whereis)
         {
             string sql = "SELECT " + KeyColumn + " FROM " + Table + " WHERE " + column + " = @0;";
-            var reader = Database.ExecuteQuery(sql, whereis);
-            while(reader.Read())
+            List<TKey> keys = new List<TKey>();
+            using(var reader = Database.ExecuteQuery(sql, whereis))
             {
-                TKey key = (TKey)reader[KeyColumn];
+                if(reader.HasRows)
+                {
+                    while(reader.Read())
+                    {
+                        keys.Add((TKey)reader[KeyColumn]);
+                    }
+                }
+            }
+
+            foreach(var key in keys)
+            {
                 yield return Load(key);
             }
         }

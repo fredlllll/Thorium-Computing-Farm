@@ -12,6 +12,30 @@ namespace Thorium_Server.Data
 {
     public class DataManager
     {
+        public static MySqlConnection GetNewConnection(string host, UInt16 port, string user, string password, string db)
+        {
+            //reference https://dev.mysql.com/doc/connector-net/en/connector-net-connection-options.html
+            return new MySqlConnection("SERVER=" + host + ";PORT=" + port + ";DATABASE=" + db + ";USER=" + user + ";PASSWORD=" + password + ";");
+        }
+
+        public static MySqlDatabase GetNewDatabase()
+        {
+            string host = MySqlConfig.DatabaseHost;
+            ushort port = MySqlConfig.DatabasePort;
+            string user = MySqlConfig.DatabaseUser;
+            string password = MySqlConfig.DatabasePassword;
+            string db = MySqlConfig.DatabaseName;
+            string tablePrefix = MySqlConfig.TablePrefix;
+
+            var conn = GetNewConnection(host, port, user, password, db);
+            conn.Open();
+
+            return new MySqlDatabase(conn)
+            {
+                TablePrefix = tablePrefix
+            };
+        }
+
         public TaskSerializer TaskSerializer { get; set; }
         public JobSerializer JobSerializer { get; set; }
         public ClientSerializer ClientSerializer { get; set; }
@@ -19,14 +43,9 @@ namespace Thorium_Server.Data
 
         MySqlDatabase database;
 
-        public DataManager(string host, UInt16 port, string user, string password, string db, string tablePrefix)
+        public DataManager()
         {
-            var conn = new MySqlConnection("");
-
-            database = new MySqlDatabase(conn)
-            {
-                TablePrefix = tablePrefix
-            };
+            database = GetNewDatabase();
 
             JobSerializer = new JobSerializer(database);
             TaskSerializer = new TaskSerializer(database, JobSerializer);

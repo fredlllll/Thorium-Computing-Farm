@@ -19,14 +19,16 @@ namespace Thorium_Shared.Data.Serializers
 
         public override Job Load(string key)
         {
-            var reader = SelectStarWhereKey(key);
-            reader.Read();
+            using(var reader = SelectStarWhereKey(key))
+            {
+                reader.Read();
 
-            string name = (string)reader["name"];
-            string informationString = (string)reader["information"];
-            JobStatus jobStatus = (JobStatus)Enum.Parse(typeof(JobStatus), (string)reader["status"]);
+                string name = (string)reader["name"];
+                string informationString = (string)reader["information"];
+                JobStatus jobStatus = (JobStatus)Enum.Parse(typeof(JobStatus), (string)reader["status"]);
 
-            return new Job(key, name, JObject.Parse(informationString), jobStatus);
+                return new Job(key, name, JObject.Parse(informationString), jobStatus);
+            }
         }
 
         public override void Save(string key, Job value)

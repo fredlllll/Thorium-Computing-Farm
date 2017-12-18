@@ -1,6 +1,8 @@
 ﻿using System.Threading;
 using NLog;
+using Thorium_Server.Data;
 using Thorium_Shared;
+using Thorium_Shared.Data;
 using Thorium_Shared.Data.Serializers;
 
 namespace Thorium_Server
@@ -9,24 +11,28 @@ namespace Thorium_Server
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();
 
-        private readonly ClientSerializer serializer;
+        private ClientSerializer serializer;
 
         public delegate void ClientStoppedRespondingHandler(Client client);
         public event ClientStoppedRespondingHandler ClientStoppedResponding;
 
-        public ClientManager(ClientSerializer serializer) : base(false)
+        MySqlDatabase database;
+
+        public ClientManager() : base(false)
         {
-            this.serializer = serializer;
         }
 
         public override void Start()
         {
+            database = DataManager.GetNewDatabase();
+            serializer = new ClientSerializer(database);
             base.Start();
         }
 
         public override void Stop()
         {
             base.Stop();
+            database.Dispose();
         }
 
         public void RegisterClient(Client client)

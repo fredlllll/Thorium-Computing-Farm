@@ -6,8 +6,18 @@ namespace Thorium_Shared.Data
 {
     public static class Util
     {
-        public static Dictionary<Type, DbType> TypeMap { get; } = new Dictionary<Type, DbType>();
+        private static Dictionary<Type, DbType> TypeMap { get; } = new Dictionary<Type, DbType>();
         //public static Dictionary<Type, string> TypeAffinityMap { get; } = new Dictionary<Type, string>();
+
+        public static DbType ResolveType(object obj)
+        {
+            Type t = obj.GetType();
+            if(TypeMap.TryGetValue(t, out DbType retval))
+            {
+                return retval;
+            }
+            return DbType.Object;
+        }
 
         static Util()
         {

@@ -23,11 +23,11 @@ namespace Thorium_Server
 
         public ThoriumServer()
         {
-            DataManager = new DataManager(MySqlConfig.DatabaseHost, MySqlConfig.DatabasePort, MySqlConfig.DatabaseUser, MySqlConfig.DatabasePassword, MySqlConfig.DatabaseName, MySqlConfig.TablePrefix);
+            DataManager = new DataManager();
 
             JobManager = new JobManager(this, DataManager.JobSerializer, DataManager.TaskSerializer);
             TaskManager = new TaskManager(DataManager.TaskSerializer);
-            ClientManager = new ClientManager(DataManager.ClientSerializer);
+            ClientManager = new ClientManager();
             ClientTaskRelationManager = new ClientTaskRelationManager(DataManager.ClientTaskRelationSerializer);
 
             //TODO remove ThoriumServerConfig.ListeningPort from config

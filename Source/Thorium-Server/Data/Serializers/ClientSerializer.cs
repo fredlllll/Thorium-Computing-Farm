@@ -21,12 +21,14 @@ namespace Thorium_Shared.Data.Serializers
 
         public override Client Load(string key)
         {
-            var reader = SelectStarWhereKey(key);
-            reader.Read();
+            using(var reader = SelectStarWhereKey(key))
+            {
+                reader.Read();
 
-            string ip = (string)reader["ip"];
+                string ip = (string)reader["ip"];
 
-            return new Client(IPAddress.Parse(ip), key);
+                return new Client(IPAddress.Parse(ip), key);
+            }
         }
 
         public override void Save(string key, Client value)

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Data;
-using System.Data.Common;
+﻿using System.Data.Common;
 
 namespace Thorium_Shared.Data
 {
@@ -11,7 +9,7 @@ namespace Thorium_Shared.Data
 
         DbCommand GetCommand();
         DbTransaction GetTransaction();
-        DbParameter GetParameter(int index, DbType type, object value);
+        DbParameter GetParameter(int index, object value);
 
         string GetTableName(string name);
 
