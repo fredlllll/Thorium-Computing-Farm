@@ -41,11 +41,6 @@ namespace Thorium_Server
         public void Start()
         {
             //load
-            foreach(var j in jobSerializer.LoadAll())
-            {
-
-            }
-
             foreach(var j in jobSerializer.LoadWhere("status", JobStatus.Initializing.ToString()))
             {
                 taskSerializer.DeleteWhere("job_id", j.ID);//delete tasks that were saved previously, but job init wasnt completed
