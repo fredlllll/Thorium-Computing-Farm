@@ -13,7 +13,7 @@ namespace Thorium_Shared.Net.ServicePoint
 
         //TODO: service point configuration file?
 
-        private void CheckStarted()
+        private void RequireNotStarted()
         {
             if(started)
             {
@@ -23,7 +23,7 @@ namespace Thorium_Shared.Net.ServicePoint
 
         public void RegisterRoutine(Routine routine)
         {
-            CheckStarted();
+            RequireNotStarted();
             if(routines.ContainsKey(routine.Name))
             {
                 throw new ArgumentException("There is already a routine named '" + routine.Name + "' registered");

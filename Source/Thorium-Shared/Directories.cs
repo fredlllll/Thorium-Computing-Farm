@@ -1,15 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+﻿using System.IO;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Thorium_Shared
 {
     public static class Directories
     {
+        /// <summary>
+        /// Gives the directory that contains the assembly that called this
+        /// </summary>
+        public static string AssemblyDir
+        {
+            get
+            {
+                return Path.GetDirectoryName(Assembly.GetCallingAssembly().Location);
+            }
+        }
+
+        /// <summary>
+        /// Gives the directory that contains the entry assembly
+        /// </summary>
         public static string ProgramDir
         {
             get
@@ -18,6 +27,9 @@ namespace Thorium_Shared
             }
         }
 
+        /// <summary>
+        /// Gives the users (windows) or systems (linux) temp directory
+        /// </summary>
         public static string TempDir
         {
             get

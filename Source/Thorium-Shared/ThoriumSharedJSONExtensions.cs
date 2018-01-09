@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
-
+using Thorium_Shared;
 
 public static class ThoriumSharedJSONExtensions
 {
@@ -16,6 +17,53 @@ public static class ThoriumSharedJSONExtensions
             return token.Value<T>();
         }
         return def;
+    }
+
+    static object ConvertTo<T>(this T token, Type u) where T : JToken
+    {
+        if(token == null)
+        {
+            return ReflectionHelper.GetDefault(u);
+        }
+        if(u.IsAssignableFrom(token.GetType()) && u != typeof(IComparable) && u != typeof(IFormattable))
+        {
+            return token;
+        }
+        JValue jValue = token as JValue;
+        if(jValue == null)
+        {
+            throw new InvalidCastException(String.Format(CultureInfo.InvariantCulture, "Cannot cast {0} to {1}.", token.GetType(), typeof(T)));
+        }
+        if(u.IsAssignableFrom(jValue.Value.GetType()))
+        {
+            return jValue.Value;
+        }
+        if(ReflectionHelper.IsNullableType(u))
+        {
+            if(jValue.Value == null)
+            {
+                return ReflectionHelper.GetDefault(u);
+            }
+            u = Nullable.GetUnderlyingType(u);
+        }
+        return System.Convert.ChangeType(jValue.Value, u, CultureInfo.InvariantCulture);
+    }
+
+    public static object Get(this JObject jobj, Type t, string key, object def = null)
+    {
+        var token = jobj[key];
+
+        if(token != null && !token.IsNull())
+        {
+            return token.ConvertTo(t);
+        }
+        return def;
+    }
+
+    public static bool HasValue(this JObject jobj, string key)
+    {
+        var token = jobj[key];
+        return token != null;
     }
 
     public static bool IsNull(this JToken token)

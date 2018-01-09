@@ -8,7 +8,7 @@ using Newtonsoft.Json.Linq;
 
 namespace Thorium_Client
 {
-    public static class ThoriumClientConfig
+    /*public static class ThoriumClientConfig
     {
         public static UInt16 ServerListeningPort { get; private set; }
         public static string ServerHost { get; private set; }
@@ -25,5 +25,5 @@ namespace Thorium_Client
             ServerListeningPort = obj.Get<UInt16>("serverListeningPort");
             ServerHost = obj.Get<string>("serverHost");
         }
-    }
+    }*/
 }

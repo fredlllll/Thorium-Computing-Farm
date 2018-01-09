@@ -2,11 +2,14 @@
 using System.Threading;
 using Thorium_Shared;
 using NLog;
+using Thorium_Shared.Config;
 
 namespace Thorium_Client
 {
     public class ThoriumClient : RestartableThreadClass
     {
+        private static dynamic config = ConfigFile.GetClassConfig();
+
         private static Logger logger = LogManager.GetCurrentClassLogger();
 
         private ServerInterface serverInterface;
@@ -15,7 +18,7 @@ namespace Thorium_Client
 
         public ThoriumClient() : base(false)
         {
-            serverInterface = new ServerInterface(ThoriumClientConfig.ServerHost, ThoriumClientConfig.ServerListeningPort, this);
+            serverInterface = new ServerInterface(config.ServerHost, config.ServerListeningPort, this);
         }
 
         public override void Start()

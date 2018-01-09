@@ -60,12 +60,17 @@
   <ItemGroup>
     <Compile Include="AExecutioner.cs" />
     <Compile Include="ConcurrentList.cs" />
+    <Compile Include="Config\ConfigFile.cs" />
     <Compile Include="Data\BaseDataBase.cs" />
     <Compile Include="Data\ISerializer.cs" />
     <Compile Include="Data\Serializers\BaseSerializer.cs" />
     <Compile Include="Data\Serializers\JobSerializer.cs" />
     <Compile Include="Data\MySqlDatabase.cs" />
     <Compile Include="Data\Serializers\TaskSerializer.cs" />
+    <Compile Include="Events\EventService.cs" />
+    <Compile Include="Events\IEventQueue.cs" />
+    <Compile Include="Events\IEventQueueProvider.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="JobAndTaskProperties.cs" />
     <Compile Include="JobProperties.cs" />
     <Compile Include="JobStatus.cs" />
@@ -98,19 +103,12 @@
     <Compile Include="Files.cs" />
     <Compile Include="Jobtypes\SimpleExecution\SEExecutioner.cs" />
     <Compile Include="Jobtypes\SimpleExecution\SETaskProducer.cs" />
-    <Compile Include="Net\Comms\CommsFactory.cs" />
-    <Compile Include="Net\Comms\IMessageTransceiver.cs" />
-    <Compile Include="Net\Comms\JsonTransceiver.cs" />
-    <Compile Include="Net\Comms\ServiceClient.cs" />
-    <Compile Include="Net\Comms\ServiceServer.cs" />
     <Compile Include="Net\ServerControlCommands.cs" />
     <Compile Include="PluginLoader.cs" />
     <Compile Include="RunExecutableAction.cs" />
     <Compile Include="Task.cs" />
     <Compile Include="ThoriumSharedJSONExtensions.cs" />
     <Compile Include="LoggedProcessInfo.cs" />
-    <Compile Include="Net\JSONObjectClient.cs" />
-    <Compile Include="Net\JSONObjectServer.cs" />
     <Compile Include="ProcessUtil.cs" />
     <Compile Include="RestartableThreadClass.cs" />
     <Compile Include="Unused\JobTypes\Blender\BlenderEngineConfig.cs" />
