@@ -33,11 +33,9 @@
   <ItemGroup>
     <Compile Include="Files.cs" />
     <Compile Include="FileSystemStorageBackend.cs" />
-    <Compile Include="FileSystemStorageBackendConfig.cs" />
     <Compile Include="IStorageBackend.cs" />
     <Compile Include="StorageService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StorageServiceConfig.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="file_system_storage_backend_config.json.default">
