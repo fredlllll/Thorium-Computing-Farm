@@ -1,4 +1,5 @@
 ﻿using Thorium_Server.Data;
+using Thorium_Shared.Config;
 
 namespace Thorium_Server
 {
@@ -32,7 +33,8 @@ namespace Thorium_Server
 
             //TODO remove ThoriumServerConfig.ListeningPort from config
             serverController = new ServerController(this);
-            clientsServer = new ClientsServicePoint(this, ThoriumServerConfig.ClientListeningPort);
+            var config = ConfigFile.GetClassConfig();
+            clientsServer = new ClientsServicePoint(this, config.ClientListeningPort);
         }
 
 

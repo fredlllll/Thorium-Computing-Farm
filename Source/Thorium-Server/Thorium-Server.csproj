@@ -69,7 +69,6 @@
     <Compile Include="Files.cs" />
     <Compile Include="JobInitializer.cs" />
     <Compile Include="JobManager.cs" />
-    <Compile Include="MySqlConfig.cs" />
     <Compile Include="ServerController.cs" />
     <Compile Include="TaskManager.cs" />
     <Compile Include="Program.cs" />

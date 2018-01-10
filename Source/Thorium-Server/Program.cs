@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading;
 using Newtonsoft.Json.Linq;
 using Thorium_Shared;
+using Thorium_Shared.Config;
 using Thorium_Shared.Logging;
 using Thorium_Shared.Net;
 using Thorium_Shared.Net.ServicePoint;
@@ -39,7 +40,9 @@ namespace Thorium_Server
 
         static void AddBlenderJob()
         {
-            var client = new TCPServiceInvoker("localhost", ThoriumServerConfig.ListeningPort);
+            var config = ConfigFile.GetConfig("thorium_server");
+
+            var client = new TCPServiceInvoker("localhost", config.ListeningPort);
 
             JObject info = new JObject
             {

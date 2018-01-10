@@ -20,12 +20,14 @@ namespace Thorium_Server.Data
 
         public static MySqlDatabase GetNewDatabase()
         {
-            string host = MySqlConfig.DatabaseHost;
-            ushort port = MySqlConfig.DatabasePort;
-            string user = MySqlConfig.DatabaseUser;
-            string password = MySqlConfig.DatabasePassword;
-            string db = MySqlConfig.DatabaseName;
-            string tablePrefix = MySqlConfig.TablePrefix;
+            dynamic config = Thorium_Shared.Config.ConfigFile.GetConfig("mysql");
+
+            string host = config.DatabaseHost;
+            ushort port = config.DatabasePort;
+            string user = config.DatabaseUser;
+            string password = config.DatabasePassword;
+            string db =config.DatabaseName;
+            string tablePrefix = config.TablePrefix;
 
             var conn = GetNewConnection(host, port, user, password, db);
             conn.Open();

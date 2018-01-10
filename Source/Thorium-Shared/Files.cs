@@ -15,25 +15,42 @@ namespace Thorium_Shared
             return file + ".default";
         }
 
+        public static List<string> Dirs { get; } = new List<string>();
+
+        static Files()
+        {
+            Dirs.Add(Directories.ProgramDir);
+            Dirs.Add(Directories.AssemblyDir);
+        }
+
+        static IEnumerable<string> GetFiles(string file)
+        {
+            IEnumerable<string> retval = Enumerable.Empty<string>();
+            foreach(var d in Dirs)
+            {
+                retval = retval.Concat(Directory.EnumerateFiles(d, file, SearchOption.AllDirectories));
+            }
+            return retval;
+        }
+
         public static string ResolveFileOrDefault(string file)
         {
-            var files = Directory.EnumerateFiles(Directories.ProgramDir, file, SearchOption.AllDirectories);
-            var retval = files.FirstOrDefault();
+            //first look for file in all dirs, then for its default
+            var retval = GetFiles(file).FirstOrDefault();
             if(retval != null)
             {
                 return retval;
             }
             string defaultFile = GetDefault(file);
-            files = Directory.EnumerateFiles(Directories.ProgramDir, defaultFile, SearchOption.AllDirectories);
-            retval = files.FirstOrDefault();
+            retval = GetFiles(defaultFile).FirstOrDefault();
             if(retval != null)
             {
                 return retval;
             }
-            return file;
+            return null;
         }
 
-        private static Dictionary<string, string> executablePaths = new Dictionary<string, string>();
+        private static Dictionary<string, string> executablesCache = new Dictionary<string, string>();
 
         /// <summary>
         /// this is needed on unix to find files of executables that you could call in the terminal
@@ -42,7 +59,7 @@ namespace Thorium_Shared
         /// <returns></returns>
         public static string GetExecutablePath(string executableName)
         {
-            if(!executablePaths.TryGetValue(executableName, out string path))
+            if(!executablesCache.TryGetValue(executableName, out string path))
             {
                 Process p = ProcessUtil.BeginRunExecutableWithRedirect("/usr/bin/which", executableName);
                 path = p.StandardOutput.ReadToEnd().TrimEnd('\r', '\n');

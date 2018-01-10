@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using NLog;
 using Thorium_Shared;
+using Thorium_Shared.Config;
 
 namespace Thorium_Storage_Service
 {
@@ -20,11 +21,13 @@ namespace Thorium_Storage_Service
 
         static StorageService()
         {
-            Type t = ReflectionHelper.GetType(StorageServiceConfig.StorageBackend);
+            var config = ConfigFile.GetClassConfig();
+
+            Type t = ReflectionHelper.GetType(config.StorageBackend);
             if(t == null)
             {
-                logger.Error("could not find type: " + StorageServiceConfig.StorageBackend);
-                throw new Exception("could not find type: " + StorageServiceConfig.StorageBackend);
+                logger.Error("could not find type: " + config.StorageBackend);
+                throw new Exception("could not find type: " + config.StorageBackend);
             }
             ConstructorInfo ci = t.GetConstructor(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, Type.EmptyTypes, null);
             storageBackend = (IStorageBackend)ci.Invoke(new Type[] { });

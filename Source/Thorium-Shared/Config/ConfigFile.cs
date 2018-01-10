@@ -51,15 +51,20 @@ namespace Thorium_Shared.Config
             return obj.Properties().Select(x => x.Name.FirstCharacterToUpper());
         }
 
-        public static dynamic GetClassConfig()
+        public static dynamic GetConfig(string name)
         {
-            Type t = ReflectionHelper.GetCallingType();
-            string name = Char.ToLowerInvariant(t.Name[0]) + String.Join("", t.Name.Skip(1).Select(x => char.IsUpper(x) ? ("_" + x) : (char.ToLowerInvariant(x).ToString())));
             name += "_config.json";
 
             string file = Files.ResolveFileOrDefault(name);
 
             return new ConfigFile(file);
+        }
+
+        public static dynamic GetClassConfig()
+        {
+            Type t = ReflectionHelper.GetCallingType();
+            string name = Char.ToLowerInvariant(t.Name[0]) + String.Join("", t.Name.Skip(1).Select(x => char.IsUpper(x) ? ("_" + x) : (char.ToLowerInvariant(x).ToString())));
+            return GetConfig(name);
         }
     }
 }
