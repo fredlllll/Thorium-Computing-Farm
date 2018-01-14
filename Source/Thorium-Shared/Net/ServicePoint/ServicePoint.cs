@@ -1,17 +1,80 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using Newtonsoft.Json.Linq;
+using NLog;
+using Thorium_Shared.Config;
 
 namespace Thorium_Shared.Net.ServicePoint
 {
     public class ServicePoint
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
+
         private bool started = false;
 
         private readonly Dictionary<string, Routine> routines = new Dictionary<string, Routine>();
-        private readonly List<IServiceInvokationReceiver> invokers = new List<IServiceInvokationReceiver>();
+        private readonly List<IServiceInvokationReceiver> invokationReceivers = new List<IServiceInvokationReceiver>();
 
-        //TODO: service point configuration file?
+        public ServicePoint(string configName = null)
+        {
+            if(configName != null)
+            {
+                var config = ConfigFile.GetConfig(configName);
+                JArray invokationReceivers = config.InvokationReceivers;
+                foreach(var val in invokationReceivers)
+                {
+                    if(val is JObject jo && jo.Get("load", false))
+                    {
+                        var type = jo.Get<string>("type");
+
+                        Type t = ReflectionHelper.GetType(type);
+                        if(t == null)
+                        {
+                            logger.Warn("Couldn't find type: " + type);
+                            continue;
+                        }
+                        ConstructorInfo ci = null;
+                        ci = t.GetConstructor(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, new Type[] { typeof(string) }, null);
+                        if(ci != null)
+                        {
+                            AddFromConstructor(ci, new object[] { jo.Get<string>("args") });
+                        }
+                        else
+                        {
+                            ci = t.GetConstructor(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, Type.EmptyTypes, null);
+                            if(ci == null)
+                            {
+                                logger.Warn("Couldn't find constructor for " + t.AssemblyQualifiedName + ". Provide either a default constructor or one that takes a string argument");
+                                continue;
+                            }
+                            AddFromConstructor(ci, new object[0]);
+                        }
+                    }
+                }
+            }
+        }
+
+        private void AddFromConstructor(ConstructorInfo ci, object[] args)
+        {
+            try
+            {
+                object obj = ci.Invoke(args);
+                if(obj is IServiceInvokationReceiver sir)
+                {
+                    RegisterInvokationReceiver(sir);
+                }
+                else
+                {
+                    logger.Warn(ci.ReflectedType.AssemblyQualifiedName + " Is not a " + nameof(IServiceInvokationReceiver));
+                }
+            }
+            catch(TargetInvocationException ex)
+            {
+                logger.Error("Error thrown when creating service invokation receiver: " + ci.ReflectedType.AssemblyQualifiedName);
+                logger.Error(ex);
+            }
+        }
 
         private void RequireNotStarted()
         {
@@ -33,7 +96,7 @@ namespace Thorium_Shared.Net.ServicePoint
 
         public void RegisterInvokationReceiver(IServiceInvokationReceiver si)
         {
-            invokers.Add(si);
+            invokationReceivers.Add(si);
         }
 
         public void Start()
@@ -43,7 +106,7 @@ namespace Thorium_Shared.Net.ServicePoint
                 throw new InvalidOperationException("Can't start more than once");
             }
 
-            foreach(var si in invokers)
+            foreach(var si in invokationReceivers)
             {
                 si.InvokationReceived += HandleInvokationReceived;
                 si.Start();
@@ -57,7 +120,7 @@ namespace Thorium_Shared.Net.ServicePoint
                 throw new InvalidOperationException("Can't stop before starting");
             }
 
-            foreach(var si in invokers)
+            foreach(var si in invokationReceivers)
             {
                 si.InvokationReceived -= HandleInvokationReceived;
                 si.Stop();

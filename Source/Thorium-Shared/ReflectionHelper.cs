@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace Thorium_Shared
 {
-    public class ReflectionHelper
+    public static class ReflectionHelper
     {
         /// <summary>
         /// searches using name, namespace+name and assembly qualified name

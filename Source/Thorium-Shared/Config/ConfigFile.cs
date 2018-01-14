@@ -43,6 +43,9 @@ namespace Thorium_Shared.Config
                 cache[binder.Name] = result;
                 return true;
             }
+
+            //TODO: should i instead throw an exception with a meaningful message?
+
             return false;
         }
 
@@ -51,6 +54,11 @@ namespace Thorium_Shared.Config
             return obj.Properties().Select(x => x.Name.FirstCharacterToUpper());
         }
 
+        /// <summary>
+        /// searches for a file name+"_config.json"
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
         public static dynamic GetConfig(string name)
         {
             name += "_config.json";

@@ -6,6 +6,7 @@ using System.Net.Sockets;
 using System.Threading;
 using Newtonsoft.Json.Linq;
 using NLog;
+using Thorium_Shared.Config;
 
 namespace Thorium_Shared.Net.ServicePoint
 {
@@ -17,9 +18,11 @@ namespace Thorium_Shared.Net.ServicePoint
 
         TcpListener listener;
 
-        public TCPServiceInvokationReceiver(int port)
+        public TCPServiceInvokationReceiver(string configName)
         {
-            listener = new TcpListener(IPAddress.Any, port);
+            var config = ConfigFile.GetConfig(configName);
+
+            listener = new TcpListener(IPAddress.Any, config.Port);
         }
 
         public void Start()

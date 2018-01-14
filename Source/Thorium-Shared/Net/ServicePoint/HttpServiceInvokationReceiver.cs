@@ -3,6 +3,7 @@ using System.IO;
 using System.Net;
 using System.Text;
 using Newtonsoft.Json.Linq;
+using Thorium_Shared.Config;
 
 namespace Thorium_Shared.Net.ServicePoint
 {
@@ -10,13 +11,22 @@ namespace Thorium_Shared.Net.ServicePoint
     {
         HttpListener listener;
 
+        private int port;
+
         public event InvokationHandler InvokationReceived;
+
+        public HttpServiceInvokationReceiver(string configName)
+        {
+            var c = ConfigFile.GetConfig(configName);
+
+            port = c.Port;
+        }
 
         public void Start()
         {
             listener = new HttpListener();
 
-            int port = 80;
+
 
             listener.Prefixes.Add(string.Format("http://*:{0}/", port));
 

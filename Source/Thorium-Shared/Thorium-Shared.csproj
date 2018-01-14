@@ -137,6 +137,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="service_point_config.json.default" />
+    <None Include="file_dirs.json.default">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
     <None Include="plugins.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

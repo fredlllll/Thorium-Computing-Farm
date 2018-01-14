@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
 
 namespace Thorium_Shared
 {
@@ -21,6 +19,19 @@ namespace Thorium_Shared
         {
             Dirs.Add(Directories.ProgramDir);
             Dirs.Add(Directories.AssemblyDir);
+
+            string configFile = Path.Combine(Directories.ProgramDir, "file_dirs.json");
+            if(File.Exists(configFile))
+            {
+                JArray ja = JArray.Parse(File.ReadAllText(configFile));
+                foreach(var t in ja)
+                {
+                    if(t is JObject j && j.Get("load", false))
+                    {
+                        Dirs.Add(j.Get<string>("path"));
+                    }
+                }
+            }
         }
 
         static IEnumerable<string> GetFiles(string file)
