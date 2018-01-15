@@ -14,7 +14,7 @@ namespace Thorium_Shared.Jobtypes.SimpleExecution
         {
         }
 
-        int providedTasks = 0;
+        /*int providedTasks = 0;
         public override Task GetNextTask()
         {
             JObject ji = Job.Information;
@@ -25,8 +25,9 @@ namespace Thorium_Shared.Jobtypes.SimpleExecution
 
                 JObject info = new JObject
                 {
-                    ["index"] = providedTasks.ToString(),
+                    ["index"] = providedTasks,
                     ["program"] = Job.Information["program"],
+                    ["args"] = Job.Information["args"],
                     [ExecutionerType] = typeof(SEExecutioner).AssemblyQualifiedName
                 };
 
@@ -34,6 +35,26 @@ namespace Thorium_Shared.Jobtypes.SimpleExecution
                 return new Task(Job.ID, Utils.GetRandomID(), info);
             }
             return null;
+        }*/
+
+        public override IEnumerator<Task> GetTasks()
+        {
+            JObject ji = Job.Information;
+            int maxCount = ji.Get<int>("tasksCount");
+            for(int i =0; i< maxCount; i++)
+            {
+                //TODO: additional arguments?
+
+                JObject info = new JObject
+                {
+                    ["index"] = i,
+                    ["program"] = Job.Information["program"],
+                    ["args"] = Job.Information["args"],
+                    [ExecutionerType] = typeof(SEExecutioner).AssemblyQualifiedName
+                };
+
+                yield return new Task(Job.ID, Utils.GetRandomID(), info);
+            }
         }
     }
 }

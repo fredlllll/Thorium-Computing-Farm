@@ -15,6 +15,7 @@ namespace Thorium_Shared
             Job = job;
         }
 
-        public abstract Task GetNextTask();
+        //public abstract Task GetNextTask();
+        public abstract IEnumerator<Task> GetTasks();
     }
 }

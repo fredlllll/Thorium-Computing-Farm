@@ -53,9 +53,10 @@ namespace Thorium_Server
                         {
                             logger.Info("initializing job " + job.ID);
                             var producer = job.TaskProducer;
-                            Task t;
-                            while((t = producer.GetNextTask()) != null)
+                            var iterator = producer.GetTasks();
+                            while(iterator.MoveNext())
                             {
+                                Task t = iterator.Current;
                                 logger.Debug("got task: " + t.ID);
                                 server.DataManager.TaskSerializer.Save(t.ID, t);
                             }
