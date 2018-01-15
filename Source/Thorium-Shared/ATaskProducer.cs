@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Thorium_Shared
 {
@@ -15,7 +11,6 @@ namespace Thorium_Shared
             Job = job;
         }
 
-        //public abstract Task GetNextTask();
         public abstract IEnumerator<Task> GetTasks();
     }
 }

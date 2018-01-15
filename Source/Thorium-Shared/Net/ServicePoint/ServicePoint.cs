@@ -52,6 +52,42 @@ namespace Thorium_Shared.Net.ServicePoint
                         }
                     }
                 }
+
+                JArray routineHandlers = config.RoutineHandlers;
+                foreach(var val in routineHandlers)
+                {
+                    if(val is JObject jo && jo.Get("load", false))
+                    {
+                        var name = jo.Get<string>("name");
+                        var handler = jo.Get<string>("handler");
+
+                        int lastDot = handler.LastIndexOf('.');
+                        string typeName = handler.Substring(0, lastDot);
+                        string methodName = handler.Substring(lastDot + 1);
+                        Type type = ReflectionHelper.GetType(typeName);
+
+                        if(type == null)
+                        {
+                            logger.Warn("Couldn't find type: " + typeName);
+                            continue;
+                        }
+
+                        MethodInfo mi = type.GetMethod(methodName, BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public, null, new Type[] { typeof(JToken) }, null);
+                        if(mi == null)
+                        {
+                            logger.Warn("Couldn't find suitable method " + methodName + " that takes a JToken");
+                            continue;
+                        }
+                        if(!mi.ReturnType.Equals(typeof(JToken)))
+                        {
+                            logger.Warn("The routine handler " + methodName + " has to return JToken");
+                            continue;
+                        }
+                        RoutineHandler routineHandler = (RoutineHandler)Delegate.CreateDelegate(typeof(RoutineHandler), mi);
+                        Routine routine = new Routine(name, routineHandler);
+                        RegisterRoutine(routine);
+                    }
+                }
             }
         }
 

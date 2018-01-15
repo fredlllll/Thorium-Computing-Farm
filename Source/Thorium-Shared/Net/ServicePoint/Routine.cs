@@ -3,12 +3,14 @@ using Newtonsoft.Json.Linq;
 
 namespace Thorium_Shared.Net.ServicePoint
 {
+    public delegate JToken RoutineHandler(JToken arg);
+
     public class Routine
     {
         public string Name { get; }
-        public Func<JToken, JToken> Handler { get; }
+        public RoutineHandler Handler { get; }
 
-        public Routine(string name, Func<JToken, JToken> handler)
+        public Routine(string name, RoutineHandler handler)
         {
             Name = name;
             Handler = handler;
@@ -19,7 +21,7 @@ namespace Thorium_Shared.Net.ServicePoint
             return Handler.Invoke(arg);
         }
 
-        public static explicit operator Routine(Func<JToken, JToken> func)
+        public static explicit operator Routine(RoutineHandler func)
         {
             return new Routine(func.Method.Name, func);
         }

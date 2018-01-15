@@ -6,5 +6,12 @@
       "type": "Example.Type.Of.IServiceInvokationReceiver",
       "args": "optional arg if you provide a constructor for it"
     }
+  ],
+  "routineHandlers": [
+    {
+      "load": false,
+      "name": "ping",
+      "handler": "Some.Type.Methodname"
+    }
   ]
 }
