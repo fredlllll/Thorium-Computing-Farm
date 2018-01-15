@@ -44,5 +44,20 @@ namespace Thorium_Shared
             }
             throw new KeyNotFoundException("could not find key " + key + " in task or job info");
         }
+
+        public T GetInfo<T>(string key, T def)
+        {
+            var val = Information[key];
+            if(val != null && !val.IsNull())
+            {
+                return val.Value<T>();
+            }
+            val = JobInformation[key];
+            if(val != null && !val.IsNull())
+            {
+                return val.Value<T>();
+            }
+            return def;
+        }
     }
 }

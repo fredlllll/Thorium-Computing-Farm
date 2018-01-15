@@ -65,13 +65,41 @@ namespace Thorium_Shared
             return p;
         }
 
+        /// <summary>
+        /// rudimentary method to escape strings for process args. why isnt there a OS level method for this?
+        /// </summary>
+        /// <param name="arg"></param>
+        /// <returns></returns>
         public static string EscapeArgument(string arg)
         {
             if(string.IsNullOrEmpty(arg))
             {
-                return "\"\"";
+                return arg;
             }
-            return "\"" + arg.Replace("\\", "\\\\").Replace("\"", "\\\"") + "\"";
+
+            if(arg.Contains("\\"))
+            {
+                arg = arg.Replace("\\", "\\\\");
+            }
+            bool quotes = false;
+            if(arg.Contains("\""))
+            {
+                quotes = true;
+                arg = arg.Replace("\"", "\\\"");
+            }
+            if(arg.Contains(" "))
+            {
+                quotes = true;
+            }
+
+            if(quotes)
+            {
+                return "\"" + arg + "\"";
+            }
+            else
+            {
+                return arg;
+            }
         }
 
         public static void ThrowIfExitCode(Process p)
