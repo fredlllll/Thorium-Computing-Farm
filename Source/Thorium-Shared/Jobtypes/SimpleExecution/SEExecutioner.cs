@@ -13,11 +13,11 @@ namespace Thorium_Shared.Jobtypes.SimpleExecution
         public override void Execute()
         {
             int index = Task.GetInfo<int>("index");
-            string program = Task.GetInfo<string>("program");
+            string executable = Task.GetInfo<string>("executable");
             JArray args = Task.GetInfo<JArray>("args");
 
             Process p = new Process();
-            p.StartInfo.FileName = program;
+            p.StartInfo.FileName = Files.GetExecutablePath(executable);
             p.StartInfo.EnvironmentVariables["THORIUM_SE_INDEX"] = index.ToString(System.Globalization.CultureInfo.InvariantCulture);
             string argString = string.Join(" ", args.Select(x => ProcessUtil.EscapeArgument(x.Value<string>())));
             p.StartInfo.Arguments = argString;

@@ -48,7 +48,7 @@ namespace Thorium_Shared.Jobtypes.SimpleExecution
                 JObject info = new JObject
                 {
                     ["index"] = i,
-                    ["program"] = Job.Information["program"],
+                    ["executable"] = Job.Information["executable"],
                     ["args"] = Job.Information["args"],
                     [ExecutionerType] = typeof(SEExecutioner).AssemblyQualifiedName
                 };
