@@ -81,18 +81,18 @@ namespace Thorium_Shared
             {
                 arg = arg.Replace("\\", "\\\\");
             }
-            bool quotes = false;
+            bool needsQuotes = false;
             if(arg.Contains("\""))
             {
-                quotes = true;
+                needsQuotes = true;
                 arg = arg.Replace("\"", "\\\"");
             }
             if(arg.Contains(" "))
             {
-                quotes = true;
+                needsQuotes = true;
             }
 
-            if(quotes)
+            if(needsQuotes)
             {
                 return "\"" + arg + "\"";
             }

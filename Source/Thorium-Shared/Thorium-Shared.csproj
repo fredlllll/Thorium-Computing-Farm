@@ -64,9 +64,14 @@
     <Compile Include="Data\BaseDataBase.cs" />
     <Compile Include="Data\ISerializer.cs" />
     <Compile Include="Data\Serializers\BaseSerializer.cs" />
+    <Compile Include="Data\Serializers\ServiceInterfaceDefinitionSerializer.cs" />
     <Compile Include="Data\Serializers\JobSerializer.cs" />
     <Compile Include="Data\MySqlDatabase.cs" />
+    <Compile Include="Data\Serializers\ServiceDefinitionSerializer.cs" />
     <Compile Include="Data\Serializers\TaskSerializer.cs" />
+    <Compile Include="Data\SqlBuilder.cs" />
+    <Compile Include="Data\SqlCondition.cs" />
+    <Compile Include="Data\SqlValue.cs" />
     <Compile Include="Events\EventService.cs" />
     <Compile Include="Events\IEventQueue.cs" />
     <Compile Include="Events\IEventQueueProvider.cs" />
@@ -89,6 +94,10 @@
     <Compile Include="Net\ServicePoint\ServicePoint.cs" />
     <Compile Include="Net\ServicePoint\TCPServiceInvokationReceiver.cs" />
     <Compile Include="Net\ServicePoint\TCPServiceInvoker.cs" />
+    <Compile Include="Services\ServiceInterfaceDefinition.cs" />
+    <Compile Include="Services\ServiceDefinition.cs" />
+    <Compile Include="Services\ServiceTenancy.cs" />
+    <Compile Include="Services\ThoriumServices.cs" />
     <Compile Include="TaskStatus.cs" />
     <Compile Include="Unused\Data\AutoIncrementAttribute.cs" />
     <Compile Include="Unused\Data\DatabaseObject.cs" />

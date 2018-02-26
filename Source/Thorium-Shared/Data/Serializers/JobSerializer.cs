@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Newtonsoft.Json.Linq;
 
 namespace Thorium_Shared.Data.Serializers
@@ -33,9 +34,18 @@ namespace Thorium_Shared.Data.Serializers
 
         public override void Save(string key, Job value)
         {
-            string sql = "INSERT INTO " + Table + "(" + KeyColumn + ",name,information,status) VALUES(@0,@1,@2,@3) ON DUPLICATE KEY UPDATE name=@4, information=@5, status=@6";
-            string informationString = value.Information.ToString(Newtonsoft.Json.Formatting.None);
-            Database.ExecuteNonQueryTransaction(sql, key, value.Name, informationString, value.Status.ToString(), value.Name, informationString, value.Status.ToString());
+            SqlValue[] values = new SqlValue[]
+            {
+                new SqlValue(KeyColumn,key),
+                new SqlValue("name",value.Name),
+                new SqlValue("information", value.Information.ToString()),
+                new SqlValue("status",value.Status.ToString())
+            };
+            string sql = SqlBuilder.InsertOrUpdate(Table, values);
+            //string sql = "INSERT INTO " + Table + "(" + KeyColumn + ",name,information,status) VALUES(@0,@1,@2,@3) ON DUPLICATE KEY UPDATE name=@4, information=@5, status=@6";
+            //string informationString = value.Information.ToString(Newtonsoft.Json.Formatting.None);
+            //Database.ExecuteNonQueryTransaction(sql, key, value.Name, informationString, value.Status.ToString(), value.Name, informationString, value.Status.ToString());
+            Database.ExecuteNonQueryTransaction(sql, values.Concat(values).Select(x => x.Value).ToArray());
         }
 
         public override void CreateTable()
