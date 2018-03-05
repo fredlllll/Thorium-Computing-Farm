@@ -3,7 +3,7 @@ using Newtonsoft.Json.Linq;
 using Thorium_Shared;
 using static Thorium_Shared.Net.ClientToServerCommands;
 using NLog;
-using Thorium_Shared.Net.ServicePoint;
+using Thorium_Net;
 
 namespace Thorium_Client
 {
@@ -23,7 +23,7 @@ namespace Thorium_Client
 
         public void InvokeRegister()
         {
-            serviceClient.Invoke(Register, new JObject() { ["ip"] = Utils.GetExternalIP(), ["clientId"] = Client.ID });
+            serviceClient.Invoke(Register, new JObject() { ["ip"] = NetUtils.GetExternalIP(), ["clientId"] = Client.ID });
         }
 
         public void InvokeUnregister()

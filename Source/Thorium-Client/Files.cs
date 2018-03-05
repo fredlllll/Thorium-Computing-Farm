@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace Thorium_Client
+﻿namespace Thorium_Client
 {
     public static class Files
     {

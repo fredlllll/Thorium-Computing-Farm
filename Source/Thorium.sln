@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.12
+VisualStudioVersion = 15.0.27004.2009
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Thorium-Server", "Thorium-Server\Thorium-Server.csproj", "{1440817D-1468-46DB-B086-E3049A3ADB92}"
 EndProject
@@ -14,6 +14,48 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Thorium-Test", "Thorium-Test\Thorium-Test.csproj", "{AC4D22A1-F56D-4D9F-9506-A6CCF7570996}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Thorium-Storage-Service", "Thorium-Storage-Service\Thorium-Storage-Service.csproj", "{60CE86DE-D3EB-4052-B3F7-3950BA29BB63}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Thorium-Data", "Thorium-Data\Thorium-Data.csproj", "{CE09B32A-6648-4683-9371-4BEAB1EAF050}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Thorium-Data-Impl", "Thorium-Data-Impl\Thorium-Data-Impl.csproj", "{09068342-D870-430B-BE61-EA9A4EA92B24}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Thorium-Services-Client", "Thorium-Services-Client\Thorium-Services-Client.csproj", "{97351C87-1976-4F35-81E1-42D47EC0FCF8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Thorium-Services-Host", "Thorium-Services-Host\Thorium-Services-Host.csproj", "{9F52A57E-7E99-4318-8C23-1724F268F918}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Thorium-Services-Shared", "Thorium-Services-Shared\Thorium-Services-Shared.csproj", "{F5ABF0F0-0DF4-4224-AC36-A717345422EE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Thorium-Net", "Thorium-Net\Thorium-Net.csproj", "{6C35570E-8937-4E5D-80A8-608D1D5080FA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Thorium-Services-Host-Storage", "Thorium-Services-Host-Storage\Thorium-Services-Host-Storage.csproj", "{51494A4A-33E5-4099-8AA3-A96697F792F9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Thorium-Config", "Thorium-Config\Thorium-Config.csproj", "{9614C963-7E65-4F33-8DD2-4CA7E080A39F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Thorium-Extensions-JSON", "Thorium-Extensions-JSON\Thorium-Extensions-JSON.csproj", "{B1143619-9C6C-4A4B-9777-139B0DD299F9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Thorium-Reflection", "Thorium-Reflection\Thorium-Reflection.csproj", "{9EB60393-FE62-4652-AE93-1C0A912C7455}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Thorium-Extensions-String", "Thorium-Extensions-String\Thorium-Extensions-String.csproj", "{C3980A26-E25D-4C61-90EB-3E49BA565F69}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Thorium-Logging", "Thorium-Logging\Thorium-Logging.csproj", "{779CCC20-8F23-4026-B922-4E22586B2242}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Thorium-Collections", "Thorium-Collections\Thorium-Collections.csproj", "{45D2CB81-6F28-4EB8-A173-BAFC92A7F5E4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Thorium-Threading", "Thorium-Threading\Thorium-Threading.csproj", "{A066C6D5-B60A-4D09-8D8D-DA85E7900B1E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Thorium-Events", "Thorium-Events\Thorium-Events.csproj", "{45A552C6-4D20-4FF8-B0E8-FCFB3456CD82}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Thorium-CommandLine", "Thorium-CommandLine\Thorium-CommandLine.csproj", "{F6E068A0-6C15-40DC-A80B-C9AA75FD13A3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Thorium-Processes", "Thorium-Processes\Thorium-Processes.csproj", "{054BB79A-57FF-4222-8B24-AB8FF995E5A6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Thorium-Utils", "Thorium-Utils\Thorium-Utils.csproj", "{A171EBC8-F5ED-479C-BEF5-FD545B551BE4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Thorium-IO", "Thorium-IO\Thorium-IO.csproj", "{EDDA42E6-5158-41CD-AAC8-2347301BA08A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Thorium-Jobs", "Thorium-Jobs\Thorium-Jobs.csproj", "{9AD83361-D4F8-435C-9F23-D367F38D5DFF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Thorium-Plugins", "Thorium-Plugins\Thorium-Plugins.csproj", "{D287EC1D-1F2B-4433-A6BB-24ADD1D25466}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +87,90 @@ Global
 		{60CE86DE-D3EB-4052-B3F7-3950BA29BB63}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{60CE86DE-D3EB-4052-B3F7-3950BA29BB63}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{60CE86DE-D3EB-4052-B3F7-3950BA29BB63}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CE09B32A-6648-4683-9371-4BEAB1EAF050}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE09B32A-6648-4683-9371-4BEAB1EAF050}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE09B32A-6648-4683-9371-4BEAB1EAF050}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE09B32A-6648-4683-9371-4BEAB1EAF050}.Release|Any CPU.Build.0 = Release|Any CPU
+		{09068342-D870-430B-BE61-EA9A4EA92B24}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{09068342-D870-430B-BE61-EA9A4EA92B24}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{09068342-D870-430B-BE61-EA9A4EA92B24}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{09068342-D870-430B-BE61-EA9A4EA92B24}.Release|Any CPU.Build.0 = Release|Any CPU
+		{97351C87-1976-4F35-81E1-42D47EC0FCF8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{97351C87-1976-4F35-81E1-42D47EC0FCF8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{97351C87-1976-4F35-81E1-42D47EC0FCF8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{97351C87-1976-4F35-81E1-42D47EC0FCF8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9F52A57E-7E99-4318-8C23-1724F268F918}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F52A57E-7E99-4318-8C23-1724F268F918}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9F52A57E-7E99-4318-8C23-1724F268F918}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9F52A57E-7E99-4318-8C23-1724F268F918}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F5ABF0F0-0DF4-4224-AC36-A717345422EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F5ABF0F0-0DF4-4224-AC36-A717345422EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F5ABF0F0-0DF4-4224-AC36-A717345422EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F5ABF0F0-0DF4-4224-AC36-A717345422EE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6C35570E-8937-4E5D-80A8-608D1D5080FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C35570E-8937-4E5D-80A8-608D1D5080FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C35570E-8937-4E5D-80A8-608D1D5080FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C35570E-8937-4E5D-80A8-608D1D5080FA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{51494A4A-33E5-4099-8AA3-A96697F792F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{51494A4A-33E5-4099-8AA3-A96697F792F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{51494A4A-33E5-4099-8AA3-A96697F792F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{51494A4A-33E5-4099-8AA3-A96697F792F9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9614C963-7E65-4F33-8DD2-4CA7E080A39F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9614C963-7E65-4F33-8DD2-4CA7E080A39F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9614C963-7E65-4F33-8DD2-4CA7E080A39F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9614C963-7E65-4F33-8DD2-4CA7E080A39F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B1143619-9C6C-4A4B-9777-139B0DD299F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1143619-9C6C-4A4B-9777-139B0DD299F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1143619-9C6C-4A4B-9777-139B0DD299F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1143619-9C6C-4A4B-9777-139B0DD299F9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9EB60393-FE62-4652-AE93-1C0A912C7455}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9EB60393-FE62-4652-AE93-1C0A912C7455}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9EB60393-FE62-4652-AE93-1C0A912C7455}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9EB60393-FE62-4652-AE93-1C0A912C7455}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C3980A26-E25D-4C61-90EB-3E49BA565F69}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3980A26-E25D-4C61-90EB-3E49BA565F69}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C3980A26-E25D-4C61-90EB-3E49BA565F69}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C3980A26-E25D-4C61-90EB-3E49BA565F69}.Release|Any CPU.Build.0 = Release|Any CPU
+		{779CCC20-8F23-4026-B922-4E22586B2242}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{779CCC20-8F23-4026-B922-4E22586B2242}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{779CCC20-8F23-4026-B922-4E22586B2242}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{779CCC20-8F23-4026-B922-4E22586B2242}.Release|Any CPU.Build.0 = Release|Any CPU
+		{45D2CB81-6F28-4EB8-A173-BAFC92A7F5E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45D2CB81-6F28-4EB8-A173-BAFC92A7F5E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45D2CB81-6F28-4EB8-A173-BAFC92A7F5E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45D2CB81-6F28-4EB8-A173-BAFC92A7F5E4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A066C6D5-B60A-4D09-8D8D-DA85E7900B1E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A066C6D5-B60A-4D09-8D8D-DA85E7900B1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A066C6D5-B60A-4D09-8D8D-DA85E7900B1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A066C6D5-B60A-4D09-8D8D-DA85E7900B1E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{45A552C6-4D20-4FF8-B0E8-FCFB3456CD82}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45A552C6-4D20-4FF8-B0E8-FCFB3456CD82}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45A552C6-4D20-4FF8-B0E8-FCFB3456CD82}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45A552C6-4D20-4FF8-B0E8-FCFB3456CD82}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F6E068A0-6C15-40DC-A80B-C9AA75FD13A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F6E068A0-6C15-40DC-A80B-C9AA75FD13A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F6E068A0-6C15-40DC-A80B-C9AA75FD13A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F6E068A0-6C15-40DC-A80B-C9AA75FD13A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{054BB79A-57FF-4222-8B24-AB8FF995E5A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{054BB79A-57FF-4222-8B24-AB8FF995E5A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{054BB79A-57FF-4222-8B24-AB8FF995E5A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{054BB79A-57FF-4222-8B24-AB8FF995E5A6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A171EBC8-F5ED-479C-BEF5-FD545B551BE4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A171EBC8-F5ED-479C-BEF5-FD545B551BE4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A171EBC8-F5ED-479C-BEF5-FD545B551BE4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A171EBC8-F5ED-479C-BEF5-FD545B551BE4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EDDA42E6-5158-41CD-AAC8-2347301BA08A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EDDA42E6-5158-41CD-AAC8-2347301BA08A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EDDA42E6-5158-41CD-AAC8-2347301BA08A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EDDA42E6-5158-41CD-AAC8-2347301BA08A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9AD83361-D4F8-435C-9F23-D367F38D5DFF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9AD83361-D4F8-435C-9F23-D367F38D5DFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9AD83361-D4F8-435C-9F23-D367F38D5DFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9AD83361-D4F8-435C-9F23-D367F38D5DFF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D287EC1D-1F2B-4433-A6BB-24ADD1D25466}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D287EC1D-1F2B-4433-A6BB-24ADD1D25466}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D287EC1D-1F2B-4433-A6BB-24ADD1D25466}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D287EC1D-1F2B-4433-A6BB-24ADD1D25466}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

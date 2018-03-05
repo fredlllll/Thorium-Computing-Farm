@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
 
 namespace Thorium_Shared
 {
     public class Task
     {
-        //public Job Job { get; protected set; }
         public string JobID { get; protected set; }
 
         public string ID { get; protected set; }

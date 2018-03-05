@@ -1,14 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Thorium_Shared.Data
+﻿namespace Thorium_Shared.Data
 {
-    public class Serializer
+    /*public class Serializer
     {
         IDatabase database;
 
@@ -217,5 +209,5 @@ namespace Thorium_Shared.Data
             //TODO: compare table structure with structure of type, and alter table structure if difference is found
             throw new NotImplementedException();
         }
-    }
+    }*/
 }

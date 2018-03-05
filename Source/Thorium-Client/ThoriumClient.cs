@@ -2,7 +2,9 @@
 using System.Threading;
 using Thorium_Shared;
 using NLog;
-using Thorium_Shared.Config;
+using Thorium_Config;
+using Thorium_Threading;
+using Thorium_Utils;
 
 namespace Thorium_Client
 {
@@ -14,7 +16,7 @@ namespace Thorium_Client
 
         private ServerInterface serverInterface;
 
-        public string ID { get; } = Utils.GetRandomID();
+        public string ID { get; } = Utils.GetRandomGUID();
 
         public ThoriumClient() : base(false)
         {

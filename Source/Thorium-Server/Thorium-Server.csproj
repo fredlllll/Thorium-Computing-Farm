@@ -35,14 +35,14 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="MySql.Data, Version=6.10.5.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
-      <HintPath>..\packages\MySql.Data.6.10.5\lib\net452\MySql.Data.dll</HintPath>
+    <Reference Include="MySql.Data, Version=6.10.6.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <HintPath>..\packages\MySql.Data.6.10.6\lib\net452\MySql.Data.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.4.4.12\lib\net45\NLog.dll</HintPath>
+      <HintPath>..\packages\NLog.4.4.13\lib\net45\NLog.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel" />
@@ -80,6 +80,7 @@
     <None Include="clients_service_point_tcp_config.json.default">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="packages.config" />
     <None Include="server_controller_service_point_config.json.default">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -95,12 +96,51 @@
     <None Include="mysql_config.json.default">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Thorium-CommandLine\Thorium-CommandLine.csproj">
+      <Project>{F6E068A0-6C15-40DC-A80B-C9AA75FD13A3}</Project>
+      <Name>Thorium-CommandLine</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Thorium-Config\Thorium-Config.csproj">
+      <Project>{9614C963-7E65-4F33-8DD2-4CA7E080A39F}</Project>
+      <Name>Thorium-Config</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Thorium-Extensions-JSON\Thorium-Extensions-JSON.csproj">
+      <Project>{b1143619-9c6c-4a4b-9777-139b0dd299f9}</Project>
+      <Name>Thorium-Extensions-JSON</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Thorium-Logging\Thorium-Logging.csproj">
+      <Project>{779CCC20-8F23-4026-B922-4E22586B2242}</Project>
+      <Name>Thorium-Logging</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Thorium-Net\Thorium-Net.csproj">
+      <Project>{6C35570E-8937-4E5D-80A8-608D1D5080FA}</Project>
+      <Name>Thorium-Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Thorium-Plugins\Thorium-Plugins.csproj">
+      <Project>{D287EC1D-1F2B-4433-A6BB-24ADD1D25466}</Project>
+      <Name>Thorium-Plugins</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Thorium-Data-Impl\Thorium-Data-Impl.csproj">
+      <Project>{09068342-D870-430B-BE61-EA9A4EA92B24}</Project>
+      <Name>Thorium-Shared-Data-Impl</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Thorium-Data\Thorium-Data.csproj">
+      <Project>{CE09B32A-6648-4683-9371-4BEAB1EAF050}</Project>
+      <Name>Thorium-Shared-Data</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Thorium-Shared\Thorium-Shared.csproj">
       <Project>{FE33D9C9-43CA-4EC3-AB9F-154611627BFF}</Project>
       <Name>Thorium-Shared</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Thorium-Threading\Thorium-Threading.csproj">
+      <Project>{A066C6D5-B60A-4D09-8D8D-DA85E7900B1E}</Project>
+      <Name>Thorium-Threading</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Thorium-Utils\Thorium-Utils.csproj">
+      <Project>{A171EBC8-F5ED-479C-BEF5-FD545B551BE4}</Project>
+      <Name>Thorium-Utils</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

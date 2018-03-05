@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-
-namespace Thorium_Shared.Data
+﻿namespace Thorium_Shared.Data
 {
-    public abstract class DatabaseObject
+    /*public abstract class DatabaseObject
     {
         [DataMember, PrimaryKey, AutoIncrement]
         public long ___Id___
@@ -34,5 +27,5 @@ namespace Thorium_Shared.Data
                 throw;
             }
         }
-    }
+    }*/
 }

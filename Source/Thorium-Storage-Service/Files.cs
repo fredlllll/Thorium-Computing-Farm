@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Thorium_Shared;
-
-namespace Thorium_Storage_Service
+﻿namespace Thorium_Storage_Service
 {
     public static class Files
     {

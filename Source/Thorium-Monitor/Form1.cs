@@ -2,9 +2,10 @@
 using System.IO.Compression;
 using System.Windows.Forms;
 using Newtonsoft.Json.Linq;
+using Thorium_Net;
 using Thorium_Shared;
 using Thorium_Shared.Net;
-using Thorium_Shared.Net.ServicePoint;
+using Thorium_Utils;
 
 namespace Thorium_Monitor
 {
@@ -17,8 +18,8 @@ namespace Thorium_Monitor
 
         private void BtnStartJob_Click(object sender, System.EventArgs e)
         {
-            string dataPackage = Utils.GetRandomID();
-            string tmpDir = Path.Combine(Directories.TempDir, "datapackage");
+            string dataPackage = Utils.GetRandomGUID();
+            string tmpDir = Path.Combine(Thorium_IO.Directories.TempDir, "datapackage");
             Directory.CreateDirectory(tmpDir);
             File.Copy(txtDataPackagePath.Text, Path.Combine(tmpDir, Path.GetFileName(txtDataPackagePath.Text)), true);
             Thorium_Storage_Service.StorageService.CreateDataPackage(dataPackage, tmpDir, true);

@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-
-namespace Thorium_Shared.Data
+﻿namespace Thorium_Shared.Data
 {
-    public static class Util
+    /*public static class Util
     {
         private static Dictionary<Type, DbType> TypeMap { get; } = new Dictionary<Type, DbType>();
         //public static Dictionary<Type, string> TypeAffinityMap { get; } = new Dictionary<Type, string>();
@@ -61,7 +57,7 @@ namespace Thorium_Shared.Data
             TypeAffinityMap[typeof(char)] = text;
             TypeAffinityMap[typeof(DateTime)] = numeric;
             TypeAffinityMap[typeof(DateTimeOffset)] = numeric;
-            TypeAffinityMap[typeof(byte[])] = blob;*/
+            TypeAffinityMap[typeof(byte[])] = blob;
         }
-    }
+    }*/
 }

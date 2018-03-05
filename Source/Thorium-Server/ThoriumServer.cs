@@ -1,5 +1,5 @@
-﻿using Thorium_Server.Data;
-using Thorium_Shared.Config;
+﻿using Thorium_Config;
+using Thorium_Server.Data;
 
 namespace Thorium_Server
 {

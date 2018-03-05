@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
+using Thorium_Config;
 using Thorium_Server.Data.Serializers;
-using Thorium_Shared.Data;
-using Thorium_Shared.Data.Serializers;
+using Thorium_Data_Impl;
+using Thorium_Data_Impl.Serializers;
 
 namespace Thorium_Server.Data
 {
@@ -20,7 +17,7 @@ namespace Thorium_Server.Data
 
         public static MySqlDatabase GetNewDatabase()
         {
-            dynamic config = Thorium_Shared.Config.ConfigFile.GetConfig("mysql");
+            dynamic config = ConfigFile.GetConfig("mysql");
 
             string host = config.DatabaseHost;
             ushort port = config.DatabasePort;

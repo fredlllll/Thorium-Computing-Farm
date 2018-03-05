@@ -33,129 +33,59 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="MySql.Data, Version=6.10.5.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
-      <HintPath>..\packages\MySql.Data.6.10.5\lib\net452\MySql.Data.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.4.4.12\lib\net45\NLog.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.ComponentModel" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Configuration.Install" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Drawing.Design" />
-    <Reference Include="System.IO.Compression.FileSystem" />
-    <Reference Include="System.Management" />
-    <Reference Include="System.Runtime" />
-    <Reference Include="System.Transactions" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="AExecutioner.cs" />
-    <Compile Include="ConcurrentList.cs" />
-    <Compile Include="Config\ConfigFile.cs" />
-    <Compile Include="Data\BaseDataBase.cs" />
-    <Compile Include="Data\ISerializer.cs" />
-    <Compile Include="Data\Serializers\BaseSerializer.cs" />
-    <Compile Include="Data\Serializers\ServiceInterfaceDefinitionSerializer.cs" />
-    <Compile Include="Data\Serializers\JobSerializer.cs" />
-    <Compile Include="Data\MySqlDatabase.cs" />
-    <Compile Include="Data\Serializers\ServiceDefinitionSerializer.cs" />
-    <Compile Include="Data\Serializers\TaskSerializer.cs" />
-    <Compile Include="Data\SqlBuilder.cs" />
-    <Compile Include="Data\SqlCondition.cs" />
-    <Compile Include="Data\SqlValue.cs" />
-    <Compile Include="Events\EventService.cs" />
-    <Compile Include="Events\IEventQueue.cs" />
-    <Compile Include="Events\IEventQueueProvider.cs" />
-    <Compile Include="Extensions.cs" />
     <Compile Include="JobAndTaskProperties.cs" />
     <Compile Include="JobProperties.cs" />
     <Compile Include="JobStatus.cs" />
     <Compile Include="LightweightTask.cs" />
-    <Compile Include="Logging\Logging.cs" />
     <Compile Include="Net\ClientToServerCommands.cs" />
     <Compile Include="Job.cs" />
-    <Compile Include="ArgParse.cs" />
     <Compile Include="ATaskProducer.cs" />
-    <Compile Include="Net\ServicePoint\HttpServiceInvokationReceiver.cs" />
-    <Compile Include="Net\ServicePoint\HttpServiceInvoker.cs" />
-    <Compile Include="Net\ServicePoint\InvokationResult.cs" />
-    <Compile Include="Net\ServicePoint\IServiceInvokationReceiver.cs" />
-    <Compile Include="Net\ServicePoint\IServiceInvoker.cs" />
-    <Compile Include="Net\ServicePoint\Routine.cs" />
-    <Compile Include="Net\ServicePoint\ServicePoint.cs" />
-    <Compile Include="Net\ServicePoint\TCPServiceInvokationReceiver.cs" />
-    <Compile Include="Net\ServicePoint\TCPServiceInvoker.cs" />
-    <Compile Include="Services\ServiceInterfaceDefinition.cs" />
-    <Compile Include="Services\ServiceDefinition.cs" />
-    <Compile Include="Services\ServiceTenancy.cs" />
-    <Compile Include="Services\ThoriumServices.cs" />
     <Compile Include="TaskStatus.cs" />
     <Compile Include="Unused\Data\AutoIncrementAttribute.cs" />
     <Compile Include="Unused\Data\DatabaseObject.cs" />
     <Compile Include="Unused\Data\DataMemberAttribute.cs" />
-    <Compile Include="Data\IDatabase.cs" />
     <Compile Include="Unused\Data\PreviouslyKnownAsAttribute.cs" />
     <Compile Include="Unused\Data\PrimaryKeyAttribute.cs" />
     <Compile Include="Unused\Data\Serializer.cs" />
     <Compile Include="Unused\Data\SqLiteDatabase.cs" />
     <Compile Include="Unused\Data\Util.cs" />
-    <Compile Include="Directories.cs" />
-    <Compile Include="Files.cs" />
-    <Compile Include="Jobtypes\SimpleExecution\SEExecutioner.cs" />
-    <Compile Include="Jobtypes\SimpleExecution\SETaskProducer.cs" />
     <Compile Include="Net\ServerControlCommands.cs" />
-    <Compile Include="PluginLoader.cs" />
-    <Compile Include="RunExecutableAction.cs" />
     <Compile Include="Task.cs" />
-    <Compile Include="ThoriumSharedJSONExtensions.cs" />
-    <Compile Include="LoggedProcessInfo.cs" />
-    <Compile Include="ProcessUtil.cs" />
-    <Compile Include="RestartableThreadClass.cs" />
     <Compile Include="Unused\JobTypes\Blender\BlenderEngineConfig.cs" />
     <Compile Include="Unused\JobTypes\Blender\BlenderExecutionInfo.cs" />
     <Compile Include="Unused\JobTypes\Blender\BlenderJob.cs" />
     <Compile Include="Unused\JobTypes\Blender\BlenderRenderEngine.cs" />
     <Compile Include="Unused\JobTypes\Blender\BlenderTask.cs" />
-    <Compile Include="ReflectionHelper.cs" />
-    <Compile Include="ConsoleMenu.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Utils.cs" />
+    <Compile Include="ThoriumUtils.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="docs\MySqlCommand.xml" />
-    <Content Include="docs\MySqlCommandBuilder.xml" />
-    <Content Include="docs\MySqlConnection.xml" />
-    <Content Include="docs\MySqlConnectionStringBuilder.xml" />
-    <Content Include="docs\MySqlDataAdapter.xml" />
-    <Content Include="docs\MySqlDataReader.xml" />
-    <Content Include="docs\MySqlException.xml" />
-    <Content Include="docs\MySqlHelper.xml" />
-    <Content Include="docs\MySqlParameter.xml" />
-    <Content Include="docs\MySqlParameterCollection.xml" />
-    <Content Include="docs\MySqlTransaction.xml" />
     <Content Include="Unused\JobTypes\Blender\BlenderConfigExample.xml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="service_point_config.json.default" />
-    <None Include="file_dirs.json.default">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="packages.config" />
-    <None Include="plugins.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\packages\NLog.4.4.13\lib\net45\NLog.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Thorium-Extensions-JSON\Thorium-Extensions-JSON.csproj">
+      <Project>{b1143619-9c6c-4a4b-9777-139b0dd299f9}</Project>
+      <Name>Thorium-Extensions-JSON</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Thorium-Reflection\Thorium-Reflection.csproj">
+      <Project>{9EB60393-FE62-4652-AE93-1C0A912C7455}</Project>
+      <Name>Thorium-Reflection</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

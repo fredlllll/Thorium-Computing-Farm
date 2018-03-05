@@ -1,6 +1,7 @@
 ﻿using System.Linq;
-using Thorium_Shared;
-using Thorium_Shared.Logging;
+using Thorium_CommandLine;
+using Thorium_Logging;
+using Thorium_Plugins;
 
 namespace Thorium_Client
 {

@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using Newtonsoft.Json.Linq;
+using Thorium_Net;
 using Thorium_Shared;
-using Thorium_Shared.Net.ServicePoint;
 using static Thorium_Shared.Net.ClientToServerCommands;
 
 namespace Thorium_Server
@@ -10,13 +10,13 @@ namespace Thorium_Server
     {
         ThoriumServer server;
 
-        Thorium_Shared.Net.ServicePoint.ServicePoint servicePoint;
+        Thorium_Net.ServicePoint servicePoint;
 
         public ClientsServicePoint(ThoriumServer thoriumServer, int port)
         {
             server = thoriumServer;
 
-            servicePoint = new Thorium_Shared.Net.ServicePoint.ServicePoint("clients_service_point");
+            servicePoint = new Thorium_Net.ServicePoint("clients_service_point");
 
             servicePoint.RegisterRoutine(new Routine(Register, HandleRegister));
             servicePoint.RegisterRoutine(new Routine(Unregister, HandleUnregister));

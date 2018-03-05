@@ -47,6 +47,18 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Thorium-Config\Thorium-Config.csproj">
+      <Project>{9614C963-7E65-4F33-8DD2-4CA7E080A39F}</Project>
+      <Name>Thorium-Config</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Thorium-IO\Thorium-IO.csproj">
+      <Project>{edda42e6-5158-41cd-aac8-2347301ba08a}</Project>
+      <Name>Thorium-IO</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Thorium-Reflection\Thorium-Reflection.csproj">
+      <Project>{9EB60393-FE62-4652-AE93-1C0A912C7455}</Project>
+      <Name>Thorium-Reflection</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Thorium-Shared\Thorium-Shared.csproj">
       <Project>{fe33d9c9-43ca-4ec3-ab9f-154611627bff}</Project>
       <Name>Thorium-Shared</Name>
@@ -54,11 +66,11 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.4.4.12\lib\net45\NLog.dll</HintPath>
+      <HintPath>..\packages\NLog.4.4.13\lib\net45\NLog.dll</HintPath>
     </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

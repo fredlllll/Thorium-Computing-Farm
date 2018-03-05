@@ -1,8 +1,8 @@
 ﻿using Newtonsoft.Json.Linq;
 using NLog;
+using Thorium_Net;
 using Thorium_Shared;
-using Thorium_Shared.Config;
-using Thorium_Shared.Net.ServicePoint;
+using Thorium_Utils;
 using static Thorium_Shared.Net.ServerControlCommands;
 
 namespace Thorium_Server
@@ -44,7 +44,7 @@ namespace Thorium_Server
         {
             JObject argObject = (JObject)arg;
 
-            Job j = new Job(Utils.GetRandomID(), argObject.Get<string>("jobName"), (JObject)argObject["jobInformation"], JobStatus.Initializing);
+            Job j = new Job(Utils.GetRandomGUID(), argObject.Get<string>("jobName"), (JObject)argObject["jobInformation"], JobStatus.Initializing);
             logger.Info("new Job Added: " + j.ID + ", " + j.Name + ", " + j.Information);
             server.JobManager.AddJob(j);
             JObject retval = new JObject

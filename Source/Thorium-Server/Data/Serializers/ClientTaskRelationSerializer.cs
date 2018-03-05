@@ -1,5 +1,5 @@
-﻿using Thorium_Shared.Data;
-using Thorium_Shared.Data.Serializers;
+﻿using Thorium_Data;
+using Thorium_Data_Impl.Serializers;
 
 namespace Thorium_Server.Data.Serializers
 {
@@ -8,11 +8,11 @@ namespace Thorium_Server.Data.Serializers
         private readonly ClientSerializer clientSer;
         private readonly TaskSerializer taskSer;
 
-        public override IDatabase Database { get; }
+        public override IRawDatabase Database { get; }
         public override string Table => Database.GetTableName("client_task_relations");
         public override string KeyColumn => "client_id";
 
-        public ClientTaskRelationSerializer(IDatabase database, ClientSerializer clientSer, TaskSerializer taskSer)
+        public ClientTaskRelationSerializer(IRawDatabase database, ClientSerializer clientSer, TaskSerializer taskSer)
         {
             Database = database;
             this.clientSer = clientSer;

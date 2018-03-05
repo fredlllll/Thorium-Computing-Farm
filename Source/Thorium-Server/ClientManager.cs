@@ -1,9 +1,9 @@
 ﻿using System.Threading;
 using NLog;
 using Thorium_Server.Data;
-using Thorium_Shared;
-using Thorium_Shared.Data;
-using Thorium_Shared.Data.Serializers;
+using Thorium_Server.Data.Serializers;
+using Thorium_Threading;
+using Thorium_Data_Impl;
 
 namespace Thorium_Server
 {

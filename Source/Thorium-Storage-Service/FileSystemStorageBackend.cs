@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using Thorium_Shared.Config;
+using Thorium_Config;
 
 namespace Thorium_Storage_Service
 {

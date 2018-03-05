@@ -1,20 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
-using Thorium_Server;
+﻿using System.Net;
+using Thorium_Data;
+using Thorium_Data_Impl.Serializers;
 
-namespace Thorium_Shared.Data.Serializers
+namespace Thorium_Server.Data.Serializers
 {
     public class ClientSerializer : BaseSerializer<string, Client>
     {
-        public override IDatabase Database { get; }
+        public override IRawDatabase Database { get; }
         public override string Table => Database.GetTableName("clients");
         public override string KeyColumn => "id";
 
-        public ClientSerializer(IDatabase database)
+        public ClientSerializer(IRawDatabase database)
         {
             Database = database;
         }

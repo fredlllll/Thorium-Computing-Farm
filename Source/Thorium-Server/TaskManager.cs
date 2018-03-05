@@ -1,6 +1,6 @@
 ﻿using NLog;
 using Thorium_Shared;
-using Thorium_Shared.Data.Serializers;
+using Thorium_Data_Impl.Serializers;
 
 namespace Thorium_Server
 {
