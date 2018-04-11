@@ -13,13 +13,13 @@ namespace Thorium_Server
 
         private ThoriumServer server;
 
-        private ServicePoint servicePoint;
+        private ServiceHost servicePoint;
 
         public ServerController(ThoriumServer server)
         {
             this.server = server;
 
-            servicePoint = new ServicePoint("server_controller_service_point");
+            servicePoint = new ServiceHost("server_controller_service_point");
 
             //servicePoint.RegisterInvokationReceiver(new HttpServiceInvokationReceiver());
             //var config = ConfigFile.GetConfig("thorium_server");

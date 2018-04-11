@@ -3,7 +3,7 @@ using System.Globalization;
 using Newtonsoft.Json.Linq;
 using Thorium_Reflection;
 
-public static class Thorium_Extensions_JSON
+public static class Thorium_Extensions_JSON_CLASS
 {
     public static T Get<T>(this JObject jobj, string key, T def = default(T))
     {
@@ -15,7 +15,7 @@ public static class Thorium_Extensions_JSON
         return def;
     }
 
-    static object ConvertTo<T>(this T token, Type u) where T : JToken
+    public static object ConvertTo<T>(this T token, Type u) where T : JToken
     {
         if(token == null)
         {

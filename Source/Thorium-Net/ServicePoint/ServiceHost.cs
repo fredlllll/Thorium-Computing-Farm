@@ -8,7 +8,7 @@ using Thorium_Reflection;
 
 namespace Thorium_Net
 {
-    public class ServicePoint
+    public class ServiceHost
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();
 
@@ -17,7 +17,11 @@ namespace Thorium_Net
         private readonly Dictionary<string, Routine> routines = new Dictionary<string, Routine>();
         private readonly List<IServiceInvokationReceiver> invokationReceivers = new List<IServiceInvokationReceiver>();
 
-        public ServicePoint(string configName = null)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="configName"><see cref="ConfigFile.GetConfig"/></param>
+        public ServiceHost(string configName = null)
         {
             if(configName != null)
             {
@@ -92,6 +96,11 @@ namespace Thorium_Net
             }
         }
 
+        /// <summary>
+        /// creates an instance if possible and adds it. will not add on error and only write log information
+        /// </summary>
+        /// <param name="ci">the constructor to invoke</param>
+        /// <param name="args">the arguments</param>
         private void AddFromConstructor(ConstructorInfo ci, object[] args)
         {
             try
@@ -113,6 +122,9 @@ namespace Thorium_Net
             }
         }
 
+        /// <summary>
+        /// will throw an <see cref="InvalidOperationException"/> if the servive host has been started
+        /// </summary>
         private void RequireNotStarted()
         {
             if(started)

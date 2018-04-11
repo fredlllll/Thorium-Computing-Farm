@@ -10,13 +10,13 @@ namespace Thorium_Server
     {
         ThoriumServer server;
 
-        Thorium_Net.ServicePoint servicePoint;
+        Thorium_Net.ServiceHost servicePoint;
 
         public ClientsServicePoint(ThoriumServer thoriumServer, int port)
         {
             server = thoriumServer;
 
-            servicePoint = new Thorium_Net.ServicePoint("clients_service_point");
+            servicePoint = new Thorium_Net.ServiceHost("clients_service_point");
 
             servicePoint.RegisterRoutine(new Routine(Register, HandleRegister));
             servicePoint.RegisterRoutine(new Routine(Unregister, HandleUnregister));

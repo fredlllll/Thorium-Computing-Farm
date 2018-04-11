@@ -39,7 +39,7 @@
     <Compile Include="ServicePoint\IServiceInvokationReceiver.cs" />
     <Compile Include="ServicePoint\IServiceInvoker.cs" />
     <Compile Include="ServicePoint\Routine.cs" />
-    <Compile Include="ServicePoint\ServicePoint.cs" />
+    <Compile Include="ServicePoint\ServiceHost.cs" />
     <Compile Include="ServicePoint\TCPServiceInvokationReceiver.cs" />
     <Compile Include="ServicePoint\TCPServiceInvoker.cs" />
   </ItemGroup>
