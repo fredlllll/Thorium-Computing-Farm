@@ -11,6 +11,11 @@ namespace Thorium_Services_Shared
         public string Name { get; private set; }
         public ServiceInterfaceDefinition[] InterfaceDefinitions { get; private set; }
 
+        public ServiceDefinition()
+        {
+
+        }
+
         public ServiceDefinition(string name, ServiceInterfaceDefinition[] interfaceDefinitions)
         {
             Id = Utils.GetRandomGUID();
