@@ -82,35 +82,35 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Thorium-Extensions-JSON\Thorium-Extensions-JSON.csproj">
+    <ProjectReference Include="..\Thorium.Extensions.JSON\Thorium.Extensions.JSON.csproj">
       <Project>{b1143619-9c6c-4a4b-9777-139b0dd299f9}</Project>
       <Name>Thorium-Extensions-JSON</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Thorium-IO\Thorium-IO.csproj">
+    <ProjectReference Include="..\Thorium.IO\Thorium.IO.csproj">
       <Project>{edda42e6-5158-41cd-aac8-2347301ba08a}</Project>
       <Name>Thorium-IO</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Thorium-Logging\Thorium-Logging.csproj">
+    <ProjectReference Include="..\Thorium.Logging\Thorium.Logging.csproj">
       <Project>{779CCC20-8F23-4026-B922-4E22586B2242}</Project>
       <Name>Thorium-Logging</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Thorium-Net\Thorium-Net.csproj">
+    <ProjectReference Include="..\Thorium.Net\Thorium.Net.csproj">
       <Project>{6C35570E-8937-4E5D-80A8-608D1D5080FA}</Project>
       <Name>Thorium-Net</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Thorium-Plugins\Thorium-Plugins.csproj">
+    <ProjectReference Include="..\Thorium.Plugins\Thorium.Plugins.csproj">
       <Project>{D287EC1D-1F2B-4433-A6BB-24ADD1D25466}</Project>
       <Name>Thorium-Plugins</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Thorium-Shared\Thorium-Shared.csproj">
+    <ProjectReference Include="..\Thorium.Shared\Thorium.Shared.csproj">
       <Project>{fe33d9c9-43ca-4ec3-ab9f-154611627bff}</Project>
       <Name>Thorium-Shared</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Thorium-Storage-Service\Thorium-Storage-Service.csproj">
+    <ProjectReference Include="..\Thorium.Storage_Service\Thorium.Storage_Service.csproj">
       <Project>{60ce86de-d3eb-4052-b3f7-3950ba29bb63}</Project>
       <Name>Thorium-Storage-Service</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Thorium-Utils\Thorium-Utils.csproj">
+    <ProjectReference Include="..\Thorium.Utils\Thorium.Utils.csproj">
       <Project>{A171EBC8-F5ED-479C-BEF5-FD545B551BE4}</Project>
       <Name>Thorium-Utils</Name>
     </ProjectReference>

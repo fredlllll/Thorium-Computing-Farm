@@ -45,11 +45,11 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Thorium-Data\Thorium-Data.csproj">
+    <ProjectReference Include="..\Thorium.Data\Thorium.Data.csproj">
       <Project>{ce09b32a-6648-4683-9371-4beab1eaf050}</Project>
       <Name>Thorium-Shared-Data</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Thorium-Shared\Thorium-Shared.csproj">
+    <ProjectReference Include="..\Thorium.Shared\Thorium.Shared.csproj">
       <Project>{fe33d9c9-43ca-4ec3-ab9f-154611627bff}</Project>
       <Name>Thorium-Shared</Name>
     </ProjectReference>

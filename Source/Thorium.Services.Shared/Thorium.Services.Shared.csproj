@@ -45,15 +45,15 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Thorium-Extensions-JSON\Thorium-Extensions-JSON.csproj">
+    <ProjectReference Include="..\Thorium.Extensions.JSON\Thorium.Extensions.JSON.csproj">
       <Project>{B1143619-9C6C-4A4B-9777-139B0DD299F9}</Project>
       <Name>Thorium-Extensions-JSON</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Thorium-Shared\Thorium-Shared.csproj">
+    <ProjectReference Include="..\Thorium.Shared\Thorium.Shared.csproj">
       <Project>{fe33d9c9-43ca-4ec3-ab9f-154611627bff}</Project>
       <Name>Thorium-Shared</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Thorium-Utils\Thorium-Utils.csproj">
+    <ProjectReference Include="..\Thorium.Utils\Thorium.Utils.csproj">
       <Project>{A171EBC8-F5ED-479C-BEF5-FD545B551BE4}</Project>
       <Name>Thorium-Utils</Name>
     </ProjectReference>

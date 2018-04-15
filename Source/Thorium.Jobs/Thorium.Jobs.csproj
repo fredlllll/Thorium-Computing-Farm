@@ -44,23 +44,23 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Thorium-Extensions-JSON\Thorium-Extensions-JSON.csproj">
+    <ProjectReference Include="..\Thorium.Extensions.JSON\Thorium.Extensions.JSON.csproj">
       <Project>{b1143619-9c6c-4a4b-9777-139b0dd299f9}</Project>
       <Name>Thorium-Extensions-JSON</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Thorium-IO\Thorium-IO.csproj">
+    <ProjectReference Include="..\Thorium.IO\Thorium.IO.csproj">
       <Project>{edda42e6-5158-41cd-aac8-2347301ba08a}</Project>
       <Name>Thorium-IO</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Thorium-Processes\Thorium-Processes.csproj">
+    <ProjectReference Include="..\Thorium.Processes\Thorium.Processes.csproj">
       <Project>{054bb79a-57ff-4222-8b24-ab8ff995e5a6}</Project>
       <Name>Thorium-Processes</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Thorium-Shared\Thorium-Shared.csproj">
+    <ProjectReference Include="..\Thorium.Shared\Thorium.Shared.csproj">
       <Project>{fe33d9c9-43ca-4ec3-ab9f-154611627bff}</Project>
       <Name>Thorium-Shared</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Thorium-Utils\Thorium-Utils.csproj">
+    <ProjectReference Include="..\Thorium.Utils\Thorium.Utils.csproj">
       <Project>{A171EBC8-F5ED-479C-BEF5-FD545B551BE4}</Project>
       <Name>Thorium-Utils</Name>
     </ProjectReference>

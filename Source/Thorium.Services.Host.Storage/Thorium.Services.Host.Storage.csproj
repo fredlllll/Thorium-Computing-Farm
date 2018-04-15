@@ -36,15 +36,15 @@
     <Compile Include="ServiceInterfaceDefinitionSerializer.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Thorium-Services-Shared\Thorium-Services-Shared.csproj">
+    <ProjectReference Include="..\Thorium.Services.Shared\Thorium.Services.Shared.csproj">
       <Project>{F5ABF0F0-0DF4-4224-AC36-A717345422EE}</Project>
       <Name>Thorium-Services-Shared</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Thorium-Data-Impl\Thorium-Data-Impl.csproj">
+    <ProjectReference Include="..\Thorium.Data.Impl\Thorium.Data.Impl.csproj">
       <Project>{09068342-D870-430B-BE61-EA9A4EA92B24}</Project>
       <Name>Thorium-Shared-Data-Impl</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Thorium-Data\Thorium-Data.csproj">
+    <ProjectReference Include="..\Thorium.Data\Thorium.Data.csproj">
       <Project>{CE09B32A-6648-4683-9371-4BEAB1EAF050}</Project>
       <Name>Thorium-Shared-Data</Name>
     </ProjectReference>

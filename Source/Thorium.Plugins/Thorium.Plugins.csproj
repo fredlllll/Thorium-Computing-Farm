@@ -48,11 +48,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Thorium-Extensions-JSON\Thorium-Extensions-JSON.csproj">
+    <ProjectReference Include="..\Thorium.Extensions.JSON\Thorium.Extensions.JSON.csproj">
       <Project>{b1143619-9c6c-4a4b-9777-139b0dd299f9}</Project>
       <Name>Thorium-Extensions-JSON</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Thorium-IO\Thorium-IO.csproj">
+    <ProjectReference Include="..\Thorium.IO\Thorium.IO.csproj">
       <Project>{EDDA42E6-5158-41CD-AAC8-2347301BA08A}</Project>
       <Name>Thorium-IO</Name>
     </ProjectReference>

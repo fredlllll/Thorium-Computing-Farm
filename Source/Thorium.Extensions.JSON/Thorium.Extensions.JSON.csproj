@@ -44,7 +44,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Thorium-Reflection\Thorium-Reflection.csproj">
+    <ProjectReference Include="..\Thorium.Reflection\Thorium.Reflection.csproj">
       <Project>{9eb60393-fe62-4652-ae93-1c0a912c7455}</Project>
       <Name>Thorium-Reflection</Name>
     </ProjectReference>

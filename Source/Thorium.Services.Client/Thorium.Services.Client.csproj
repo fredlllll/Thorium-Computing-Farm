@@ -35,11 +35,11 @@
     <Compile Include="ThoriumServicesClient.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Thorium-Net\Thorium-Net.csproj">
+    <ProjectReference Include="..\Thorium.Net\Thorium.Net.csproj">
       <Project>{6C35570E-8937-4E5D-80A8-608D1D5080FA}</Project>
       <Name>Thorium-Net</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Thorium-Services-Shared\Thorium-Services-Shared.csproj">
+    <ProjectReference Include="..\Thorium.Services.Shared\Thorium.Services.Shared.csproj">
       <Project>{f5abf0f0-0df4-4224-ac36-a717345422ee}</Project>
       <Name>Thorium-Services-Shared</Name>
     </ProjectReference>

@@ -47,19 +47,19 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Thorium-Config\Thorium-Config.csproj">
+    <ProjectReference Include="..\Thorium.Config\Thorium.Config.csproj">
       <Project>{9614C963-7E65-4F33-8DD2-4CA7E080A39F}</Project>
       <Name>Thorium-Config</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Thorium-IO\Thorium-IO.csproj">
+    <ProjectReference Include="..\Thorium.IO\Thorium.IO.csproj">
       <Project>{edda42e6-5158-41cd-aac8-2347301ba08a}</Project>
       <Name>Thorium-IO</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Thorium-Reflection\Thorium-Reflection.csproj">
+    <ProjectReference Include="..\Thorium.Reflection\Thorium.Reflection.csproj">
       <Project>{9EB60393-FE62-4652-AE93-1C0A912C7455}</Project>
       <Name>Thorium-Reflection</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Thorium-Shared\Thorium-Shared.csproj">
+    <ProjectReference Include="..\Thorium.Shared\Thorium.Shared.csproj">
       <Project>{fe33d9c9-43ca-4ec3-ab9f-154611627bff}</Project>
       <Name>Thorium-Shared</Name>
     </ProjectReference>
