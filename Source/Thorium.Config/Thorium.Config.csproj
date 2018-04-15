@@ -43,13 +43,13 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Thorium-Extensions-String\Thorium.Extensions.String.csproj">
+      <Project>{c3980a26-e25d-4c61-90eb-3e49ba565f69}</Project>
+      <Name>Thorium.Extensions.String</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Thorium.Extensions.JSON\Thorium.Extensions.JSON.csproj">
       <Project>{b1143619-9c6c-4a4b-9777-139b0dd299f9}</Project>
       <Name>Thorium-Extensions-JSON</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Thorium.Extensions.String\Thorium.Extensions.String.csproj">
-      <Project>{c3980a26-e25d-4c61-90eb-3e49ba565f69}</Project>
-      <Name>Thorium-Extensions-String</Name>
     </ProjectReference>
     <ProjectReference Include="..\Thorium.IO\Thorium.IO.csproj">
       <Project>{EDDA42E6-5158-41CD-AAC8-2347301BA08A}</Project>
@@ -58,10 +58,6 @@
     <ProjectReference Include="..\Thorium.Reflection\Thorium.Reflection.csproj">
       <Project>{9EB60393-FE62-4652-AE93-1C0A912C7455}</Project>
       <Name>Thorium-Reflection</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Thorium.Shared\Thorium.Shared.csproj">
-      <Project>{FE33D9C9-43CA-4EC3-AB9F-154611627BFF}</Project>
-      <Name>Thorium-Shared</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

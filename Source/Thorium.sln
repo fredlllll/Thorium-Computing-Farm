@@ -19,23 +19,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Thorium.Data", "Thorium.Dat
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Thorium.Data.Impl", "Thorium.Data.Impl\Thorium.Data.Impl.csproj", "{09068342-D870-430B-BE61-EA9A4EA92B24}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Thorium.Services.Client", "Thorium.Services.Client\Thorium.Services.Client.csproj", "{97351C87-1976-4F35-81E1-42D47EC0FCF8}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Thorium.Services.Host", "Thorium.Services.Host\Thorium.Services.Host.csproj", "{9F52A57E-7E99-4318-8C23-1724F268F918}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Thorium.Services.Shared", "Thorium.Services.Shared\Thorium.Services.Shared.csproj", "{F5ABF0F0-0DF4-4224-AC36-A717345422EE}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Thorium.Net", "Thorium.Net\Thorium.Net.csproj", "{6C35570E-8937-4E5D-80A8-608D1D5080FA}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Thorium.Services.Host.Storage", "Thorium.Services.Host.Storage\Thorium.Services.Host.Storage.csproj", "{51494A4A-33E5-4099-8AA3-A96697F792F9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Thorium.Config", "Thorium.Config\Thorium.Config.csproj", "{9614C963-7E65-4F33-8DD2-4CA7E080A39F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Thorium.Extensions.JSON", "Thorium.Extensions.JSON\Thorium.Extensions.JSON.csproj", "{B1143619-9C6C-4A4B-9777-139B0DD299F9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Thorium.Reflection", "Thorium.Reflection\Thorium.Reflection.csproj", "{9EB60393-FE62-4652-AE93-1C0A912C7455}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Thorium.Extensions.String", "Thorium.Extensions.String\Thorium.Extensions.String.csproj", "{C3980A26-E25D-4C61-90EB-3E49BA565F69}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Thorium.Logging", "Thorium.Logging\Thorium.Logging.csproj", "{779CCC20-8F23-4026-B922-4E22586B2242}"
 EndProject
@@ -56,6 +46,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Thorium.Jobs", "Thorium.Jobs\Thorium.Jobs.csproj", "{9AD83361-D4F8-435C-9F23-D367F38D5DFF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Thorium.Plugins", "Thorium.Plugins\Thorium.Plugins.csproj", "{D287EC1D-1F2B-4433-A6BB-24ADD1D25466}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Thorium.Extensions.String", "Thorium-Extensions-String\Thorium.Extensions.String.csproj", "{C3980A26-E25D-4C61-90EB-3E49BA565F69}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -95,26 +87,10 @@ Global
 		{09068342-D870-430B-BE61-EA9A4EA92B24}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{09068342-D870-430B-BE61-EA9A4EA92B24}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{09068342-D870-430B-BE61-EA9A4EA92B24}.Release|Any CPU.Build.0 = Release|Any CPU
-		{97351C87-1976-4F35-81E1-42D47EC0FCF8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{97351C87-1976-4F35-81E1-42D47EC0FCF8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{97351C87-1976-4F35-81E1-42D47EC0FCF8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{97351C87-1976-4F35-81E1-42D47EC0FCF8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9F52A57E-7E99-4318-8C23-1724F268F918}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9F52A57E-7E99-4318-8C23-1724F268F918}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9F52A57E-7E99-4318-8C23-1724F268F918}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9F52A57E-7E99-4318-8C23-1724F268F918}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F5ABF0F0-0DF4-4224-AC36-A717345422EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F5ABF0F0-0DF4-4224-AC36-A717345422EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F5ABF0F0-0DF4-4224-AC36-A717345422EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F5ABF0F0-0DF4-4224-AC36-A717345422EE}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6C35570E-8937-4E5D-80A8-608D1D5080FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6C35570E-8937-4E5D-80A8-608D1D5080FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6C35570E-8937-4E5D-80A8-608D1D5080FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6C35570E-8937-4E5D-80A8-608D1D5080FA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{51494A4A-33E5-4099-8AA3-A96697F792F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{51494A4A-33E5-4099-8AA3-A96697F792F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{51494A4A-33E5-4099-8AA3-A96697F792F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{51494A4A-33E5-4099-8AA3-A96697F792F9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9614C963-7E65-4F33-8DD2-4CA7E080A39F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9614C963-7E65-4F33-8DD2-4CA7E080A39F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9614C963-7E65-4F33-8DD2-4CA7E080A39F}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -127,10 +103,6 @@ Global
 		{9EB60393-FE62-4652-AE93-1C0A912C7455}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9EB60393-FE62-4652-AE93-1C0A912C7455}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9EB60393-FE62-4652-AE93-1C0A912C7455}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C3980A26-E25D-4C61-90EB-3E49BA565F69}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C3980A26-E25D-4C61-90EB-3E49BA565F69}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C3980A26-E25D-4C61-90EB-3E49BA565F69}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C3980A26-E25D-4C61-90EB-3E49BA565F69}.Release|Any CPU.Build.0 = Release|Any CPU
 		{779CCC20-8F23-4026-B922-4E22586B2242}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{779CCC20-8F23-4026-B922-4E22586B2242}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{779CCC20-8F23-4026-B922-4E22586B2242}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -171,6 +143,10 @@ Global
 		{D287EC1D-1F2B-4433-A6BB-24ADD1D25466}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D287EC1D-1F2B-4433-A6BB-24ADD1D25466}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D287EC1D-1F2B-4433-A6BB-24ADD1D25466}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C3980A26-E25D-4C61-90EB-3E49BA565F69}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3980A26-E25D-4C61-90EB-3E49BA565F69}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C3980A26-E25D-4C61-90EB-3E49BA565F69}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C3980A26-E25D-4C61-90EB-3E49BA565F69}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
