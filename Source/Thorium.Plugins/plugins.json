@@ -1,7 +1,0 @@
-﻿[
-  {
-    "name": "testplugin",
-    "file": "testplugin.dll",
-    "load": false
-  }
-]

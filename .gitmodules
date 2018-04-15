@@ -1,3 +1,51 @@
 [submodule "Source/Thorium-Extensions-String"]
 	path = Source/Thorium-Extensions-String
 	url = https://github.com/fredlllll/Thorium-Extensions-String
+[submodule "Source/Thorium-Collections"]
+	path = Source/Thorium-Collections
+	url = https://github.com/fredlllll/Thorium-Collections.git
+[submodule "Source/Thorium-CommandLine"]
+	path = Source/Thorium-CommandLine
+	url = https://github.com/fredlllll/Thorium-CommandLine.git
+[submodule "Source/Thorium-Config"]
+	path = Source/Thorium-Config
+	url = https://github.com/fredlllll/Thorium-Config.git
+[submodule "Source/Thorium-Data"]
+	path = Source/Thorium-Data
+	url = https://github.com/fredlllll/Thorium-Data.git
+[submodule "Source/Thorium-Data-Implementation"]
+	path = Source/Thorium-Data-Implementation
+	url = https://github.com/fredlllll/Thorium-Data-Implementation.git
+[submodule "Source/Thorium-Events"]
+	path = Source/Thorium-Events
+	url = https://github.com/fredlllll/Thorium-Events.git
+[submodule "Source/Thorium-Extensions-JSON"]
+	path = Source/Thorium-Extensions-JSON
+	url = https://github.com/fredlllll/Thorium-Extensions-JSON.git
+[submodule "Source/Thorium-IO"]
+	path = Source/Thorium-IO
+	url = https://github.com/fredlllll/Thorium-IO.git
+[submodule "Source/Thorium-Logging"]
+	path = Source/Thorium-Logging
+	url = https://github.com/fredlllll/Thorium-Logging.git
+[submodule "Source/Thorium-Net"]
+	path = Source/Thorium-Net
+	url = https://github.com/fredlllll/Thorium-Net.git
+[submodule "Source/Thorium-Plugins"]
+	path = Source/Thorium-Plugins
+	url = https://github.com/fredlllll/Thorium-Plugins.git
+[submodule "Source/Thorium-Processes"]
+	path = Source/Thorium-Processes
+	url = https://github.com/fredlllll/Thorium-Processes.git
+[submodule "Source/Thorium-Reflection"]
+	path = Source/Thorium-Reflection
+	url = https://github.com/fredlllll/Thorium-Reflection.git
+[submodule "Source/Thorium-StorageService"]
+	path = Source/Thorium-StorageService
+	url = https://github.com/fredlllll/Thorium-StorageService.git
+[submodule "Source/Thorium-Threading"]
+	path = Source/Thorium-Threading
+	url = https://github.com/fredlllll/Thorium-Threading.git
+[submodule "Source/Thorium-Utils"]
+	path = Source/Thorium-Utils
+	url = https://github.com/fredlllll/Thorium-Utils.git
