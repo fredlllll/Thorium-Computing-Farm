@@ -34,6 +34,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="AExecutioner.cs" />
+    <Compile Include="Data\JobSerializer.cs" />
+    <Compile Include="Data\TaskSerializer.cs" />
     <Compile Include="JobAndTaskProperties.cs" />
     <Compile Include="JobProperties.cs" />
     <Compile Include="JobStatus.cs" />
@@ -75,8 +77,17 @@
       <HintPath>..\packages\NLog.4.4.13\lib\net45\NLog.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Data" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Thorium-Data-Implementation\Thorium.Data.Implementation.csproj">
+      <Project>{09068342-d870-430b-be61-ea9a4ea92b24}</Project>
+      <Name>Thorium.Data.Implementation</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Thorium-Data\Thorium.Data.csproj">
+      <Project>{ce09b32a-6648-4683-9371-4beab1eaf050}</Project>
+      <Name>Thorium.Data</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Thorium-Extensions-JSON\Thorium.Extensions.JSON.csproj">
       <Project>{b1143619-9c6c-4a4b-9777-139b0dd299f9}</Project>
       <Name>Thorium.Extensions.JSON</Name>
