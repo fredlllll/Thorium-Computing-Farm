@@ -7,8 +7,8 @@
     <ProjectGuid>{FE33D9C9-43CA-4EC3-AB9F-154611627BFF}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Thorium_Shared</RootNamespace>
-    <AssemblyName>Thorium-Shared</AssemblyName>
+    <RootNamespace>Thorium.Shared</RootNamespace>
+    <AssemblyName>Thorium.Shared</AssemblyName>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <NuGetPackageImportStamp>

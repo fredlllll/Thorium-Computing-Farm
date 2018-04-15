@@ -1,7 +1,7 @@
-﻿using Thorium_Data;
-using Thorium_Data_Impl.Serializers;
+﻿using Thorium.Data;
+using Thorium.Data.Implementation.Serializers;
 
-namespace Thorium_Server.Data.Serializers
+namespace Thorium.Server.Data.Serializers
 {
     public class ClientTaskRelationSerializer : BaseSerializer<string, ClientTaskRelation>
     {

@@ -1,22 +1,22 @@
 ﻿using System.Net;
 using Newtonsoft.Json.Linq;
-using Thorium_Net;
-using Thorium_Shared;
-using static Thorium_Shared.Net.ClientToServerCommands;
+using Thorium.Net;
+using Thorium.Shared;
+using static Thorium.Shared.Net.ClientToServerCommands;
 
-namespace Thorium_Server
+namespace Thorium.Server
 {
     public class ClientsServicePoint
     {
         ThoriumServer server;
 
-        Thorium_Net.ServiceHost servicePoint;
+        Thorium.Net.ServiceHost servicePoint;
 
         public ClientsServicePoint(ThoriumServer thoriumServer, int port)
         {
             server = thoriumServer;
 
-            servicePoint = new Thorium_Net.ServiceHost("clients_service_point");
+            servicePoint = new Thorium.Net.ServiceHost("clients_service_point");
 
             servicePoint.RegisterRoutine(new Routine(Register, HandleRegister));
             servicePoint.RegisterRoutine(new Routine(Unregister, HandleUnregister));

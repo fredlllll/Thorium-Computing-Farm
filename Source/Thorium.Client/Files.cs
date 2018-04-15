@@ -1,4 +1,4 @@
-﻿namespace Thorium_Client
+﻿namespace Thorium.Client
 {
     public static class Files
     {

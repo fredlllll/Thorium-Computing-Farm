@@ -2,10 +2,10 @@
 using System.Collections.Concurrent;
 using System.Threading;
 using NLog;
-using Thorium_Shared;
-using Thorium_Threading;
+using Thorium.Shared;
+using Thorium.Threading;
 
-namespace Thorium_Server
+namespace Thorium.Server
 {
     [Serializable]
     public class JobInitializer : RestartableThreadClass

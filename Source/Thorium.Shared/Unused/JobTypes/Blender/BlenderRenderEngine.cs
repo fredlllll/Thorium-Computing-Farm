@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Thorium_Shared.Blender
+namespace Thorium.Shared.Blender
 {
     public enum BlenderRenderEngine
     {

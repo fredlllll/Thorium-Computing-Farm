@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Threading;
-using Thorium_Shared;
+using Thorium.Shared;
 using NLog;
-using Thorium_Config;
-using Thorium_Threading;
-using Thorium_Utils;
+using Thorium.Config;
+using Thorium.Threading;
 
-namespace Thorium_Client
+namespace Thorium.Client
 {
     public class ThoriumClient : RestartableThreadClass
     {
@@ -16,7 +15,7 @@ namespace Thorium_Client
 
         private ServerInterface serverInterface;
 
-        public string ID { get; } = Utils.GetRandomGUID();
+        public string ID { get; } = Utils.Utils.GetRandomGUID();
 
         public ThoriumClient() : base(false)
         {

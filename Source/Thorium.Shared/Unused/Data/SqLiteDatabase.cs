@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Thorium_Shared.Data
+namespace Thorium.Shared.Data
 {
     public class SqLiteDatabase : IDatabase
     {

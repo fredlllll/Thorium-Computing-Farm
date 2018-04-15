@@ -1,4 +1,4 @@
-﻿namespace Thorium_Shared.Net
+﻿namespace Thorium.Shared.Net
 {
     public static class ServerControlCommands
     {

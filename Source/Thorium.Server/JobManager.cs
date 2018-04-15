@@ -1,9 +1,9 @@
 ﻿using System;
-using Thorium_Shared;
+using Thorium.Shared;
 using NLog;
-using Thorium_Data_Impl.Serializers;
+using Thorium.Data.Implementation.Serializers;
 
-namespace Thorium_Server
+namespace Thorium.Server
 {
     public class JobManager
     {

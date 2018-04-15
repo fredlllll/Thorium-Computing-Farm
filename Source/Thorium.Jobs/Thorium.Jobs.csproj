@@ -7,8 +7,8 @@
     <ProjectGuid>{9AD83361-D4F8-435C-9F23-D367F38D5DFF}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Thorium_Jobs</RootNamespace>
-    <AssemblyName>Thorium-Jobs</AssemblyName>
+    <RootNamespace>Thorium.Jobs</RootNamespace>
+    <AssemblyName>Thorium.Jobs</AssemblyName>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

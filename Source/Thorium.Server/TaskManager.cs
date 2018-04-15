@@ -1,8 +1,8 @@
 ﻿using NLog;
-using Thorium_Shared;
-using Thorium_Data_Impl.Serializers;
+using Thorium.Shared;
+using Thorium.Data.Implementation.Serializers;
 
-namespace Thorium_Server
+namespace Thorium.Server
 {
     public class TaskManager
     {

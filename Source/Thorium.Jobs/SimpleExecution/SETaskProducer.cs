@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
-using Thorium_Shared;
-using Thorium_Utils;
-using static Thorium_Shared.JobAndTaskProperties;
+using Thorium.Shared;
+using static Thorium.Shared.JobAndTaskProperties;
 
-namespace Thorium_Jobs.SimpleExecution
+namespace Thorium.Jobs.SimpleExecution
 {
     public class SETaskProducer : ATaskProducer
     {
@@ -26,7 +25,7 @@ namespace Thorium_Jobs.SimpleExecution
                     [ExecutionerType] = typeof(SEExecutioner).AssemblyQualifiedName
                 };
 
-                yield return new Task(Job.ID, Utils.GetRandomGUID(), info);
+                yield return new Task(Job.ID, Utils.Utils.GetRandomGUID(), info);
             }
         }
     }

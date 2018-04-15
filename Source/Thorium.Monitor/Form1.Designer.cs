@@ -1,4 +1,4 @@
-﻿namespace Thorium_Monitor
+﻿namespace Thorium.Monitor
 {
     partial class Form1
     {

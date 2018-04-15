@@ -6,11 +6,11 @@ using System.IO.Compression;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Thorium_Shared.Services;
-using Thorium_Shared.Services.Server;
+using Thorium.Shared.Services;
+using Thorium.Shared.Services.Server;
 using Codolith.Config;
 
-namespace Thorium_Shared.Blender
+namespace Thorium.Shared.Blender
 {
     public class BlenderJob : AJob
     {

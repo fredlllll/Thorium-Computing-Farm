@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Codolith.Config;
 
-namespace Thorium_Shared.Blender
+namespace Thorium.Shared.Blender
 {
     public struct BlenderEngineConfig
     {

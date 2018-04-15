@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using Thorium_Server.Data.Serializers;
+using Thorium.Server.Data.Serializers;
 
-namespace Thorium_Server
+namespace Thorium.Server
 {
     public class ClientTaskRelationManager
     {

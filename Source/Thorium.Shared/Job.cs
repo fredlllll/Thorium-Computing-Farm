@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Reflection;
 using Newtonsoft.Json.Linq;
-using Thorium_Reflection;
-using static Thorium_Shared.JobProperties;
+using Thorium.Reflection;
+using static Thorium.Shared.JobProperties;
 
-namespace Thorium_Shared
+namespace Thorium.Shared
 {
     public class Job
     {

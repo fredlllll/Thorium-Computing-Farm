@@ -7,8 +7,8 @@
     <ProjectGuid>{1701A4EB-99F8-4D7D-B471-A738AD83C83B}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Thorium_Monitor</RootNamespace>
-    <AssemblyName>Thorium-Monitor</AssemblyName>
+    <RootNamespace>Thorium.Monitor</RootNamespace>
+    <AssemblyName>Thorium.Monitor</AssemblyName>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>

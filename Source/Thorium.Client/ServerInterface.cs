@@ -1,11 +1,11 @@
 ﻿using System;
 using Newtonsoft.Json.Linq;
-using Thorium_Shared;
-using static Thorium_Shared.Net.ClientToServerCommands;
+using Thorium.Shared;
+using static Thorium.Shared.Net.ClientToServerCommands;
 using NLog;
-using Thorium_Net;
+using Thorium.Net;
 
-namespace Thorium_Client
+namespace Thorium.Client
 {
     public class ServerInterface
     {

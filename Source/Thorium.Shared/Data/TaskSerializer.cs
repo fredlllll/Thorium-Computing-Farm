@@ -1,9 +1,8 @@
 ﻿using System;
 using Newtonsoft.Json.Linq;
-using Thorium_Data;
-using Thorium_Shared;
+using Thorium.Shared;
 
-namespace Thorium_Data_Impl.Serializers
+namespace Thorium.Data.Implementation.Serializers
 {
     public class TaskSerializer : BaseSerializer<string, Task>
     {

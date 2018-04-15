@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Windows.Forms;
-using Thorium_Logging;
-using Thorium_Plugins;
+using Thorium.Plugins;
 
-namespace Thorium_Monitor
+namespace Thorium.Monitor
 {
     static class Program
     {
@@ -13,7 +12,7 @@ namespace Thorium_Monitor
         [STAThread]
         static void Main()
         {
-            Logging.SetupLogging();
+            Logging.Logging.SetupLogging();
 
             PluginLoader.LoadPlugins();
 

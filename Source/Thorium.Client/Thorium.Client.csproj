@@ -7,8 +7,8 @@
     <ProjectGuid>{736545C5-DBBC-45F2-818B-6F2E79251D46}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Thorium_Client</RootNamespace>
-    <AssemblyName>Thorium-Client</AssemblyName>
+    <RootNamespace>Thorium.Client</RootNamespace>
+    <AssemblyName>Thorium.Client</AssemblyName>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>

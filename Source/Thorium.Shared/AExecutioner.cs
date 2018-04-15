@@ -1,4 +1,4 @@
-﻿namespace Thorium_Shared
+﻿namespace Thorium.Shared
 {
     public abstract class AExecutioner
     {

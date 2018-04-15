@@ -2,15 +2,14 @@
 using System.Linq;
 using System.Threading;
 using Newtonsoft.Json.Linq;
-using Thorium_CommandLine;
-using Thorium_Config;
-using Thorium_Logging;
-using Thorium_Net;
-using Thorium_Plugins;
-using Thorium_Shared;
-using Thorium_Shared.Net;
+using Thorium.CommandLine;
+using Thorium.Config;
+using Thorium.Net;
+using Thorium.Plugins;
+using Thorium.Shared;
+using Thorium.Shared.Net;
 
-namespace Thorium_Server
+namespace Thorium.Server
 {
     class Program
     {
@@ -18,7 +17,7 @@ namespace Thorium_Server
         static ConsoleMenu menu;
         static void Main(string[] args)
         {
-            Logging.SetupLogging();
+            Logging.Logging.SetupLogging();
 
             PluginLoader.LoadPlugins();
 

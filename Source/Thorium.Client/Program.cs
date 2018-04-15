@@ -1,15 +1,14 @@
 ﻿using System.Linq;
-using Thorium_CommandLine;
-using Thorium_Logging;
-using Thorium_Plugins;
+using Thorium.CommandLine;
+using Thorium.Plugins;
 
-namespace Thorium_Client
+namespace Thorium.Client
 {
     public class Program
     {
         static void Main(string[] args)
         {
-            Logging.SetupLogging();
+            Logging.Logging.SetupLogging();
 
             PluginLoader.LoadPlugins();
 

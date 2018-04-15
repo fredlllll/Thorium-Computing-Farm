@@ -7,8 +7,8 @@
     <ProjectGuid>{1440817D-1468-46DB-B086-E3049A3ADB92}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Thorium_Server</RootNamespace>
-    <AssemblyName>Thorium-Server</AssemblyName>
+    <RootNamespace>Thorium.Server</RootNamespace>
+    <AssemblyName>Thorium.Server</AssemblyName>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>

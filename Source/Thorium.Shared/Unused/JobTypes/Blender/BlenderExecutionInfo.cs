@@ -6,14 +6,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Ninject;
-using Thorium_Shared.ExecutionActions;
-using Thorium_Shared.Services;
-using Thorium_Shared.Services.Client;
-using Thorium_Shared.Services.Server;
+using Thorium.Shared.ExecutionActions;
+using Thorium.Shared.Services;
+using Thorium.Shared.Services.Client;
+using Thorium.Shared.Services.Server;
 using Codolith.Config;
-using Thorium_Shared.WCF;
+using Thorium.Shared.WCF;
 
-namespace Thorium_Shared.Blender
+namespace Thorium.Shared.Blender
 {
     public class BlenderExecutionInfo : ITaskExecutionInfo
     {

@@ -1,4 +1,4 @@
-﻿namespace Thorium_Client
+﻿namespace Thorium.Client
 {
     /*public static class ThoriumClientConfig
     {
@@ -12,7 +12,7 @@
 
         public static void Load()
         {
-            JObject obj = JObject.Parse(File.ReadAllText(Thorium_Shared.Files.ResolveFileOrDefault(Files.ThoriumClientConfigFile)));
+            JObject obj = JObject.Parse(File.ReadAllText(Thorium.Shared.Files.ResolveFileOrDefault(Files.ThoriumClientConfigFile)));
 
             ServerListeningPort = obj.Get<UInt16>("serverListeningPort");
             ServerHost = obj.Get<string>("serverHost");

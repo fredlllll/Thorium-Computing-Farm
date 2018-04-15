@@ -1,4 +1,4 @@
-﻿namespace Thorium_Shared
+﻿namespace Thorium.Shared
 {
     /// <summary>
     /// properties that can only be put in job

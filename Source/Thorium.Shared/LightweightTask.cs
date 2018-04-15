@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
-using Thorium_Reflection;
-using static Thorium_Shared.JobAndTaskProperties;
+using Thorium.Reflection;
+using static Thorium.Shared.JobAndTaskProperties;
 
-namespace Thorium_Shared
+namespace Thorium.Shared
 {
     public class LightweightTask
     {

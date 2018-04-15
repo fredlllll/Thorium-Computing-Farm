@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Thorium_Shared
+namespace Thorium.Shared
 {
     public abstract class ATaskProducer
     {

@@ -1,7 +1,7 @@
-﻿using Thorium_Config;
-using Thorium_Server.Data;
+﻿using Thorium.Config;
+using Thorium.Server.Data;
 
-namespace Thorium_Server
+namespace Thorium.Server
 {
     public class ThoriumServer
     {

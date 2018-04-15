@@ -1,4 +1,4 @@
-﻿namespace Thorium_Shared.Data
+﻿namespace Thorium.Shared.Data
 {
     /*public class PreviouslyKnownAsAttribute : Attribute
     {

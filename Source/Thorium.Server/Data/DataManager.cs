@@ -1,11 +1,11 @@
 ﻿using System;
 using MySql.Data.MySqlClient;
-using Thorium_Config;
-using Thorium_Server.Data.Serializers;
-using Thorium_Data_Impl;
-using Thorium_Data_Impl.Serializers;
+using Thorium.Config;
+using Thorium.Server.Data.Serializers;
+using Thorium.Data.Implementation;
+using Thorium.Data.Implementation.Serializers;
 
-namespace Thorium_Server.Data
+namespace Thorium.Server.Data
 {
     public class DataManager
     {

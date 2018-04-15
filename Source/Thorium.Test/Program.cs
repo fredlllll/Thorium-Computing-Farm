@@ -2,7 +2,7 @@
 using System.ServiceModel;
 using System.Threading;
 
-namespace Thorium_Test
+namespace Thorium.Test
 {
     class Program
     {

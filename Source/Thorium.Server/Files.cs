@@ -1,4 +1,4 @@
-﻿namespace Thorium_Server
+﻿namespace Thorium.Server
 {
     public static class Files
     {

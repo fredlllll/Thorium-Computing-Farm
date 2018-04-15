@@ -1,11 +1,11 @@
 ﻿using System.Diagnostics;
 using System.Linq;
 using Newtonsoft.Json.Linq;
-using Thorium_IO;
-using Thorium_Processes;
-using Thorium_Shared;
+using Thorium.IO;
+using Thorium.Processes;
+using Thorium.Shared;
 
-namespace Thorium_Jobs.SimpleExecution
+namespace Thorium.Jobs.SimpleExecution
 {
     public class SEExecutioner : AExecutioner
     {

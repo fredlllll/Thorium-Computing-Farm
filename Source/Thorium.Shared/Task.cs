@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 
-namespace Thorium_Shared
+namespace Thorium.Shared
 {
     public class Task
     {

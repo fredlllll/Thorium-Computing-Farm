@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace Thorium_Server
+namespace Thorium.Server
 {
     public class Client
     {

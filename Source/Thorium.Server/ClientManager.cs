@@ -1,11 +1,11 @@
 ﻿using System.Threading;
 using NLog;
-using Thorium_Server.Data;
-using Thorium_Server.Data.Serializers;
-using Thorium_Threading;
-using Thorium_Data_Impl;
+using Thorium.Server.Data;
+using Thorium.Server.Data.Serializers;
+using Thorium.Threading;
+using Thorium.Data.Implementation;
 
-namespace Thorium_Server
+namespace Thorium.Server
 {
     public class ClientManager : RestartableThreadClass
     {

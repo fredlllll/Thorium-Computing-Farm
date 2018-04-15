@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Linq;
 using Newtonsoft.Json.Linq;
-using Thorium_Data;
-using Thorium_Shared;
+using Thorium.Shared;
 
-namespace Thorium_Data_Impl.Serializers
+namespace Thorium.Data.Implementation.Serializers
 {
     public class JobSerializer : BaseSerializer<string, Job>
     {
