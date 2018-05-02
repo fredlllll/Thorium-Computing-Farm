@@ -33,7 +33,7 @@ namespace Thorium.Server
 
             //TODO remove ThoriumServerConfig.ListeningPort from config
             serverController = new ServerController(this);
-            var config = ConfigFile.GetClassConfig();
+            dynamic config = ConfigFile.GetClassConfig();
             clientsServer = new ClientsServicePoint(this, config.ClientListeningPort);
         }
 

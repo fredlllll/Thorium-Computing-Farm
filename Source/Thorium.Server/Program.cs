@@ -41,7 +41,7 @@ namespace Thorium.Server
 
         static void AddBlenderJob()
         {
-            var config = ConfigFile.GetConfig("thorium_server");
+            dynamic config = ConfigFile.GetConfig("thorium_server");
 
             var client = new TCPServiceInvoker("localhost", config.ListeningPort);
 
