@@ -32,10 +32,10 @@ namespace Thorium.Server
             base.Start();
         }
 
-        public override void Stop()
+        public override void Stop(int joinTimeoutms = -1)
         {
             running = false;
-            base.Stop();
+            base.Stop(joinTimeoutms);
         }
 
         protected override void Run()

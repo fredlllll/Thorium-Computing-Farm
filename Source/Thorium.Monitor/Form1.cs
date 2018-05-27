@@ -2,7 +2,7 @@
 using System.IO.Compression;
 using System.Windows.Forms;
 using Newtonsoft.Json.Linq;
-using Thorium.Net;
+using Thorium.Net.ServiceHost.Invokers;
 using Thorium.Shared;
 using Thorium.Shared.Net;
 

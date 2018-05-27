@@ -1,6 +1,12 @@
 ﻿using System;
-using System.ServiceModel;
 using System.Threading;
+using Newtonsoft.Json.Linq;
+using Thorium.Config;
+using Thorium.Net.ServiceHost;
+using Thorium.Net.ServiceHost.InvokationHandlers;
+using Thorium.Net.ServiceHost.InvokationReceivers;
+using Thorium.Net.ServiceHost.Invokers;
+using Thorium.Net.ServiceHost.Proxying;
 
 namespace Thorium.Test
 {
@@ -8,63 +14,37 @@ namespace Thorium.Test
     {
         static void Main(string[] args)
         {
-            NetTcpBinding b = new NetTcpBinding();
+            ServiceHost sh = new ServiceHost();
 
-            var s = new Service();
+            Service service = new Service();
 
-            var address = "net.tcp://localhost:8100/test";
-            Console.WriteLine("hosting " + s + " on " + address);
+            ObjectInvokationHandler<IServiceInterface> oih = new ObjectInvokationHandler<IServiceInterface>(service);
+            sh.RegisterInvokationHandler(oih);
 
-            Uri wcfAddress = new Uri(address);
-            var host = new ServiceHost(s, wcfAddress);
-            host.Open();
+            Config.Config config = new Config.Config(new JObject() { ["port"] = 7677, ["host"] = "localhost" });
+            HttpServiceInvokationReceiver ir = new HttpServiceInvokationReceiver(config);
+            sh.RegisterInvokationReceiver(ir);
+            sh.Start();
 
+            HttpServiceInvoker iv = new HttpServiceInvoker(config);
 
-            EndpointAddress endpointAddress = new EndpointAddress("net.tcp://localhost:8100/test");
+            IServiceInterface proxy = ProxyFactory.CreateInstance<IServiceInterface>(iv);
 
-            var cb = new Callback();
-            var channelFactory = new DuplexChannelFactory<IService>(cb, new NetTcpBinding(), endpointAddress);
-            var serviceInstance = channelFactory.CreateChannel();
-
-            serviceInstance.DoMe();
-
-            Thread.Sleep(5000);
+            Console.WriteLine(proxy.Concatenate(56, " sheep"));
+            Console.ReadKey();
         }
+    }
 
-        [ServiceContract(CallbackContract = typeof(ICallback), SessionMode = SessionMode.Required)]
-        interface IService
+    public class Service : IServiceInterface
+    {
+        public JToken Concatenate(int arg, string arg2)
         {
-            [OperationContract(IsInitiating = true, IsOneWay = true)]
-            void DoMe();
+            return arg + arg2;
         }
+    }
 
-        [ServiceContract]
-        interface ICallback
-        {
-            [OperationContract]
-            void DidMe();
-        }
-
-        class Callback : ICallback
-        {
-            public void DidMe()
-            {
-                Console.WriteLine("didme");
-            }
-        }
-
-        [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single, IncludeExceptionDetailInFaults = true, ConcurrencyMode = ConcurrencyMode.Reentrant)]
-        class Service :IService
-        {
-            
-            public void DoMe()
-            {
-                Console.WriteLine("dome");
-                var client = OperationContext.Current.GetCallbackChannel<ICallback>();
-                client.DidMe();
-            }
-        }
-
-        
+    public interface IServiceInterface
+    {
+        JToken Concatenate(int arg, string arg2);
     }
 }

@@ -51,6 +51,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Thorium.Extensions.String",
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Submodules", "Submodules", "{24656C1B-BBA2-4463-9A65-583B94909F51}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Thorium.Net.ServiceHost.Proxying", "Thorium.Net.ServiceHost.Proxying\Thorium.Net.ServiceHost.Proxying.csproj", "{FE5AD83D-1CC2-411D-A56D-1424031D4106}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -149,6 +151,10 @@ Global
 		{C3980A26-E25D-4C61-90EB-3E49BA565F69}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C3980A26-E25D-4C61-90EB-3E49BA565F69}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C3980A26-E25D-4C61-90EB-3E49BA565F69}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE5AD83D-1CC2-411D-A56D-1424031D4106}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE5AD83D-1CC2-411D-A56D-1424031D4106}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE5AD83D-1CC2-411D-A56D-1424031D4106}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE5AD83D-1CC2-411D-A56D-1424031D4106}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -171,6 +177,7 @@ Global
 		{EDDA42E6-5158-41CD-AAC8-2347301BA08A} = {24656C1B-BBA2-4463-9A65-583B94909F51}
 		{D287EC1D-1F2B-4433-A6BB-24ADD1D25466} = {24656C1B-BBA2-4463-9A65-583B94909F51}
 		{C3980A26-E25D-4C61-90EB-3E49BA565F69} = {24656C1B-BBA2-4463-9A65-583B94909F51}
+		{FE5AD83D-1CC2-411D-A56D-1424031D4106} = {24656C1B-BBA2-4463-9A65-583B94909F51}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6760BD9C-E47B-432A-B93B-5FD34F3A09A7}

@@ -1,0 +1,14 @@
+﻿{
+  "invokationReceivers": [
+    {
+      "load": true,
+      "type": "Thorium.Shared.Net.ServiceHost.Interfaces.HttpServiceInvokationReceiver",
+      "args": "server_controller_http"
+    },
+    {
+      "load": true,
+      "type": "Thorium.Shared.Net.ServiceHost.Interfaces.TCPServiceInvokationReceiver",
+      "args": "server_controller_tcp"
+    }
+  ]
+}

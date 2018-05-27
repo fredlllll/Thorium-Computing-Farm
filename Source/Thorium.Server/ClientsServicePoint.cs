@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using Newtonsoft.Json.Linq;
-using Thorium.Net;
+using Thorium.Net.ServiceHost;
+using Thorium.Net.ServiceHost.InvokationHandlers;
 using Thorium.Shared;
 using static Thorium.Shared.Net.ClientToServerCommands;
 
@@ -10,19 +11,23 @@ namespace Thorium.Server
     {
         ThoriumServer server;
 
-        Thorium.Net.ServiceHost servicePoint;
+       ServiceHost servicePoint;
 
         public ClientsServicePoint(ThoriumServer thoriumServer, int port)
         {
             server = thoriumServer;
 
-            servicePoint = new Thorium.Net.ServiceHost("clients_service_point");
+            servicePoint = new ServiceHost("clients_service_point");
 
-            servicePoint.RegisterRoutine(new Routine(Register, HandleRegister));
-            servicePoint.RegisterRoutine(new Routine(Unregister, HandleUnregister));
-            servicePoint.RegisterRoutine(new Routine(CheckoutTask, HandleCheckoutTask));
-            servicePoint.RegisterRoutine(new Routine(TurnInTask, HandleTurnInTask));
-            servicePoint.RegisterRoutine(new Routine(AbandonTask, HandleAbandonTask));
+            RoutineInvokationHandler rih = new RoutineInvokationHandler();
+
+            rih.RegisterRoutine(new Routine(Register, HandleRegister));
+            rih.RegisterRoutine(new Routine(Unregister, HandleUnregister));
+            rih.RegisterRoutine(new Routine(CheckoutTask, HandleCheckoutTask));
+            rih.RegisterRoutine(new Routine(TurnInTask, HandleTurnInTask));
+            rih.RegisterRoutine(new Routine(AbandonTask, HandleAbandonTask));
+
+            servicePoint.RegisterInvokationHandler(rih);
         }
 
         public void Start()

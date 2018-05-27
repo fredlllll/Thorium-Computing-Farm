@@ -28,10 +28,10 @@ namespace Thorium.Client
             base.Start();
         }
 
-        public override void Stop()
+        public override void Stop(int joinTimeoutms = -1)
         {
             serverInterface.InvokeUnregister();
-            base.Stop();
+            base.Stop(joinTimeoutms);
         }
 
         protected override void Run()

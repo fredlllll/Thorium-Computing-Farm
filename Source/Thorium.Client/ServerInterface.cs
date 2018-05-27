@@ -4,6 +4,7 @@ using Thorium.Shared;
 using static Thorium.Shared.Net.ClientToServerCommands;
 using NLog;
 using Thorium.Net;
+using Thorium.Net.ServiceHost.Invokers;
 
 namespace Thorium.Client
 {

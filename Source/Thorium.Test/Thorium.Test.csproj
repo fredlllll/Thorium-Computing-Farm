@@ -38,17 +38,33 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Thorium-Config\Thorium.Config.csproj">
+      <Project>{9614C963-7E65-4F33-8DD2-4CA7E080A39F}</Project>
+      <Name>Thorium.Config</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Thorium-Net\Thorium.Net.csproj">
+      <Project>{6C35570E-8937-4E5D-80A8-608D1D5080FA}</Project>
+      <Name>Thorium.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Thorium.Net.ServiceHost.Proxying\Thorium.Net.ServiceHost.Proxying.csproj">
+      <Project>{FE5AD83D-1CC2-411D-A56D-1424031D4106}</Project>
+      <Name>Thorium.Net.ServiceHost.Proxying</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Thorium.Shared\Thorium.Shared.csproj">
       <Project>{fe33d9c9-43ca-4ec3-ab9f-154611627bff}</Project>
       <Name>Thorium.Shared</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ServiceModel" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
