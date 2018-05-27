@@ -49,3 +49,6 @@
 [submodule "Source/Thorium-Utils"]
 	path = Source/Thorium-Utils
 	url = https://github.com/fredlllll/Thorium-Utils.git
+[submodule "Source/Thorium-Net-ServiceHost-Proxying"]
+	path = Source/Thorium-Net-ServiceHost-Proxying
+	url = https://github.com/fredlllll/Thorium-Net-ServiceHost-Proxying.git
