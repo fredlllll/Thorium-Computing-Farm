@@ -1,77 +1,19 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{AC4D22A1-F56D-4D9F-9506-A6CCF7570996}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Thorium.Test</RootNamespace>
-    <AssemblyName>Thorium.Test</AssemblyName>
-    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <TargetFrameworkProfile />
+    <TargetFramework>netcoreapp2.1</TargetFramework>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Compile Include="Program.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
   </ItemGroup>
+
   <ItemGroup>
-    <ProjectReference Include="..\Thorium-Config\Thorium.Config.csproj">
-      <Project>{9614C963-7E65-4F33-8DD2-4CA7E080A39F}</Project>
-      <Name>Thorium.Config</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Thorium-Net\Thorium.Net.csproj">
-      <Project>{6C35570E-8937-4E5D-80A8-608D1D5080FA}</Project>
-      <Name>Thorium.Net</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Thorium.Net.ServiceHost.Proxying\Thorium.Net.ServiceHost.Proxying.csproj">
-      <Project>{FE5AD83D-1CC2-411D-A56D-1424031D4106}</Project>
-      <Name>Thorium.Net.ServiceHost.Proxying</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Thorium.Shared\Thorium.Shared.csproj">
-      <Project>{fe33d9c9-43ca-4ec3-ab9f-154611627bff}</Project>
-      <Name>Thorium.Shared</Name>
-    </ProjectReference>
+    <ProjectReference Include="..\Thorium-Config\Thorium.Config.csproj" />
+    <ProjectReference Include="..\Thorium-Net-ServiceHost-Proxying\Thorium.Net.ServiceHost.Proxying.csproj" />
+    <ProjectReference Include="..\Thorium-Net\Thorium.Net.csproj" />
+    <ProjectReference Include="..\Thorium.Shared\Thorium.Shared.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.ServiceModel" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
-    <None Include="packages.config" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+
 </Project>
