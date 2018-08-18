@@ -5,8 +5,6 @@ VisualStudioVersion = 15.0.27004.2009
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Thorium.Client", "Thorium.Client\Thorium.Client.csproj", "{736545C5-DBBC-45F2-818B-6F2E79251D46}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Thorium.Monitor", "Thorium.Monitor\Thorium.Monitor.csproj", "{1701A4EB-99F8-4D7D-B471-A738AD83C83B}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Thorium.Test", "Thorium.Test\Thorium.Test.csproj", "{AC4D22A1-F56D-4D9F-9506-A6CCF7570996}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Thorium.StorageService", "Thorium-StorageService\Thorium.StorageService.csproj", "{60CE86DE-D3EB-4052-B3F7-3950BA29BB63}"
