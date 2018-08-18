@@ -6,13 +6,13 @@ namespace Thorium.Server.Data.Serializers
     public class ClientTaskRelationSerializer : BaseSerializer<string, ClientTaskRelation>
     {
         private readonly ClientSerializer clientSer;
-        private readonly TaskSerializer taskSer;
+        private readonly TaskDataSerializer taskSer;
 
         public override IRawDatabase Database { get; }
         public override string Table => Database.GetTableName("client_task_relations");
         public override string KeyColumn => "client_id";
 
-        public ClientTaskRelationSerializer(IRawDatabase database, ClientSerializer clientSer, TaskSerializer taskSer)
+        public ClientTaskRelationSerializer(IRawDatabase database, ClientSerializer clientSer, TaskDataSerializer taskSer)
         {
             Database = database;
             this.clientSer = clientSer;

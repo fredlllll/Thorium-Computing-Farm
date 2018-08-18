@@ -1,9 +1,10 @@
 ﻿using Thorium.Config;
 using Thorium.Server.Data;
+using Thorium.Threading;
 
 namespace Thorium.Server
 {
-    public class ThoriumServer
+    public class ThoriumServer : RestartableThreadClass
     {
         /// <summary>
         /// for control commands
@@ -14,7 +15,6 @@ namespace Thorium.Server
         /// </summary>
         ClientsServicePoint clientsServer;
 
-        public JobManager JobManager { get; private set; }
         public TaskManager TaskManager { get; private set; }
         public ClientManager ClientManager { get; private set; }
         public ClientTaskRelationManager ClientTaskRelationManager { get; private set; }
@@ -22,11 +22,10 @@ namespace Thorium.Server
         public DataManager DataManager { get; private set; }
 
 
-        public ThoriumServer()
+        public ThoriumServer() : base(false)
         {
             DataManager = new DataManager();
 
-            JobManager = new JobManager(this, DataManager.JobSerializer, DataManager.TaskSerializer);
             TaskManager = new TaskManager(DataManager.TaskSerializer);
             ClientManager = new ClientManager();
             ClientTaskRelationManager = new ClientTaskRelationManager(DataManager.ClientTaskRelationSerializer);
@@ -38,26 +37,34 @@ namespace Thorium.Server
         }
 
 
-        public void Start()
+        public override void Start()
         {
-            //TODO: load jobs
-            JobManager.Start();
             ClientManager.Start();
             ClientTaskRelationManager.Start();
             serverController.Start();
             clientsServer.Start();
-            ClientManager.Start();
+            base.Start();
         }
 
-        public void Stop()
+        public override void Stop(int joinTimeoutms = -1)
         {
-            JobManager.Stop();
-            ClientManager.Stop();
+            ClientManager.Stop(joinTimeoutms);
             ClientTaskRelationManager.Stop();
             serverController.Stop();
             clientsServer.Stop();
-            ClientManager.Stop();
-            //TODO: save jobs
+            base.Stop(joinTimeoutms);
+        }
+
+        protected override void Run()
+        {
+            //check database for jobs that can be assigned
+            var lt = TaskManager.GetAssignableTask().ToLightweightTask();
+            var client = ClientManager.GetFreeClient();
+            if(client.AssignTask(lt))
+            {
+                var rel = new ClientTaskRelation(client.Id, lt.Id);
+                ClientTaskRelationManager.Add(rel);
+            }
         }
     }
 }

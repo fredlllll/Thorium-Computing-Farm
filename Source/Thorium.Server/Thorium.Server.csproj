@@ -44,6 +44,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Thorium-CommandLine\Thorium.CommandLine.csproj" />
+    <ProjectReference Include="..\Thorium-Extensions-JSON\Thorium.Extensions.JSON.csproj" />
     <ProjectReference Include="..\Thorium-Logging\Thorium.Logging.csproj" />
     <ProjectReference Include="..\Thorium-Net\Thorium.Net.csproj" />
     <ProjectReference Include="..\Thorium-Plugins\Thorium.Plugins.csproj" />

@@ -14,12 +14,18 @@ namespace Thorium.Client
         private static Logger logger = LogManager.GetCurrentClassLogger();
 
         private ServerInterface serverInterface;
+        private ClientController clientController;
 
-        public string ID { get; } = Utils.Utils.GetRandomGUID();
+        //TODO: make id created by a pattern, so single machines can be identified
+        public string Id { get; } = Utils.Utils.GetRandomGUID();
+
+        private AutoResetEvent hasTaskEvent = new AutoResetEvent(false);
+        private LightweightTask currentTask = null;
 
         public ThoriumClient() : base(false)
         {
             serverInterface = new ServerInterface(config.ServerHost, config.ServerListeningPort, this);
+            clientController = new ClientController(this);
         }
 
         public override void Start()
@@ -30,8 +36,20 @@ namespace Thorium.Client
 
         public override void Stop(int joinTimeoutms = -1)
         {
+            string id = currentTask?.Id;
+            if(id != null)
+            {
+                serverInterface.InvokeAbandonTask(id, "Client Stopped");
+            }
             serverInterface.InvokeUnregister();
+
             base.Stop(joinTimeoutms);
+        }
+
+        public void AssignTask(LightweightTask lightweightTask)
+        {
+            currentTask = lightweightTask;
+            hasTaskEvent.Set();
         }
 
         protected override void Run()
@@ -42,44 +60,36 @@ namespace Thorium.Client
                 while(true)
                 {
                     logger.Info("getting job...");
-                    LightweightTask lightweightTask = null;
+                    hasTaskEvent.WaitOne();
+                    logger.Info("got task: " + currentTask.Id);
+
+                    AExecutioner executioner = currentTask.GetExecutioner();
                     try
                     {
-                        lightweightTask = serverInterface.InvokeCheckoutTask();
-                    }
-                    catch(TimeoutException)
-                    {
-                        logger.Info("timeout when checking out task...");
-                    }
-                    if(lightweightTask != null)
-                    {
-                        logger.Info("got task: " + lightweightTask.ID);
-
-                        AExecutioner executioner = lightweightTask.GetExecutioner();
-                        try
+                        logger.Info("executing task");
+                        var result = executioner.Execute();
+                        switch(result.FinalAction)
                         {
-                            logger.Info("executing task");
-                            executioner.Execute();
-                            serverInterface.InvokeTurnInTask(lightweightTask);
-                            logger.Info("done task");
-                        }
-                        catch(Exception execEx) when(!(execEx is ThreadInterruptedException))
-                        {
-                            logger.Info("task failed: " + execEx);
-                            serverInterface.InvokeFailTask(lightweightTask, execEx.ToString());
+                            case FinalAction.TurnIn:
+                                serverInterface.InvokeTurnInTask(currentTask.Id, result.AdditionalInformation);
+                                break;
+                            case FinalAction.Abandon:
+                                serverInterface.InvokeAbandonTask(currentTask.Id, result.AdditionalInformation);
+                                break;
+                            case FinalAction.Fail:
+                                serverInterface.InvokeFailTask(currentTask.Id, result.AdditionalInformation);
+                                break;
                         }
 
-                        lastTimeJobCompleted = DateTime.UtcNow;
+                        logger.Info("done task");
                     }
-                    else
+                    catch(Exception execEx) when(!(execEx is ThreadInterruptedException))
                     {
-                        /*if((DateTime.UtcNow - lastTimeJobCompleted).TotalSeconds > 180) //if idle for x seconds we shutdown
-                        {
-                            break;
-                        }*/
-                        logger.Info("no task available, waiting 5 seconds");
-                        Thread.Sleep(5000);
+                        logger.Info("task failed: " + execEx);
+                        serverInterface.InvokeFailTask(currentTask.Id, execEx.ToString());
                     }
+
+                    lastTimeJobCompleted = DateTime.UtcNow;
                 }
             }
             catch(ThreadInterruptedException)

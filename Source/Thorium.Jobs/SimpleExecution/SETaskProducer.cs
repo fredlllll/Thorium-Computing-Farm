@@ -5,7 +5,7 @@ using static Thorium.Shared.JobAndTaskProperties;
 
 namespace Thorium.Jobs.SimpleExecution
 {
-    public class SETaskProducer : ATaskProducer
+    /*public class SETaskProducer : ATaskProducer
     {
         public SETaskProducer(Job job) : base(job)
         {
@@ -28,5 +28,5 @@ namespace Thorium.Jobs.SimpleExecution
                 yield return new Task(Job.ID, Utils.Utils.GetRandomGUID(), info);
             }
         }
-    }
+    }*/
 }

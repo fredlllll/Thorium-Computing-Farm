@@ -4,48 +4,44 @@ using Thorium.Shared;
 
 namespace Thorium.Data.Implementation.Serializers
 {
-    public class TaskSerializer : BaseSerializer<string, Task>
+    public class TaskDataSerializer : BaseSerializer<string, TaskData>
     {
-        private readonly JobSerializer jobSer;
-
         public override IRawDatabase Database { get; }
 
-        public TaskSerializer(IRawDatabase database, JobSerializer jobSerializer)
+        public TaskDataSerializer(IRawDatabase database)
         {
             Database = database;
-            jobSer = jobSerializer;
         }
 
         public override string Table => Database.GetTableName("tasks");
         public override string KeyColumn => "id";
 
-        public override Task Load(string key)
+        public override TaskData Load(string key)
         {
             using(var reader = SelectStarWhereKey(key))
             {
                 reader.Read();
 
-                string jobId = (string)reader["job_id"];
                 string informationString = (string)reader["information"];
                 string status = (string)reader["status"];
 
                 //Job job = jobSer.LoadOrCached(jobId);
 
-                return new Task(jobId, key, JObject.Parse(informationString), (TaskStatus)Enum.Parse(typeof(TaskStatus), status));
+                return new TaskData(key, JObject.Parse(informationString), (TaskStatus)Enum.Parse(typeof(TaskStatus), status));
             }
         }
 
-        public override void Save(string key, Task value)
+        public override void Save(string key, TaskData value)
         {
-            string sql = "INSERT INTO " + Table + "(" + KeyColumn + ",job_id,information,status) VALUES(@0,@1,@2,@3) ON DUPLICATE KEY UPDATE job_id=@4, information=@5, status=@6";
+            string sql = "INSERT INTO " + Table + "(" + KeyColumn + ",information,status) VALUES(@0,@1,@2) ON DUPLICATE KEY UPDATE information=@3, status=@4";
             string informationString = value.Information.ToString(Newtonsoft.Json.Formatting.None);
-            Database.ExecuteNonQueryTransaction(sql, key, value.JobID, informationString, value.Status.ToString(), value.JobID, informationString, value.Status.ToString());
+            Database.ExecuteNonQueryTransaction(sql, key, informationString, value.Status.ToString(), informationString, value.Status.ToString());
         }
 
-        public Task CheckoutTask()
+        public TaskData CheckoutTask()
         {
             string sql = "SET @update_id:='';" +
-                "UPDATE " + Table + " SET status='" + TaskStatus.Processing.ToString() + "', " + KeyColumn + "=(SELECT @update_id:=" + KeyColumn + ") WHERE status='" + TaskStatus.Waiting.ToString() + "' LIMIT 1;" +
+                "UPDATE " + Table + " SET status='" + TaskStatus.Executing.ToString() + "', " + KeyColumn + "=(SELECT @update_id:=" + KeyColumn + ") WHERE status='" + TaskStatus.WaitingForExecution.ToString() + "' LIMIT 1;" +
                 "SELECT @update_id;";
             using(var reader = Database.ExecuteQuery(sql))
             {
@@ -72,11 +68,9 @@ namespace Thorium.Data.Implementation.Serializers
         {
             string sql = @"CREATE TABLE IF NOT EXISTS `" + Table + @"` (
   `" + KeyColumn + @"` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `job_id` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `information` mediumtext COLLATE utf8mb4_unicode_ci NOT NULL,
   `status` enum('Waiting','Processing','Failed','Finished') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Waiting',
   PRIMARY KEY (`" + KeyColumn + @"`),
-  KEY `job_id` (`job_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 ";
             Database.ExecuteNonQueryTransaction(sql);
@@ -84,9 +78,7 @@ namespace Thorium.Data.Implementation.Serializers
 
         public override void CreateConstraints()
         {
-            string sql = @"ALTER TABLE `" + Table + @"`
-  ADD CONSTRAINT `" + Table + @"_ibfk_1` FOREIGN KEY (`job_id`) REFERENCES `" + jobSer.Table + @"` (`" + jobSer.KeyColumn + "`) ON DELETE CASCADE ON UPDATE CASCADE;";
-            Database.ExecuteNonQueryTransaction(sql);
+            // no constraints
         }
     }
 }

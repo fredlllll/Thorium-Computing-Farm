@@ -13,71 +13,63 @@ namespace Thorium.Server
 
         private ThoriumServer server;
 
-        private ServiceHost servicePoint;
+        private ServiceHost serviceHost;
 
         public ServerController(ThoriumServer server)
         {
             this.server = server;
 
-            servicePoint = new ServiceHost("server_controller_service_point");
-
-            //servicePoint.RegisterInvokationReceiver(new HttpServiceInvokationReceiver());
-            //var config = ConfigFile.GetConfig("thorium_server");
-            //servicePoint.RegisterInvokationReceiver(new TCPServiceInvokationReceiver(config.ListeningPort));
+            serviceHost = new ServiceHost("server_controller");
 
             RoutineInvokationHandler rih = new RoutineInvokationHandler();
 
-            rih.RegisterRoutine(new Routine(AddJob, AddJobHandler));
-            rih.RegisterRoutine(new Routine(AbortJob, AbortJobHandler));
+            rih.RegisterRoutine(new Routine(AddTask, AddTaskHandler));
+            rih.RegisterRoutine(new Routine(GetTaskStatus, GetTaskStatusHandler));
+            rih.RegisterRoutine(new Routine(QueueTask, QueueTaskHandler));
             rih.RegisterRoutine(new Routine(AbortTask, AbortTaskHandler));
 
-            servicePoint.RegisterInvokationHandler(rih);
+            serviceHost.RegisterInvokationHandler(rih);
         }
 
         public void Start()
         {
-            servicePoint.Start();
+            serviceHost.Start();
         }
 
         public void Stop()
         {
-            servicePoint.Stop();
+            serviceHost.Stop();
         }
 
-        JToken AddJobHandler(JToken arg)
+        JToken AddTaskHandler(JToken arg)
         {
             JObject argObject = (JObject)arg;
 
-            Job j = new Job(Utils.Utils.GetRandomGUID(), argObject.Get<string>("jobName"), (JObject)argObject["jobInformation"], JobStatus.Initializing);
-            logger.Info("new Job Added: " + j.ID + ", " + j.Name + ", " + j.Information);
-            server.JobManager.AddJob(j);
-            JObject retval = new JObject
-            {
-                ["id"] = j.ID
-            };
-            return retval;
+            string id = Utils.Utils.GetRandomGUID();
+            JObject information = argObject.Get<JObject>("information");
+            server.TaskManager.AddTask(id, information, TaskStatus.Paused);
+            logger.Info("New Task added: " + id + ", " + information);
+
+            return id;
         }
 
-        JToken AbortJobHandler(JToken arg)
+        JToken GetTaskStatusHandler(JToken arg)
         {
-            JObject argObject = (JObject)arg;
+            string id = arg.Value<string>();
+            TaskStatus status = server.TaskManager.GetTaskStatus(id);
+            return status.ToString();
+        }
 
-            string id = argObject.Get<string>("id");
-            foreach(var t in server.DataManager.TaskSerializer.LoadWhere("job_id", id))
-            {
-                server.TaskManager.AbortTask(t.ID);
-            }
-            return null;
+        JToken QueueTaskHandler(JToken arg)
+        {
+            string id = arg.Value<string>();
+            return server.TaskManager.QueueTask(id);
         }
 
         JToken AbortTaskHandler(JToken arg)
         {
-            JObject argObject = (JObject)arg;
-
-            string id = argObject.Get<string>("id");
-            server.TaskManager.AbortTask(id);
-
-            return null;
+            string id = arg.Value<string>();
+            return server.TaskManager.AbortTask(id);
         }
     }
 }

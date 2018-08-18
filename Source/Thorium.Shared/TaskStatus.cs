@@ -2,9 +2,11 @@
 {
     public enum TaskStatus
     {
-        Waiting,
-        Processing,
+        Paused,
+        WaitingForExecution,
+        Executing,
+        Finished,
         Failed,
-        Finished
+        Aborted
     }
 }

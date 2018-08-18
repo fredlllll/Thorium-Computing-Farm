@@ -35,8 +35,7 @@ namespace Thorium.Server.Data
             };
         }
 
-        public TaskSerializer TaskSerializer { get; set; }
-        public JobSerializer JobSerializer { get; set; }
+        public TaskDataSerializer TaskSerializer { get; set; }
         public ClientSerializer ClientSerializer { get; set; }
         public ClientTaskRelationSerializer ClientTaskRelationSerializer { get; set; }
 
@@ -46,8 +45,7 @@ namespace Thorium.Server.Data
         {
             database = GetNewDatabase();
 
-            JobSerializer = new JobSerializer(database);
-            TaskSerializer = new TaskSerializer(database, JobSerializer);
+            TaskSerializer = new TaskDataSerializer(database);
             ClientSerializer = new ClientSerializer(database);
             ClientTaskRelationSerializer = new ClientTaskRelationSerializer(database, ClientSerializer, TaskSerializer);
         }

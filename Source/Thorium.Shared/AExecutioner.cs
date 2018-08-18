@@ -8,6 +8,6 @@
             Task = t;
         }
 
-        public abstract void Execute();
+        public abstract ExecutionResult Execute();
     }
 }

@@ -8,17 +8,13 @@ namespace Thorium.Shared
 {
     public class LightweightTask
     {
-        public string JobID { get; set; }
-        public JObject JobInformation { get; set; }
-        public string ID { get; set; }
+        public string Id { get; set; }
         public JObject Information { get; set; }
 
-        public LightweightTask(Task t, Job job)
+        public LightweightTask(string id, JObject information)
         {
-            JobID = job.ID;
-            JobInformation = job.Information;
-            ID = t.ID;
-            Information = t.Information;
+            Id = id;
+            Information = information;
         }
 
         public LightweightTask() { }
@@ -38,22 +34,12 @@ namespace Thorium.Shared
             {
                 return val.Value<T>();
             }
-            val = JobInformation[key];
-            if(val != null && !val.IsNull())
-            {
-                return val.Value<T>();
-            }
             throw new KeyNotFoundException("could not find key " + key + " in task or job info");
         }
 
         public T GetInfo<T>(string key, T def)
         {
             var val = Information[key];
-            if(val != null && !val.IsNull())
-            {
-                return val.Value<T>();
-            }
-            val = JobInformation[key];
             if(val != null && !val.IsNull())
             {
                 return val.Value<T>();

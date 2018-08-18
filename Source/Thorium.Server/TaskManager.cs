@@ -1,27 +1,34 @@
 ﻿using NLog;
 using Thorium.Shared;
 using Thorium.Data.Implementation.Serializers;
+using System;
+using Newtonsoft.Json.Linq;
 
 namespace Thorium.Server
 {
     public class TaskManager
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();
-        private readonly TaskSerializer serializer;
+        private readonly TaskDataSerializer serializer;
 
-        public TaskManager(TaskSerializer serializer)
+        public TaskManager(TaskDataSerializer serializer)
         {
             this.serializer = serializer;
         }
 
-        public Task CheckoutTask()
+        /*public LightweightTask CheckoutTask()
         {
-            Task t = serializer.CheckoutTask();
+            LightweightTask t = serializer.CheckoutTask().ToLightweightTask();
             if(t != null)
             {
-                logger.Info("Task checked out: " + t.ID);
+                logger.Info("Task checked out: " + t.Id);
             }
             return t;
+        }*/
+
+        public TaskData GetAssignableTask()
+        {
+            return serializer.CheckoutTask();
         }
 
         public void TurnInTask(string id)
@@ -32,7 +39,7 @@ namespace Thorium.Server
 
         public void AbandonTask(string id, string reason = null)
         {
-            serializer.UpdateStatus(id, TaskStatus.Waiting);
+            serializer.UpdateStatus(id, TaskStatus.WaitingForExecution);
             logger.Info("Task abandoned: " + id + (reason != null ? " reason: " + reason : ""));
         }
 
@@ -42,9 +49,25 @@ namespace Thorium.Server
             logger.Info("Task failed: " + id + (reason != null ? " reason: " + reason : ""));
         }
 
-        public void AbortTask(string iD)
+        public bool AbortTask(string id)
         {
-            //TODO: abort task on its machine and put in finished?
+            //TODO: abort task on its machine and update in database
+            return false;
+        }
+
+        public void AddTask(string id, JObject information, TaskStatus status)
+        {
+            throw new NotImplementedException();
+        }
+
+        public TaskStatus GetTaskStatus(string id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool QueueTask(string id)
+        {
+            throw new NotImplementedException();
         }
     }
 }

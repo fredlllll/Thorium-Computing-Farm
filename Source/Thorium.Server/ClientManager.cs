@@ -4,6 +4,7 @@ using Thorium.Server.Data;
 using Thorium.Server.Data.Serializers;
 using Thorium.Threading;
 using Thorium.Data.Implementation;
+using System;
 
 namespace Thorium.Server
 {
@@ -37,7 +38,7 @@ namespace Thorium.Server
 
         public void RegisterClient(Client client)
         {
-            serializer.Save(client.ID, client);
+            serializer.Save(client.Id, client);
             logger.Info("Client Registered: " + client.IPAddress);
         }
 
@@ -49,7 +50,7 @@ namespace Thorium.Server
 
         public void UnregisterClient(Client client, string reason = null)
         {
-            UnregisterClient(client.ID, reason);
+            UnregisterClient(client.Id, reason);
         }
 
         protected override void Run()
@@ -68,7 +69,7 @@ namespace Thorium.Server
                         catch
                         {
                             ClientStoppedResponding?.Invoke(c);
-                            UnregisterClient(c.ID, "Client Died!");
+                            UnregisterClient(c.Id, "Client Died!");
                         }
                     }
                     Thread.Sleep(30000);
@@ -78,6 +79,11 @@ namespace Thorium.Server
             {
                 //ending
             }
+        }
+
+        public Client GetFreeClient()
+        {
+            throw new NotImplementedException();
         }
     }
 }
