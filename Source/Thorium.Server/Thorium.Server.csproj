@@ -1,148 +1,27 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{1440817D-1468-46DB-B086-E3049A3ADB92}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Thorium.Server</RootNamespace>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
     <AssemblyName>Thorium.Server</AssemblyName>
-    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <TargetFrameworkProfile />
+    <ApplicationIcon />
+    <StartupObject />
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="MySql.Data, Version=6.10.6.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
-      <HintPath>..\packages\MySql.Data.6.10.6\lib\net452\MySql.Data.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.4.4.13\lib\net45\NLog.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.ComponentModel" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Configuration.Install" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Drawing.Design" />
-    <Reference Include="System.Management" />
-    <Reference Include="System.Runtime" />
-    <Reference Include="System.Transactions" />
-    <Reference Include="System.Xml" />
+    <None Remove="docs\MySqlCommand.xml" />
+    <None Remove="docs\MySqlCommandBuilder.xml" />
+    <None Remove="docs\MySqlConnection.xml" />
+    <None Remove="docs\MySqlConnectionStringBuilder.xml" />
+    <None Remove="docs\MySqlDataAdapter.xml" />
+    <None Remove="docs\MySqlDataReader.xml" />
+    <None Remove="docs\MySqlException.xml" />
+    <None Remove="docs\MySqlHelper.xml" />
+    <None Remove="docs\MySqlParameter.xml" />
+    <None Remove="docs\MySqlParameterCollection.xml" />
+    <None Remove="docs\MySqlTransaction.xml" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Client.cs" />
-    <Compile Include="ClientManager.cs" />
-    <Compile Include="ClientsServicePoint.cs" />
-    <Compile Include="ClientTaskRelation.cs" />
-    <Compile Include="ClientTaskRelationManager.cs" />
-    <Compile Include="Data\DataManager.cs" />
-    <Compile Include="Data\Serializers\ClientSerializer.cs" />
-    <Compile Include="Data\Serializers\ClientTaskRelationSerializer.cs" />
-    <Compile Include="Files.cs" />
-    <Compile Include="JobInitializer.cs" />
-    <Compile Include="JobManager.cs" />
-    <Compile Include="ServerController.cs" />
-    <Compile Include="TaskManager.cs" />
-    <Compile Include="Program.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ThoriumServer.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
-    <None Include="clients_service_point_tcp_config.json.default">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="packages.config" />
-    <None Include="server_controller_config.json.default">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="clients_service_point_config.json.default">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="server_controller_tcp_config.json.default">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="server_controller_http_config.json.default">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="mysql_config.json.default">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Thorium-CommandLine\Thorium.CommandLine.csproj">
-      <Project>{F6E068A0-6C15-40DC-A80B-C9AA75FD13A3}</Project>
-      <Name>Thorium.CommandLine</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Thorium-Config\Thorium.Config.csproj">
-      <Project>{9614C963-7E65-4F33-8DD2-4CA7E080A39F}</Project>
-      <Name>Thorium.Config</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Thorium-Extensions-JSON\Thorium.Extensions.JSON.csproj">
-      <Project>{b1143619-9c6c-4a4b-9777-139b0dd299f9}</Project>
-      <Name>Thorium.Extensions.JSON</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Thorium-Logging\Thorium.Logging.csproj">
-      <Project>{779CCC20-8F23-4026-B922-4E22586B2242}</Project>
-      <Name>Thorium.Logging</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Thorium-Net\Thorium.Net.csproj">
-      <Project>{6C35570E-8937-4E5D-80A8-608D1D5080FA}</Project>
-      <Name>Thorium.Net</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Thorium-Plugins\Thorium.Plugins.csproj">
-      <Project>{D287EC1D-1F2B-4433-A6BB-24ADD1D25466}</Project>
-      <Name>Thorium.Plugins</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Thorium-Data-Implementation\Thorium.Data.Implementation.csproj">
-      <Project>{09068342-D870-430B-BE61-EA9A4EA92B24}</Project>
-      <Name>Thorium.Data.Implementation</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Thorium-Data\Thorium.Data.csproj">
-      <Project>{CE09B32A-6648-4683-9371-4BEAB1EAF050}</Project>
-      <Name>Thorium.Data</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Thorium.Shared\Thorium.Shared.csproj">
-      <Project>{FE33D9C9-43CA-4EC3-AB9F-154611627BFF}</Project>
-      <Name>Thorium.Shared</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Thorium-Threading\Thorium.Threading.csproj">
-      <Project>{A066C6D5-B60A-4D09-8D8D-DA85E7900B1E}</Project>
-      <Name>Thorium.Threading</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Thorium-Utils\Thorium.Utils.csproj">
-      <Project>{A171EBC8-F5ED-479C-BEF5-FD545B551BE4}</Project>
-      <Name>Thorium.Utils</Name>
-    </ProjectReference>
-  </ItemGroup>
+
   <ItemGroup>
     <Content Include="docs\MySqlCommand.xml" />
     <Content Include="docs\MySqlCommandBuilder.xml" />
@@ -156,12 +35,41 @@
     <Content Include="docs\MySqlParameterCollection.xml" />
     <Content Include="docs\MySqlTransaction.xml" />
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+
+  <ItemGroup>
+    <PackageReference Include="MySql.Data" Version="8.0.12" />
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+    <PackageReference Include="NLog" Version="4.5.8" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Thorium-CommandLine\Thorium.CommandLine.csproj" />
+    <ProjectReference Include="..\Thorium-Logging\Thorium.Logging.csproj" />
+    <ProjectReference Include="..\Thorium-Net\Thorium.Net.csproj" />
+    <ProjectReference Include="..\Thorium-Plugins\Thorium.Plugins.csproj" />
+    <ProjectReference Include="..\Thorium-Utils\Thorium.Utils.csproj" />
+    <ProjectReference Include="..\Thorium.Shared\Thorium.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="clients_service_point_config.json.default">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="clients_service_point_tcp_config.json.default">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="mysql_config.json.default">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="server_controller_config.json.default">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="server_controller_http_config.json.default">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="server_controller_tcp_config.json.default">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
