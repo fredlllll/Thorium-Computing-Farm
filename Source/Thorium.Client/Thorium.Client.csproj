@@ -1,103 +1,32 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{736545C5-DBBC-45F2-818B-6F2E79251D46}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Thorium.Client</RootNamespace>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
     <AssemblyName>Thorium.Client</AssemblyName>
-    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <TargetFrameworkProfile />
+    <RootNamespace>Thorium.Client</RootNamespace>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.4.4.13\lib\net45\NLog.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+    <PackageReference Include="NLog" Version="4.5.8" />
   </ItemGroup>
+
   <ItemGroup>
-    <Compile Include="Files.cs" />
-    <Compile Include="ServerInterface.cs" />
-    <Compile Include="ThoriumClientConfig.cs" />
-    <Compile Include="Program.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ThoriumClient.cs" />
+    <ProjectReference Include="..\Thorium-CommandLine\Thorium.CommandLine.csproj" />
+    <ProjectReference Include="..\Thorium-Config\Thorium.Config.csproj" />
+    <ProjectReference Include="..\Thorium-Logging\Thorium.Logging.csproj" />
+    <ProjectReference Include="..\Thorium-Net\Thorium.Net.csproj" />
+    <ProjectReference Include="..\Thorium-Plugins\Thorium.Plugins.csproj" />
+    <ProjectReference Include="..\Thorium-Threading\Thorium.Threading.csproj" />
+    <ProjectReference Include="..\Thorium-Utils\Thorium.Utils.csproj" />
+    <ProjectReference Include="..\Thorium.Shared\Thorium.Shared.csproj" />
   </ItemGroup>
+
   <ItemGroup>
-    <None Include="App.config" />
-    <None Include="packages.config" />
-    <None Include="thorium_client_config.json.default">
+    <None Update="thorium_client_config.json.default">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Thorium-CommandLine\Thorium.CommandLine.csproj">
-      <Project>{F6E068A0-6C15-40DC-A80B-C9AA75FD13A3}</Project>
-      <Name>Thorium.CommandLine</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Thorium-Config\Thorium.Config.csproj">
-      <Project>{9614C963-7E65-4F33-8DD2-4CA7E080A39F}</Project>
-      <Name>Thorium.Config</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Thorium-Logging\Thorium.Logging.csproj">
-      <Project>{779CCC20-8F23-4026-B922-4E22586B2242}</Project>
-      <Name>Thorium.Logging</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Thorium-Net\Thorium.Net.csproj">
-      <Project>{6C35570E-8937-4E5D-80A8-608D1D5080FA}</Project>
-      <Name>Thorium.Net</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Thorium-Plugins\Thorium.Plugins.csproj">
-      <Project>{D287EC1D-1F2B-4433-A6BB-24ADD1D25466}</Project>
-      <Name>Thorium.Plugins</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Thorium.Shared\Thorium.Shared.csproj">
-      <Project>{FE33D9C9-43CA-4EC3-AB9F-154611627BFF}</Project>
-      <Name>Thorium.Shared</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Thorium-Threading\Thorium.Threading.csproj">
-      <Project>{A066C6D5-B60A-4D09-8D8D-DA85E7900B1E}</Project>
-      <Name>Thorium.Threading</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Thorium-Utils\Thorium.Utils.csproj">
-      <Project>{A171EBC8-F5ED-479C-BEF5-FD545B551BE4}</Project>
-      <Name>Thorium.Utils</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+
 </Project>

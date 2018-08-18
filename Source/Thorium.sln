@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27004.2009
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Thorium.Client", "Thorium.Client\Thorium.Client.csproj", "{736545C5-DBBC-45F2-818B-6F2E79251D46}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Thorium.Client", "Thorium.Client\Thorium.Client.csproj", "{736545C5-DBBC-45F2-818B-6F2E79251D46}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Thorium.Monitor", "Thorium.Monitor\Thorium.Monitor.csproj", "{1701A4EB-99F8-4D7D-B471-A738AD83C83B}"
 EndProject
@@ -51,7 +51,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Thorium.Net.ServiceHost.Pro
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Thorium.Server", "Thorium.Server\Thorium.Server.csproj", "{5F8E3C70-5836-4070-A2CD-E9F4EFF29E42}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Thorium.Shared", "Thorium.Shared\Thorium.Shared.csproj", "{F213C2FD-94E2-47C2-B26C-A4D079F44A1D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Thorium.Shared", "Thorium.Shared\Thorium.Shared.csproj", "{F213C2FD-94E2-47C2-B26C-A4D079F44A1D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,10 +63,6 @@ Global
 		{736545C5-DBBC-45F2-818B-6F2E79251D46}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{736545C5-DBBC-45F2-818B-6F2E79251D46}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{736545C5-DBBC-45F2-818B-6F2E79251D46}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FE33D9C9-43CA-4EC3-AB9F-154611627BFF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FE33D9C9-43CA-4EC3-AB9F-154611627BFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FE33D9C9-43CA-4EC3-AB9F-154611627BFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FE33D9C9-43CA-4EC3-AB9F-154611627BFF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1701A4EB-99F8-4D7D-B471-A738AD83C83B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1701A4EB-99F8-4D7D-B471-A738AD83C83B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1701A4EB-99F8-4D7D-B471-A738AD83C83B}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -159,6 +155,10 @@ Global
 		{F213C2FD-94E2-47C2-B26C-A4D079F44A1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F213C2FD-94E2-47C2-B26C-A4D079F44A1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F213C2FD-94E2-47C2-B26C-A4D079F44A1D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{114D1955-DD37-40AF-9F27-ECEC21AB9FE7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{114D1955-DD37-40AF-9F27-ECEC21AB9FE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{114D1955-DD37-40AF-9F27-ECEC21AB9FE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{114D1955-DD37-40AF-9F27-ECEC21AB9FE7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
