@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Threading;
 using Newtonsoft.Json.Linq;
-using Thorium.Config;
 using Thorium.Net.ServiceHost;
 using Thorium.Net.ServiceHost.InvokationHandlers;
 using Thorium.Net.ServiceHost.InvokationReceivers;
