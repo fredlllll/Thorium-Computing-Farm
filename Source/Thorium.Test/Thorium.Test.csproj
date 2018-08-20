@@ -9,11 +9,4 @@
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Thorium-Config\Thorium.Config.csproj" />
-    <ProjectReference Include="..\Thorium-Net-ServiceHost-Proxying\Thorium.Net.ServiceHost.Proxying.csproj" />
-    <ProjectReference Include="..\Thorium-Net\Thorium.Net.csproj" />
-    <ProjectReference Include="..\Thorium.Shared\Thorium.Shared.csproj" />
-  </ItemGroup>
-
 </Project>

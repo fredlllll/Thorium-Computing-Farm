@@ -3,15 +3,23 @@ using Thorium.Shared;
 
 namespace Thorium.Server
 {
+    public enum ClientStatus
+    {
+        Idle,
+        Busy
+    }
+
     public class Client
     {
-        public IPAddress IPAddress { get; protected set; }
         public string Id { get; protected set; }
+        public IPAddress IPAddress { get; protected set; }
+        public ClientStatus Status { get; protected set; }
 
-        public Client(IPAddress address,string id)
+        public Client(string id, IPAddress address, ClientStatus status)
         {
-            IPAddress = address;
             Id = id;
+            IPAddress = address;
+            Status = status;
         }
 
         public bool Ping()

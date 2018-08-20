@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
 using Thorium.Reflection;
-using static Thorium.Shared.JobAndTaskProperties;
+using static Thorium.Shared.TaskProperties;
 
 namespace Thorium.Shared
 {

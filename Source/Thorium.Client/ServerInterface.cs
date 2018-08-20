@@ -40,16 +40,6 @@ namespace Thorium.Client
             }
         }
 
-        /*public LightweightTask InvokeCheckoutTask()
-        {
-            JToken result = serviceClient.Invoke(CheckoutTask, new JObject { ["clientId"] = Client.ID });
-            if(result is JObject obj)
-            {
-                return obj.ToObject<LightweightTask>();
-            }
-            return null;
-        }*/
-
         public void InvokeTurnInTask(string taskId, string additionalInformation = "")
         {
             JObject arg = new JObject

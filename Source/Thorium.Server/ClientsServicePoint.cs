@@ -13,7 +13,7 @@ namespace Thorium.Server
 
         ServiceHost servicePoint;
 
-        public ClientsServicePoint(ThoriumServer thoriumServer, int port)
+        public ClientsServicePoint(ThoriumServer thoriumServer)
         {
             server = thoriumServer;
 
@@ -45,7 +45,7 @@ namespace Thorium.Server
         {
             JObject argObject = arg as JObject;
 
-            Client client = new Client(IPAddress.Parse(argObject.Get<string>("ip")), argObject.Get<string>("clientId"));
+            Client client = new Client(argObject.Get<string>("clientId"), IPAddress.Parse(argObject.Get<string>("ip")), ClientStatus.Idle);
             server.ClientManager.RegisterClient(client);
 
             return null;

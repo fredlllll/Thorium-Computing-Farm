@@ -2,8 +2,8 @@
   "invokationReceivers": [
     {
       "load": true,
-      "type": "Thorium.Shared.Net.ServicePoint.TCPServiceInvokationReceiver",
-      "args": "clients_service_point_tcp"
+      "type": "Thorium.Net.ServiceHost.InvokationReceivers.TCPServiceInvokationReceiver",
+      "config": "clients_service_point_tcp"
     }
   ]
 }

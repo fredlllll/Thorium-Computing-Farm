@@ -69,6 +69,7 @@ namespace Thorium.Server
         JToken AbortTaskHandler(JToken arg)
         {
             string id = arg.Value<string>();
+            //TODO: abort on client too
             return server.TaskManager.AbortTask(id);
         }
     }

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
 using Thorium.Shared;
-using static Thorium.Shared.JobAndTaskProperties;
+using static Thorium.Shared.TaskProperties;
 
 namespace Thorium.Jobs.SimpleExecution
 {

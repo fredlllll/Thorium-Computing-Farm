@@ -81,9 +81,14 @@ namespace Thorium.Server
             }
         }
 
+        public void ReturnFreeClient(string id)
+        {
+            serializer.UpdateStatus(id, ClientStatus.Idle);
+        }
+
         public Client GetFreeClient()
         {
-            throw new NotImplementedException();
+            return serializer.CheckoutClient();
         }
     }
 }

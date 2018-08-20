@@ -42,8 +42,7 @@ namespace Thorium.Client
         {
             if(arg is JObject argObject)
             {
-                client.AssignTask(argObject.ToObject<LightweightTask>());
-                return true;
+                return client.AssignTask(argObject.ToObject<LightweightTask>());
             }
             return false;
         }

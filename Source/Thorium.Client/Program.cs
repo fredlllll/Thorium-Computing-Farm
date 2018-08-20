@@ -1,26 +1,23 @@
 ﻿using System.Linq;
-using Thorium.CommandLine;
+using NLog;
 using Thorium.Plugins;
 
 namespace Thorium.Client
 {
     public class Program
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
+
         static void Main(string[] args)
         {
             Logging.Logging.SetupLogging();
+
+            logger.Info("Thorium Client");
 
             PluginLoader.LoadPlugins();
 
             var client = new ThoriumClient();
             client.Start();
-
-            if(args.Contains("-menu"))
-            {
-                ConsoleMenu menu = new ConsoleMenu();
-                //TODO?
-                menu.Run();
-            }
         }
     }
 }

@@ -1,48 +1,35 @@
 ﻿using System;
+using System.Net;
+using System.Net.Sockets;
 using Newtonsoft.Json.Linq;
-using Thorium.Net.ServiceHost;
-using Thorium.Net.ServiceHost.InvokationHandlers;
-using Thorium.Net.ServiceHost.InvokationReceivers;
-using Thorium.Net.ServiceHost.Invokers;
-using Thorium.Net.ServiceHost.Proxying;
 
 namespace Thorium.Test
 {
-    class Program
+    public class Program
     {
-        static void Main(string[] args)
+        static UdpClient recv;
+
+        public static void Main()
         {
-            ServiceHost sh = new ServiceHost();
+            recv = new UdpClient(8300);
+            UdpClient send = new UdpClient();
 
-            Service service = new Service();
+            recv.BeginReceive(Receive, null);
 
-            ObjectInvokationHandler<IServiceInterface> oih = new ObjectInvokationHandler<IServiceInterface>(service);
-            sh.RegisterInvokationHandler(oih);
+            IPEndPoint ep = new IPEndPoint(new IPAddress(new byte[] { 127, 0, 0, 1 }), 8300);
 
-            Config.Config config = new Config.Config(new JObject() { ["port"] = 7677, ["host"] = "localhost" });
-            HttpServiceInvokationReceiver ir = new HttpServiceInvokationReceiver(config);
-            sh.RegisterInvokationReceiver(ir);
-            sh.Start();
+            //send.
+            send.Send(new byte[] { 42, 42, 42 }, 3, ep);
 
-            HttpServiceInvoker iv = new HttpServiceInvoker(config);
-
-            IServiceInterface proxy = ProxyFactory.CreateInstance<IServiceInterface>(iv);
-
-            Console.WriteLine(proxy.Concatenate(56, " sheep"));
             Console.ReadKey();
         }
-    }
 
-    public class Service : IServiceInterface
-    {
-        public JToken Concatenate(int arg, string arg2)
+        static void Receive(IAsyncResult result)
         {
-            return arg + arg2;
-        }
-    }
+            IPEndPoint ep = new IPEndPoint(IPAddress.Any, 8300);
 
-    public interface IServiceInterface
-    {
-        JToken Concatenate(int arg, string arg2);
+            var bytes = recv.EndReceive(result, ref ep);
+            byte b = bytes[0];
+        }
     }
 }

@@ -2,8 +2,8 @@
   "invokationReceivers": [
     {
       "load": true,
-      "type": "Thorium.Shared.Net.ServiceHost.Interfaces.UDPServiceInvokationReceiver",
-      "args": "client_controller_udp"
+      "type": "Thorium.Net.ServiceHost.InvokationReceivers.TCPServiceInvokationReceiver",
+      "args": "client_controller_tcp"
     }
   ]
 }

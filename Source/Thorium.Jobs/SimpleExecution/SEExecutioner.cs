@@ -13,7 +13,7 @@ namespace Thorium.Jobs.SimpleExecution
         {
         }
 
-        public override void Execute()
+        public override ExecutionResult Execute()
         {
             int index = Task.GetInfo<int>("index");
             string executable = Task.GetInfo<string>("executable");
@@ -26,6 +26,8 @@ namespace Thorium.Jobs.SimpleExecution
             p.StartInfo.Arguments = argString;
             p.Start();
             p.WaitForExit();
+
+            return new ExecutionResult(FinalAction.TurnIn, "done");
         }
     }
 }

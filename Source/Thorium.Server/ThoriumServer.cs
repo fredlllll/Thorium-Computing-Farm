@@ -1,4 +1,5 @@
-﻿using Thorium.Config;
+﻿using System.Threading;
+using Thorium.Config;
 using Thorium.Server.Data;
 using Thorium.Threading;
 
@@ -30,10 +31,8 @@ namespace Thorium.Server
             ClientManager = new ClientManager();
             ClientTaskRelationManager = new ClientTaskRelationManager(DataManager.ClientTaskRelationSerializer);
 
-            //TODO remove ThoriumServerConfig.ListeningPort from config
             serverController = new ServerController(this);
-            dynamic config = ConfigFile.GetClassConfig();
-            clientsServer = new ClientsServicePoint(this, config.ClientListeningPort);
+            clientsServer = new ClientsServicePoint(this);
         }
 
 
@@ -57,13 +56,39 @@ namespace Thorium.Server
 
         protected override void Run()
         {
-            //check database for jobs that can be assigned
-            var lt = TaskManager.GetAssignableTask().ToLightweightTask();
-            var client = ClientManager.GetFreeClient();
-            if(client.AssignTask(lt))
+            while(true)
             {
-                var rel = new ClientTaskRelation(client.Id, lt.Id);
-                ClientTaskRelationManager.Add(rel);
+                //get a client and a task
+                var client = ClientManager.GetFreeClient();
+                var task = TaskManager.GetAssignableTask();
+                //if one of them is null, return the other, so a task cant possibly get stuck
+                if(task == null && client != null)
+                {
+                    ClientManager.ReturnFreeClient(client.Id);
+                }
+                if(client == null && task != null)
+                {
+                    TaskManager.ReturnAssignableTask(task.Id);
+                }
+                if(task != null && client != null)
+                {
+                    var lt = task.ToLightweightTask();
+                    if(client.AssignTask(lt))
+                    {
+                        var rel = new ClientTaskRelation(client.Id, lt.Id);
+                        ClientTaskRelationManager.Add(rel);
+                    }
+                    else
+                    {
+                        //return both if it could not be assigned
+                        TaskManager.ReturnAssignableTask(task.Id);
+                        ClientManager.ReturnFreeClient(client.Id);
+                    }
+                }
+                else
+                {
+                    Thread.Sleep(1000);
+                }
             }
         }
     }

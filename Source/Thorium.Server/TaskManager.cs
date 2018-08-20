@@ -16,16 +16,6 @@ namespace Thorium.Server
             this.serializer = serializer;
         }
 
-        /*public LightweightTask CheckoutTask()
-        {
-            LightweightTask t = serializer.CheckoutTask().ToLightweightTask();
-            if(t != null)
-            {
-                logger.Info("Task checked out: " + t.Id);
-            }
-            return t;
-        }*/
-
         public TaskData GetAssignableTask()
         {
             return serializer.CheckoutTask();
@@ -51,23 +41,44 @@ namespace Thorium.Server
 
         public bool AbortTask(string id)
         {
-            //TODO: abort task on its machine and update in database
-            return false;
+            try
+            {
+                serializer.UpdateStatus(id, TaskStatus.Aborted);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         public void AddTask(string id, JObject information, TaskStatus status)
         {
-            throw new NotImplementedException();
+            TaskData td = new TaskData(id, information, status);
+            serializer.Save(id, td);
         }
 
         public TaskStatus GetTaskStatus(string id)
         {
-            throw new NotImplementedException();
+            return serializer.Load(id).Status;
         }
 
         public bool QueueTask(string id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                serializer.UpdateStatus(id, TaskStatus.WaitingForExecution);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public void ReturnAssignableTask(string id)
+        {
+            serializer.UpdateStatus(id, TaskStatus.WaitingForExecution);
         }
     }
 }

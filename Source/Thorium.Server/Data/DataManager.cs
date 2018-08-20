@@ -12,7 +12,7 @@ namespace Thorium.Server.Data
         public static MySqlConnection GetNewConnection(string host, UInt16 port, string user, string password, string db)
         {
             //reference https://dev.mysql.com/doc/connector-net/en/connector-net-connection-options.html
-            return new MySqlConnection("SERVER=" + host + ";PORT=" + port + ";DATABASE=" + db + ";USER=" + user + ";PASSWORD=" + password + ";");
+            return new MySqlConnection("SERVER=" + host + ";PORT=" + port + ";DATABASE=" + db + ";USER=" + user + ";PASSWORD=" + password + ";SslMode=None;Allow User Variables=True");
         }
 
         public static MySqlDatabase GetNewDatabase()

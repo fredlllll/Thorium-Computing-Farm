@@ -13,7 +13,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Thorium-CommandLine\Thorium.CommandLine.csproj" />
     <ProjectReference Include="..\Thorium-Config\Thorium.Config.csproj" />
     <ProjectReference Include="..\Thorium-Logging\Thorium.Logging.csproj" />
     <ProjectReference Include="..\Thorium-Net\Thorium.Net.csproj" />
@@ -24,6 +23,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="client_controller_tcp_config.json.default">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="client_controller_config.json.default">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

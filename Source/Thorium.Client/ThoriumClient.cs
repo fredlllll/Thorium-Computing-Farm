@@ -24,13 +24,17 @@ namespace Thorium.Client
 
         public ThoriumClient() : base(false)
         {
-            serverInterface = new ServerInterface(config.ServerHost, config.ServerListeningPort, this);
+            string host = config.ServerHost;
+            ushort port = config.ServerListeningPort;
+
+            serverInterface = new ServerInterface(host, port, this);
             clientController = new ClientController(this);
         }
 
         public override void Start()
         {
             serverInterface.InvokeRegister();
+            clientController.Start();
             base.Start();
         }
 
@@ -42,14 +46,20 @@ namespace Thorium.Client
                 serverInterface.InvokeAbandonTask(id, "Client Stopped");
             }
             serverInterface.InvokeUnregister();
+            clientController.Stop();
 
             base.Stop(joinTimeoutms);
         }
 
-        public void AssignTask(LightweightTask lightweightTask)
+        public bool AssignTask(LightweightTask lightweightTask)
         {
-            currentTask = lightweightTask;
-            hasTaskEvent.Set();
+            if(currentTask == null)
+            {
+                currentTask = lightweightTask;
+                hasTaskEvent.Set();
+                return true;
+            }
+            return false;
         }
 
         protected override void Run()
@@ -88,7 +98,7 @@ namespace Thorium.Client
                         logger.Info("task failed: " + execEx);
                         serverInterface.InvokeFailTask(currentTask.Id, execEx.ToString());
                     }
-
+                    currentTask = null;
                     lastTimeJobCompleted = DateTime.UtcNow;
                 }
             }
