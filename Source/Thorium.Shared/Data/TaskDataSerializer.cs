@@ -18,17 +18,16 @@ namespace Thorium.Data.Implementation.Serializers
 
         public override TaskData Load(string key)
         {
+            string informationString;
+            string status;
             using(var reader = SelectStarWhereKey(key))
             {
                 reader.Read();
 
-                string informationString = (string)reader["information"];
-                string status = (string)reader["status"];
-
-                //Job job = jobSer.LoadOrCached(jobId);
-
-                return new TaskData(key, JObject.Parse(informationString), (TaskStatus)Enum.Parse(typeof(TaskStatus), status));
+                informationString = (string)reader["information"];
+                status = (string)reader["status"];
             }
+            return new TaskData(key, JObject.Parse(informationString), (TaskStatus)Enum.Parse(typeof(TaskStatus), status));
         }
 
         public override void Save(string key, TaskData value)
@@ -43,17 +42,19 @@ namespace Thorium.Data.Implementation.Serializers
             string sql = "SET @update_id:='';" +
                 "UPDATE " + Table + " SET status='" + TaskStatus.Executing.ToString() + "', " + KeyColumn + "=(SELECT @update_id:=" + KeyColumn + ") WHERE status='" + TaskStatus.WaitingForExecution.ToString() + "' LIMIT 1;" +
                 "SELECT @update_id;";
+
+            string id = null;
             using(var reader = Database.ExecuteQuery(sql))
             {
                 if(reader.HasRows)
                 {
                     reader.Read();
-                    string id = (string)reader[0];
-                    if(!string.IsNullOrWhiteSpace(id))
-                    {
-                        return Load(id);
-                    }
+                    id = (string)reader[0];
                 }
+            }
+            if(!string.IsNullOrWhiteSpace(id))
+            {
+                return Load(id);
             }
             return null;
         }

@@ -22,6 +22,8 @@ namespace Thorium.Client
         private AutoResetEvent hasTaskEvent = new AutoResetEvent(false);
         private LightweightTask currentTask = null;
 
+        private NewTaskRequester taskRequester;
+
         public ThoriumClient() : base(false)
         {
             string host = config.ServerHost;
@@ -29,12 +31,15 @@ namespace Thorium.Client
 
             serverInterface = new ServerInterface(host, port, this);
             clientController = new ClientController(this);
+
+            taskRequester = new NewTaskRequester(this, serverInterface);
         }
 
         public override void Start()
         {
             serverInterface.InvokeRegister();
             clientController.Start();
+            taskRequester.Start();
             base.Start();
         }
 
@@ -47,6 +52,7 @@ namespace Thorium.Client
             }
             serverInterface.InvokeUnregister();
             clientController.Stop();
+            taskRequester.Stop();
 
             base.Stop(joinTimeoutms);
         }

@@ -23,10 +23,11 @@ namespace Thorium.Server
 
             rih.RegisterRoutine(new Routine(Register, HandleRegister));
             rih.RegisterRoutine(new Routine(Unregister, HandleUnregister));
-            //rih.RegisterRoutine(new Routine(CheckoutTask, HandleCheckoutTask));
             rih.RegisterRoutine(new Routine(TurnInTask, HandleTurnInTask));
             rih.RegisterRoutine(new Routine(AbandonTask, HandleAbandonTask));
             rih.RegisterRoutine(new Routine(FailTask, HandleFailTask));
+
+            rih.RegisterRoutine(new Routine(CheckoutTask, HandleCheckoutTask));
 
             servicePoint.RegisterInvokationHandler(rih);
         }
@@ -60,12 +61,11 @@ namespace Thorium.Server
             return null;
         }
 
-        //TODO: make checkout not with polling
-        /*JToken HandleCheckoutTask(JToken arg)
+        JToken HandleCheckoutTask(JToken arg)
         {
             JObject argObject = arg as JObject;
 
-            Task task = server.TaskManager.CheckoutTask();
+            TaskData task = server.TaskManager.GetAssignableTask();
             if(task != null)
             {
                 //TODO: keep track of what client processes what task
@@ -73,13 +73,12 @@ namespace Thorium.Server
                 var relation = new ClientTaskRelation(clientId, task.Id);
                 server.ClientTaskRelationManager.Add(relation);
 
-                var job = server.DataManager.JobSerializer.Load(task.JobID);
-                LightweightTask lt = new LightweightTask(task, job);
+                LightweightTask lt = task.ToLightweightTask();
                 JObject retval = JObject.FromObject(lt);
                 return retval;
             }
             return null;
-        }*/
+        }
 
         JToken HandleTurnInTask(JToken arg)
         {

@@ -3,7 +3,7 @@
     {
       "load": true,
       "type": "Thorium.Net.ServiceHost.InvokationReceivers.TCPServiceInvokationReceiver",
-      "args": "client_controller_tcp"
+      "config": "client_controller_tcp"
     }
   ]
 }

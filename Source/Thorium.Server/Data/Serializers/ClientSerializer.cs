@@ -17,15 +17,16 @@ namespace Thorium.Server.Data.Serializers
 
         public override Client Load(string key)
         {
+            string ip;
+            string status_str;
             using(var reader = SelectStarWhereKey(key))
             {
                 reader.Read();
 
-                string ip = (string)reader["ip"];
-                string status_str = (string)reader["status"];
-
-                return new Client(key, IPAddress.Parse(ip), (ClientStatus)System.Enum.Parse(typeof(ClientStatus), status_str));
+                ip = (string)reader["ip"];
+                status_str = (string)reader["status"];
             }
+            return new Client(key, IPAddress.Parse(ip), (ClientStatus)System.Enum.Parse(typeof(ClientStatus), status_str));
         }
 
         public override void Save(string key, Client value)
@@ -41,17 +42,20 @@ namespace Thorium.Server.Data.Serializers
             string sql = "SET @update_id:='';" +
                 "UPDATE " + Table + " SET status='" + ClientStatus.Busy.ToString() + "', " + KeyColumn + "=(SELECT @update_id:=" + KeyColumn + ") WHERE status='" + ClientStatus.Idle.ToString() + "' LIMIT 1;" +
                 "SELECT @update_id;";
+
+            string id = null;
             using(var reader = Database.ExecuteQuery(sql))
             {
                 if(reader.HasRows)
                 {
                     reader.Read();
-                    string id = (string)reader[0];
-                    if(!string.IsNullOrWhiteSpace(id))
-                    {
-                        return Load(id);
-                    }
+                    id = (string)reader[0];
                 }
+            }
+
+            if(!string.IsNullOrWhiteSpace(id))
+            {
+                return Load(id);
             }
             return null;
         }

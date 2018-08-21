@@ -8,5 +8,7 @@
         public const string TurnInTask = "turnInTask";
         public const string AbandonTask = "abandonTask";
         public const string FailTask = "failTask";
+
+        public const string CheckoutTask = "checkoutTask";
     }
 }

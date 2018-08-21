@@ -14,7 +14,7 @@ namespace Thorium.Server
         /// <summary>
         /// for comms between server and clients
         /// </summary>
-        ClientsServicePoint clientsServer;
+        ClientsServicePoint clientsServicePoint;
 
         public TaskManager TaskManager { get; private set; }
         public ClientManager ClientManager { get; private set; }
@@ -32,7 +32,7 @@ namespace Thorium.Server
             ClientTaskRelationManager = new ClientTaskRelationManager(DataManager.ClientTaskRelationSerializer);
 
             serverController = new ServerController(this);
-            clientsServer = new ClientsServicePoint(this);
+            clientsServicePoint = new ClientsServicePoint(this);
         }
 
 
@@ -41,7 +41,7 @@ namespace Thorium.Server
             ClientManager.Start();
             ClientTaskRelationManager.Start();
             serverController.Start();
-            clientsServer.Start();
+            clientsServicePoint.Start();
             base.Start();
         }
 
@@ -50,7 +50,7 @@ namespace Thorium.Server
             ClientManager.Stop(joinTimeoutms);
             ClientTaskRelationManager.Stop();
             serverController.Stop();
-            clientsServer.Stop();
+            clientsServicePoint.Stop();
             base.Stop(joinTimeoutms);
         }
 

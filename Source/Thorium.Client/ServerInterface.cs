@@ -27,6 +27,16 @@ namespace Thorium.Client
             serviceClient.Invoke(Register, new JObject() { ["ip"] = NetUtils.GetExternalIP(), ["clientId"] = Client.Id });
         }
 
+        public LightweightTask InvokeCheckoutTask()
+        {
+            var taskData = serviceClient.Invoke(CheckoutTask, new JObject() { ["clientId"] = Client.Id });
+            if(taskData != null)
+            {
+                return taskData.ToObject<LightweightTask>();
+            }
+            return null;
+        }
+
         public void InvokeUnregister()
         {
             try

@@ -10,6 +10,8 @@ namespace Thorium.Client
 
         static void Main(string[] args)
         {
+            System.Threading.Thread.Sleep(8000);
+
             Logging.Logging.SetupLogging();
 
             logger.Info("Thorium Client");
