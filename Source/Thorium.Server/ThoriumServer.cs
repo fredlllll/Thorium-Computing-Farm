@@ -28,7 +28,7 @@ namespace Thorium.Server
             DataManager = new DataManager();
 
             TaskManager = new TaskManager(DataManager.TaskSerializer);
-            ClientManager = new ClientManager();
+            ClientManager = new ClientManager(DataManager.ClientSerializer);
             ClientTaskRelationManager = new ClientTaskRelationManager(DataManager.ClientTaskRelationSerializer);
 
             serverController = new ServerController(this);

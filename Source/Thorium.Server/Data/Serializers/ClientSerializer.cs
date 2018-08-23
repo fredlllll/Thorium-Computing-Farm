@@ -6,13 +6,24 @@ namespace Thorium.Server.Data.Serializers
 {
     public class ClientSerializer : BaseSerializer<string, Client>
     {
-        public override IRawDatabase Database { get; }
-        public override string Table => Database.GetTableName("clients");
+        public override ARawDatabaseFactory DatabaseFactory { get; }
+        string table = null;
+        public override string Table
+        {
+            get
+            {
+                if(table == null)
+                {
+                    table = DatabaseFactory.GetDatabase().GetTableName("clients");
+                }
+                return table;
+            }
+        }
         public override string KeyColumn => "id";
 
-        public ClientSerializer(IRawDatabase database)
+        public ClientSerializer(ARawDatabaseFactory database)
         {
-            Database = database;
+            DatabaseFactory = database;
         }
 
         public override Client Load(string key)
@@ -34,7 +45,7 @@ namespace Thorium.Server.Data.Serializers
             string sql = "INSERT INTO " + Table + "(" + KeyColumn + ",ip, status) VALUES(@0,@1,@2) ON DUPLICATE KEY UPDATE ip=@3, status=@4";
             var ip = value.IPAddress.ToString();
             var status = value.Status.ToString();
-            Database.ExecuteNonQueryTransaction(sql, key, ip, status, ip, status);
+            DatabaseFactory.GetDatabase().ExecuteNonQueryTransaction(sql, key, ip, status, ip, status);
         }
 
         public Client CheckoutClient()
@@ -44,7 +55,7 @@ namespace Thorium.Server.Data.Serializers
                 "SELECT @update_id;";
 
             string id = null;
-            using(var reader = Database.ExecuteQuery(sql))
+            using(var reader = DatabaseFactory.GetDatabase().ExecuteQuery(sql))
             {
                 if(reader.HasRows)
                 {
@@ -63,7 +74,7 @@ namespace Thorium.Server.Data.Serializers
         public void UpdateStatus(string key, ClientStatus status)
         {
             string sql = "UPDATE " + Table + " SET status=@0 WHERE " + KeyColumn + "=@1";
-            Database.ExecuteNonQueryTransaction(sql, status.ToString(), key);
+            DatabaseFactory.GetDatabase().ExecuteNonQueryTransaction(sql, status.ToString(), key);
         }
 
         public override void CreateTable()
@@ -74,7 +85,7 @@ namespace Thorium.Server.Data.Serializers
   `status` enum('Idle','Busy') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Idle',
   PRIMARY KEY (`" + KeyColumn + @"`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;";
-            Database.ExecuteNonQueryTransaction(sql);
+            DatabaseFactory.GetDatabase().ExecuteNonQueryTransaction(sql);
         }
 
         public override void CreateConstraints()

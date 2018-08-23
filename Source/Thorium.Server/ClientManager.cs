@@ -5,6 +5,7 @@ using Thorium.Server.Data.Serializers;
 using Thorium.Threading;
 using Thorium.Data.Implementation;
 using System;
+using Thorium.Data;
 
 namespace Thorium.Server
 {
@@ -17,23 +18,19 @@ namespace Thorium.Server
         public delegate void ClientStoppedRespondingHandler(Client client);
         public event ClientStoppedRespondingHandler ClientStoppedResponding;
 
-        MySqlDatabase database;
-
-        public ClientManager() : base(false)
+        public ClientManager(ClientSerializer serializer) : base(false)
         {
+            this.serializer = serializer;
         }
 
         public override void Start()
         {
-            database = DataManager.GetNewDatabase();
-            serializer = new ClientSerializer(database);
             base.Start();
         }
 
         public override void Stop(int joinTimeoutms = -1)
         {
             base.Stop(joinTimeoutms);
-            database.Dispose();
         }
 
         public void RegisterClient(Client client)
@@ -55,7 +52,6 @@ namespace Thorium.Server
 
         protected override void Run()
         {
-            //TODO: this will be a bottleneck with many clients. have to find a way to make it work without locking the collection
             try
             {
                 while(true)
