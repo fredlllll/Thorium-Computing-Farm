@@ -20,7 +20,7 @@ namespace Thorium.Client
         public string Id { get; } = Utils.Utils.GetRandomGUID();
 
         private AutoResetEvent hasTaskEvent = new AutoResetEvent(false);
-        private LightweightTask currentTask = null;
+        public LightweightTask CurrentTask { get; private set; } = null;
 
         private NewTaskRequester taskRequester;
 
@@ -45,7 +45,7 @@ namespace Thorium.Client
 
         public override void Stop(int joinTimeoutms = -1)
         {
-            string id = currentTask?.Id;
+            string id = CurrentTask?.Id;
             if(id != null)
             {
                 serverInterface.InvokeAbandonTask(id, "Client Stopped");
@@ -59,9 +59,9 @@ namespace Thorium.Client
 
         public bool AssignTask(LightweightTask lightweightTask)
         {
-            if(currentTask == null)
+            if(CurrentTask == null)
             {
-                currentTask = lightweightTask;
+                CurrentTask = lightweightTask;
                 hasTaskEvent.Set();
                 return true;
             }
@@ -77,9 +77,9 @@ namespace Thorium.Client
                 {
                     logger.Info("getting job...");
                     hasTaskEvent.WaitOne();
-                    logger.Info("got task: " + currentTask.Id);
+                    logger.Info("got task: " + CurrentTask.Id);
 
-                    AExecutioner executioner = currentTask.GetExecutioner();
+                    AExecutioner executioner = CurrentTask.GetExecutioner();
                     try
                     {
                         logger.Info("executing task");
@@ -87,13 +87,13 @@ namespace Thorium.Client
                         switch(result.FinalAction)
                         {
                             case FinalAction.TurnIn:
-                                serverInterface.InvokeTurnInTask(currentTask.Id, result.AdditionalInformation);
+                                serverInterface.InvokeTurnInTask(CurrentTask.Id, result.AdditionalInformation);
                                 break;
                             case FinalAction.Abandon:
-                                serverInterface.InvokeAbandonTask(currentTask.Id, result.AdditionalInformation);
+                                serverInterface.InvokeAbandonTask(CurrentTask.Id, result.AdditionalInformation);
                                 break;
                             case FinalAction.Fail:
-                                serverInterface.InvokeFailTask(currentTask.Id, result.AdditionalInformation);
+                                serverInterface.InvokeFailTask(CurrentTask.Id, result.AdditionalInformation);
                                 break;
                         }
 
@@ -102,9 +102,9 @@ namespace Thorium.Client
                     catch(Exception execEx) when(!(execEx is ThreadInterruptedException))
                     {
                         logger.Info("task failed: " + execEx);
-                        serverInterface.InvokeFailTask(currentTask.Id, execEx.ToString());
+                        serverInterface.InvokeFailTask(CurrentTask.Id, execEx.ToString());
                     }
-                    currentTask = null;
+                    CurrentTask = null;
                     lastTimeJobCompleted = DateTime.UtcNow;
                 }
             }
