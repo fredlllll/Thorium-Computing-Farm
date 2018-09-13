@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 using Thorium.Shared;
 using Thorium.Threading;
 
 namespace Thorium.Client
 {
-    public class NewTaskRequester :RestartableThreadClass
+    public class NewTaskRequester : RestartableThreadClass
     {
         private readonly ThoriumClient thoriumClient;
         private readonly ServerInterface serverInterface;
@@ -19,12 +20,26 @@ namespace Thorium.Client
 
         protected override void Run()
         {
-            while(true)
+            bool running = true;
+            while(running)
             {
-                LightweightTask task = serverInterface.InvokeCheckoutTask();
-                if(task != null)
+                try
                 {
-                    thoriumClient.AssignTask(task);
+                    LightweightTask task = serverInterface.InvokeCheckoutTask();
+                    if(task != null)
+                    {
+                        thoriumClient.AssignTask(task);
+                    }
+                    while(thoriumClient.CurrentTask != null)
+                    {
+                        Thread.Sleep(1000);
+                    }
+
+                }
+                catch(ThreadInterruptedException)
+                {
+                    running = false;
+                    break;
                 }
             }
         }
