@@ -2,73 +2,25 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <AssemblyName>Thorium.Server</AssemblyName>
     <ApplicationIcon />
-    <StartupObject />
+    <StartupObject>Thorium.Server.Program</StartupObject>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="docs\MySqlCommand.xml" />
-    <None Remove="docs\MySqlCommandBuilder.xml" />
-    <None Remove="docs\MySqlConnection.xml" />
-    <None Remove="docs\MySqlConnectionStringBuilder.xml" />
-    <None Remove="docs\MySqlDataAdapter.xml" />
-    <None Remove="docs\MySqlDataReader.xml" />
-    <None Remove="docs\MySqlException.xml" />
-    <None Remove="docs\MySqlHelper.xml" />
-    <None Remove="docs\MySqlParameter.xml" />
-    <None Remove="docs\MySqlParameterCollection.xml" />
-    <None Remove="docs\MySqlTransaction.xml" />
+    <PackageReference Include="NLog" Version="5.2.8" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="docs\MySqlCommand.xml" />
-    <Content Include="docs\MySqlCommandBuilder.xml" />
-    <Content Include="docs\MySqlConnection.xml" />
-    <Content Include="docs\MySqlConnectionStringBuilder.xml" />
-    <Content Include="docs\MySqlDataAdapter.xml" />
-    <Content Include="docs\MySqlDataReader.xml" />
-    <Content Include="docs\MySqlException.xml" />
-    <Content Include="docs\MySqlHelper.xml" />
-    <Content Include="docs\MySqlParameter.xml" />
-    <Content Include="docs\MySqlParameterCollection.xml" />
-    <Content Include="docs\MySqlTransaction.xml" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="MySql.Data" Version="8.0.12" />
-    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
-    <PackageReference Include="NLog" Version="4.5.8" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Thorium-CommandLine\Thorium.CommandLine.csproj" />
-    <ProjectReference Include="..\Thorium-Extensions-JSON\Thorium.Extensions.JSON.csproj" />
-    <ProjectReference Include="..\Thorium-Logging\Thorium.Logging.csproj" />
-    <ProjectReference Include="..\Thorium-Net\Thorium.Net.csproj" />
-    <ProjectReference Include="..\Thorium-Plugins\Thorium.Plugins.csproj" />
-    <ProjectReference Include="..\Thorium-Utils\Thorium.Utils.csproj" />
     <ProjectReference Include="..\Thorium.Shared\Thorium.Shared.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="clients_service_point_config.json.default">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="clients_service_point_tcp_config.json.default">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="mysql_config.json.default">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="server_controller_config.json.default">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Update="server_controller_http_config.json.default">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="server_controller_tcp_config.json.default">
+    <None Update="settings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

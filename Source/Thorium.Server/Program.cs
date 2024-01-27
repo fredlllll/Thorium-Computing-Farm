@@ -1,23 +1,29 @@
 ﻿using NLog;
-using Thorium.Plugins;
+using System.IO;
+using System.Reflection;
+using Thorium.Shared;
 
 namespace Thorium.Server
 {
     class Program
     {
-        private static Logger logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         static ThoriumServer server;
         static void Main(string[] args)
         {
-            Logging.Logging.SetupLogging();
+            Logging.SetupLogging();
+            logger.Info("Thorium Server v" + Assembly.GetEntryAssembly()?.GetName().Version);
 
-            logger.Info("Thorium Server");
-
-            PluginLoader.LoadPlugins();
-
+            Settings.LoadJson("settings.json");
+            if (File.Exists("local_settings.json"))
+            {
+                Settings.LoadJson("local_settings.json");
+            }
+            
             server = new ThoriumServer();
-            server.Start();
+            server.StartListeners();
+            server.Run();
         }
     }
 }

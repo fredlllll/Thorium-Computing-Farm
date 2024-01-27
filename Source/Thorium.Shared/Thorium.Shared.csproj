@@ -1,29 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <AssemblyName>Thorium.Shared</AssemblyName>
     <RootNamespace>Thorium.Shared</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Unused\JobTypes\Blender\BlenderConfigExample.xml" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="Unused\JobTypes\Blender\BlenderConfigExample.xml" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
-    <PackageReference Include="NLog" Version="4.5.8" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Thorium-Data-Implementation\Thorium.Data.Implementation.csproj" />
-    <ProjectReference Include="..\Thorium-Data\Thorium.Data.csproj" />
-    <ProjectReference Include="..\Thorium-Extensions-JSON\Thorium.Extensions.JSON.csproj" />
-    <ProjectReference Include="..\Thorium-Reflection\Thorium.Reflection.csproj" />
+    <PackageReference Include="NLog" Version="5.2.8" />
   </ItemGroup>
 
 </Project>

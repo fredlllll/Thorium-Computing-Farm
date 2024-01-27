@@ -1,0 +1,5 @@
+﻿{
+  "apiPort": 8080,
+  "clientInterface": "0.0.0.0",
+  "clientPort": 8000
+}

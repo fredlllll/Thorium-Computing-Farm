@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Threading;
-using Thorium.Shared;
 using NLog;
 using Thorium.Config;
 using Thorium.Threading;
+using Thorium.Shared.Unused;
 
 namespace Thorium.Client
 {

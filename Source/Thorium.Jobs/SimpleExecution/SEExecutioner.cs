@@ -3,7 +3,7 @@ using System.Linq;
 using Newtonsoft.Json.Linq;
 using Thorium.IO;
 using Thorium.Processes;
-using Thorium.Shared;
+using Thorium.Shared.Unused;
 
 namespace Thorium.Jobs.SimpleExecution
 {

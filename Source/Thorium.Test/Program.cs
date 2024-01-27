@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Net;
 using System.Net.Sockets;
-using Newtonsoft.Json.Linq;
 
 namespace Thorium.Test
 {

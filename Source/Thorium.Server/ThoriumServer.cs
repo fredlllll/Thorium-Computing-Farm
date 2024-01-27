@@ -1,94 +1,79 @@
 ﻿using System.Threading;
-using Thorium.Config;
-using Thorium.Server.Data;
-using Thorium.Threading;
+using Thorium.Shared;
+using System.Net.Sockets;
+using System;
+using System.Collections.Generic;
+using NLog;
+using System.Net;
+using System.Reflection;
 
 namespace Thorium.Server
 {
-    public class ThoriumServer : RestartableThreadClass
+    public class ThoriumServer
     {
-        /// <summary>
-        /// for control commands
-        /// </summary>
-        ServerController serverController;
-        /// <summary>
-        /// for comms between server and clients
-        /// </summary>
-        ClientsServicePoint clientsServicePoint;
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
-        public TaskManager TaskManager { get; private set; }
-        public ClientManager ClientManager { get; private set; }
-        public ClientTaskRelationManager ClientTaskRelationManager { get; private set; }
+        readonly Dictionary<string, MethodInfo> apiFunctions = new();
+        readonly List<ThoriumClient> clients = [];
 
-        public DataManager DataManager { get; private set; }
+        HttpListener apiListener;
+        TcpListener listener;
 
-
-        public ThoriumServer() : base(false)
+        public ThoriumServer()
         {
-            DataManager = new DataManager();
-
-            TaskManager = new TaskManager(DataManager.TaskSerializer);
-            ClientManager = new ClientManager(DataManager.ClientSerializer);
-            ClientTaskRelationManager = new ClientTaskRelationManager(DataManager.ClientTaskRelationSerializer);
-
-            serverController = new ServerController(this);
-            clientsServicePoint = new ClientsServicePoint(this);
+            //TODO: add api functions
         }
 
-
-        public override void Start()
+        public void StartListeners()
         {
-            ClientManager.Start();
-            ClientTaskRelationManager.Start();
-            serverController.Start();
-            clientsServicePoint.Start();
-            base.Start();
+            string _interface = Settings.Get<string>("clientInterface");
+            int port = Settings.Get<int>("clientPort");
+            logger.Info($"Starting to listen on {_interface}:{port}");
+            listener = new TcpListener(System.Net.IPAddress.Parse(_interface), port);
+            listener.Start();
+            listener.BeginAcceptTcpClient(HandleNewClient, null);
+
+            apiListener = new HttpListener();
+            apiListener.Prefixes.Add("http://*:" + Settings.Get<int>("apiPort") + "/");
+            apiListener.Start();
+            apiListener.BeginGetContext(HandleNewApiRequest, null);
         }
 
-        public override void Stop(int joinTimeoutms = -1)
+        private void HandleNewClient(IAsyncResult ar)
         {
-            ClientManager.Stop(joinTimeoutms);
-            ClientTaskRelationManager.Stop();
-            serverController.Stop();
-            clientsServicePoint.Stop();
-            base.Stop(joinTimeoutms);
-        }
+            var tcpClient = listener.EndAcceptTcpClient(ar);
+            var client = new ThoriumClient(tcpClient, this);
 
-        protected override void Run()
-        {
-            while(true)
+            if (client.HandshakeSuccessful())
             {
-                //get a client and a task
-                var client = ClientManager.GetFreeClient();
-                var task = TaskManager.GetAssignableTask();
-                //if one of them is null, return the other, so a task cant possibly get stuck
-                if(task == null && client != null)
-                {
-                    ClientManager.ReturnFreeClient(client.Id);
-                }
-                if(client == null && task != null)
-                {
-                    TaskManager.ReturnAssignableTask(task.Id);
-                }
-                if(task != null && client != null)
-                {
-                    var lt = task.ToLightweightTask();
-                    if(client.AssignTask(lt))
-                    {
-                        var rel = new ClientTaskRelation(client.Id, lt.Id);
-                        ClientTaskRelationManager.Add(rel);
-                    }
-                    else
-                    {
-                        //return both if it could not be assigned
-                        TaskManager.ReturnAssignableTask(task.Id);
-                        ClientManager.ReturnFreeClient(client.Id);
-                    }
-                }
-                else
-                {
-                    Thread.Sleep(1000);
-                }
+                client.Start();
+                clients.Add(client);
+            }
+            else
+            {
+                tcpClient.Close();
+            }
+            listener.BeginAcceptTcpClient(HandleNewClient, null);
+        }
+
+        private void HandleNewApiRequest(IAsyncResult ar)
+        {
+            var context = apiListener.EndGetContext(ar);
+            var request = context.Request;
+            var response = context.Response;
+
+            var functionName = request.Url.AbsolutePath;
+
+
+            apiListener.BeginGetContext(HandleNewApiRequest, null);
+        }
+
+        public void Run()
+        {
+            while (true)
+            {
+                //TODO: i dont really know what to even do here
+                Thread.Sleep(1000);
             }
         }
     }

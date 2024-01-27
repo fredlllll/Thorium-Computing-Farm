@@ -1,20 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <AssemblyName>Thorium.Jobs</AssemblyName>
     <RootNamespace>Thorium.Jobs</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Thorium-Extensions-JSON\Thorium.Extensions.JSON.csproj" />
-    <ProjectReference Include="..\Thorium-IO\Thorium.IO.csproj" />
-    <ProjectReference Include="..\Thorium-Processes\Thorium.Processes.csproj" />
-    <ProjectReference Include="..\Thorium-Utils\Thorium.Utils.csproj" />
     <ProjectReference Include="..\Thorium.Shared\Thorium.Shared.csproj" />
   </ItemGroup>
 

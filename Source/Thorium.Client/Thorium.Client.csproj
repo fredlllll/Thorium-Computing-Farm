@@ -2,23 +2,16 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <AssemblyName>Thorium.Client</AssemblyName>
     <RootNamespace>Thorium.Client</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
-    <PackageReference Include="NLog" Version="4.5.8" />
+    <PackageReference Include="NLog" Version="5.2.8" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Thorium-Config\Thorium.Config.csproj" />
-    <ProjectReference Include="..\Thorium-Logging\Thorium.Logging.csproj" />
-    <ProjectReference Include="..\Thorium-Net\Thorium.Net.csproj" />
-    <ProjectReference Include="..\Thorium-Plugins\Thorium.Plugins.csproj" />
-    <ProjectReference Include="..\Thorium-Threading\Thorium.Threading.csproj" />
-    <ProjectReference Include="..\Thorium-Utils\Thorium.Utils.csproj" />
     <ProjectReference Include="..\Thorium.Shared\Thorium.Shared.csproj" />
   </ItemGroup>
 
