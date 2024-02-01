@@ -8,6 +8,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using Thorium.Shared;
 using Thorium.Shared.DTOs;
 using Thorium.Shared.Messages;
 
@@ -15,115 +16,69 @@ namespace Thorium.Server
 {
     public class ThoriumClient
     {
-        private readonly TcpClient client;
-        private readonly ThoriumServer server;
-        private readonly NetworkStream stream;
+        public string Id { get; private set; }
 
-        private Dictionary<string, MethodInfo> functions;
-        private Thread runThread;
+        private readonly FunctionServer functionServer;
+
+        private readonly ThoriumServer server;
 
         public DateTime LastHeartbeat { get; private set; }
 
-        public ThoriumClient(TcpClient client, ThoriumServer server) {
-            this.client = client;
-            this.server = server;
-            this.stream = client.GetStream();
-        }
-
-        public bool HandshakeSuccessful()
+        public ThoriumClient(TcpClient client, ThoriumServer server)
         {
-            byte[] buffer = new byte[4]; 
-            //TODO: add timeout
-            stream.ReadExactly(buffer, 0, buffer.Length);
-
-            return buffer[0] == 'T' && buffer[0] == 'H' && buffer[0] == 'O' && buffer[0] == 'R';
+            this.functionServer = new FunctionServer(client, Encoding.ASCII.GetBytes("THOR"));
+            this.server = server;
         }
 
         public void Start()
         {
-            functions = new Dictionary<string, MethodInfo>();
-
             var flags = BindingFlags.NonPublic | BindingFlags.Instance;
 
-            functions[nameof(Heartbeat)] = GetType().GetMethod(nameof(Heartbeat), flags);
-            functions[nameof(GetTask)] = GetType().GetMethod(nameof(GetTask), flags);
-            functions[nameof(FinishTask)] = GetType().GetMethod(nameof(FinishTask), flags);
-            functions[nameof(Log)] = GetType().GetMethod(nameof(Log), flags);
+            var t = GetType();
 
-            runThread = new Thread(Run);
-            runThread.Start();
-        }
-
-        void SendAnswer (int id, object? result, Exception? exception)
-        {
-            var answer = new FunctionCallAnswer();
-            answer.Id = id;
-            answer.ReturnValue = result;
-            answer.Exception = exception;
-
-            var bytes = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(answer));
-            stream.Write(bytes, 0, bytes.Length);
-            stream.WriteByte(0);
-        }
-
-        void HandleMessage(string msg)
-        {
-            FunctionCall call = JsonSerializer.Deserialize<FunctionCall>(msg);
-            if(call != null)
-            {
-                if(functions.TryGetValue(call.FunctionName, out var func))
-                {
-                    object result = null;
-                    Exception exception = null;
-                    try
-                    {
-                         result = func.Invoke(this, call.FunctionArguments);
-                    }catch (Exception ex)
-                    {
-                        exception = ex;
-                    }
-                    SendAnswer(call.Id,result, exception);
-                }
-            }
-        }
-
-        void Run()
-        {
-            LastHeartbeat = DateTime.Now;
-            List<byte> buffer = new();
-            byte[] readBuffer = new byte[16 * 1024];
-            while (true)
-            {
-                //TODO: timeout? handle stream close
-                int count = stream.Read(readBuffer, 0, readBuffer.Length);
-                for (int i = 0; i < count; i++)
-                {
-                    byte b = readBuffer[i];
-                    if(b == 0)
-                    {
-                        string message = Encoding.UTF8.GetString(buffer.ToArray(), 0, buffer.Count); //TODO: try to get around creating a new array every time
-                        HandleMessage(message);
-                        buffer.Clear();
-                    }
-                    buffer.Add(b);
-                }
-            }
+            functionServer.AddFunction(t.GetMethod(nameof(Register), flags), this);
+            functionServer.AddFunction(t.GetMethod(nameof(Heartbeat), flags), this);
+            functionServer.AddFunction(t.GetMethod(nameof(GetNextTask), flags), this);
+            functionServer.AddFunction(t.GetMethod(nameof(GetJob), flags), this);
+            functionServer.AddFunction(t.GetMethod(nameof(TurnInTask), flags), this);
+            functionServer.AddFunction(t.GetMethod(nameof(Log), flags), this);
+            functionServer.Start();
         }
 
         #region functions
+
+        void Register(string id)
+        {
+            Id = id;
+        }
+
         void Heartbeat()
         {
             LastHeartbeat = DateTime.Now;
         }
 
-        ThoriumTask GetTask()
+        ThoriumTask GetNextTask()
         {
-            return null;//TODO
+            var t = server.GetTask();
+            if (t == null)
+            {
+                return null;
+            }
+            return t.ToThoriumTask();
         }
 
-        void FinishTask(string taskId)
+        ThoriumJob GetJob(string id)
         {
-            //TODO
+            return server.GetJob(id)?.ThoriumJob;
+        }
+
+        void TurnInTask(string jobId, int taskNumber, string status)
+        {
+            var job = server.GetJob(jobId);
+            if (job != null)
+            {
+                job.TurnInTask(taskNumber, status);
+            }
         }
 
         void Log(string msg)
@@ -131,6 +86,5 @@ namespace Thorium.Server
             //TODO
         }
         #endregion
-
     }
 }

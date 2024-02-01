@@ -1,125 +1,77 @@
 ﻿using System;
 using System.Threading;
 using NLog;
-using Thorium.Config;
-using Thorium.Threading;
-using Thorium.Shared.Unused;
+using Thorium.Shared;
+using Microsoft.Extensions.DependencyInjection;
+using Thorium.Shared.DTOs;
 
 namespace Thorium.Client
 {
-    public class ThoriumClient : RestartableThreadClass
+    public class ThoriumClient
     {
-        private static dynamic config = ConfigFile.GetClassConfig();
+        private string id = "machine_"; //TODO machine specific string
 
-        private static Logger logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
-        private ServerInterface serverInterface;
-        private ClientController clientController;
+        private ThoriumTask currentTask = null;
+        private ThoriumJob currentJob = null;
 
-        //TODO: make id created by a pattern, so single machines can be identified
-        public string Id { get; } = Utils.Utils.GetRandomGUID();
+        private OperationList operations = null;
 
-        private AutoResetEvent hasTaskEvent = new AutoResetEvent(false);
-        public LightweightTask CurrentTask { get; private set; } = null;
-
-        private NewTaskRequester taskRequester;
-
-        public ThoriumClient() : base(false)
+        public void Run()
         {
-            string host = config.ServerHost;
-            ushort port = config.ServerListeningPort;
+            ThoriumServerApi server = DI.ServiceProvider.GetRequiredService<ThoriumServerApi>();
 
-            serverInterface = new ServerInterface(host, port, this);
-            clientController = new ClientController(this);
-
-            taskRequester = new NewTaskRequester(this, serverInterface);
-        }
-
-        public override void Start()
-        {
-            serverInterface.InvokeRegister();
-            clientController.Start();
-            taskRequester.Start();
-            base.Start();
-        }
-
-        public override void Stop(int joinTimeoutms = -1)
-        {
-            string id = CurrentTask?.Id;
-            if(id != null)
-            {
-                serverInterface.InvokeAbandonTask(id, "Client Stopped");
-            }
-            serverInterface.InvokeUnregister();
-            clientController.Stop();
-            taskRequester.Stop();
-
-            base.Stop(joinTimeoutms);
-        }
-
-        public bool AssignTask(LightweightTask lightweightTask)
-        {
-            if(CurrentTask == null)
-            {
-                CurrentTask = lightweightTask;
-                hasTaskEvent.Set();
-                return true;
-            }
-            return false;
-        }
-
-        protected override void Run()
-        {
-            DateTime lastTimeJobCompleted = DateTime.UtcNow;
+            server.Register(id);
             try
             {
-                while(true)
+                while (true)
                 {
-                    logger.Info("getting job...");
-                    hasTaskEvent.WaitOne();
-                    logger.Info("got task: " + CurrentTask.Id);
+                    logger.Info("getting task...");
+                    currentTask = server.GetNextTask();
+                    if (currentTask == null)
+                    {
+                        logger.Info("no task, waiting");
+                        Thread.Sleep(1000);
+                        continue;
+                    }
+                    //TODO: put these into a single call
+                    if (currentJob == null || currentJob.Id != currentTask.JobId)
+                    {
+                        currentJob = server.GetJob(currentTask.JobId);
+                        operations = new OperationList(currentJob);
+                    }
 
-                    AExecutioner executioner = CurrentTask.GetExecutioner();
+                    logger.Info("got task: " + currentTask.JobId + ": " + currentTask.TaskNumber);
+
                     try
                     {
                         logger.Info("executing task");
-                        var result = executioner.Execute();
-                        switch(result.FinalAction)
+                        for (int i = 0; i < operations.operations.Length; ++i)
                         {
-                            case FinalAction.TurnIn:
-                                serverInterface.InvokeTurnInTask(CurrentTask.Id, result.AdditionalInformation);
-                                break;
-                            case FinalAction.Abandon:
-                                serverInterface.InvokeAbandonTask(CurrentTask.Id, result.AdditionalInformation);
-                                break;
-                            case FinalAction.Fail:
-                                serverInterface.InvokeFailTask(CurrentTask.Id, result.AdditionalInformation);
-                                break;
+                            var op = operations.operations[i];
+                            op.Execute(currentTask.TaskNumber);
                         }
-
                         logger.Info("done task");
                     }
-                    catch(Exception execEx) when(!(execEx is ThreadInterruptedException))
+                    catch (Exception execEx) when (execEx is not ThreadInterruptedException)
                     {
                         logger.Info("task failed: " + execEx);
-                        serverInterface.InvokeFailTask(CurrentTask.Id, execEx.ToString());
+                        server.TurnInTask(currentJob.Id, currentTask.TaskNumber, "error");
                     }
-                    CurrentTask = null;
-                    lastTimeJobCompleted = DateTime.UtcNow;
+                    currentTask = null;
                 }
             }
-            catch(ThreadInterruptedException)
+            catch (ThreadInterruptedException)
             {
-                //bye bye
                 logger.Info("worker thread interrupted. exiting");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 logger.Info("exception");
                 logger.Info(ex);
             }
             logger.Info("leaving worker thread");
-            Stop();
         }
     }
 }

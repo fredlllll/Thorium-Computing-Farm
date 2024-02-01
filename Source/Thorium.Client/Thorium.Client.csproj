@@ -16,13 +16,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="client_controller_tcp_config.json.default">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Update="client_controller_config.json.default">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="thorium_client_config.json.default">
+    <None Update="settings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

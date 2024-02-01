@@ -1,6 +1,9 @@
-﻿using System.Linq;
+﻿using System.IO;
+using System.Linq;
+using System.Reflection;
+using Microsoft.Extensions.DependencyInjection;
 using NLog;
-using Thorium.Plugins;
+using Thorium.Shared;
 
 namespace Thorium.Client
 {
@@ -10,16 +13,25 @@ namespace Thorium.Client
 
         static void Main(string[] args)
         {
-            System.Threading.Thread.Sleep(8000);
+            Logging.SetupLogging();
+            logger.Info("Thorium Client v" + Assembly.GetEntryAssembly()?.GetName().Version);
 
-            Logging.Logging.SetupLogging();
+            Settings.LoadJson("settings.json");
+            if (File.Exists("local_settings.json"))
+            {
+                Settings.LoadJson("local_settings.json");
+            }
 
-            logger.Info("Thorium Client");
-
-            PluginLoader.LoadPlugins();
+            //dependency injection
+            DI.Services.AddSingleton<ThoriumServerApi>((x) =>
+            {
+                var api = new ThoriumServerApi();
+                api.Start();
+                return api;
+            });
 
             var client = new ThoriumClient();
-            client.Start();
+            client.Run();
         }
     }
 }

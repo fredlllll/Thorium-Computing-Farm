@@ -9,6 +9,12 @@ namespace Thorium.Shared.DTOs
     public class ThoriumJob
     {
         public string Id { get; set; }
+
+        public string Name { get; set; }
+
+        public int TaskCount { get; set; }
+
+        public ClientOperation[] Operations { get; set; }
         //TODO: all the other things
     }
 }
