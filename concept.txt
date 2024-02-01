@@ -1,0 +1,18 @@
+Thorium Server: takes job requests and provides Tasks to clients
+Client: registers on server and awaits task
+
+server gets job description.
+job creates Factory/Enumerable For Tasks
+job gets put in priority queue
+client asks server for task periodically
+server gets task for client and tells client to do it. client gets associated with task.
+task gets put in "in process" set/bag
+client does its thing
+client calls back and says Task is done
+job gets signal that task is done
+
+
+server needs interface for clients and seperate interface for adding jobs
+on start client will register himself to server and unregister on its shutdown
+
+on start server will read config to get additional binaries and supported job types ()
