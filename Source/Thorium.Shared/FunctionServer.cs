@@ -68,7 +68,7 @@ namespace Thorium.Shared
             var answer = new FunctionCallAnswer();
             answer.Id = id;
             answer.ReturnValue = result;
-            answer.Exception = exception;
+            answer.Exception = exception?.ToString();
 
             var bytes = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(answer));
             stream.Write(bytes, 0, bytes.Length);

@@ -108,7 +108,7 @@ namespace Thorium.Shared
 
             byte[] bytes = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(call));
 
-            using var answerEvent = answerEvents[id] = new AutoResetEvent(false);
+            var answerEvent = answerEvents[id] = new AutoResetEvent(false);
             stream.Write(bytes, 0, bytes.Length);
             stream.WriteByte(0);
 
@@ -116,11 +116,12 @@ namespace Thorium.Shared
             {
                 answerEvent.WaitOne(); //wait for answer to arrive
                 answerEvents.Remove(id);
+                answerEvent.Dispose();
                 var answer = answers[id];
                 answers.Remove(id);
                 if (answer.Exception != null)
                 {
-                    throw answer.Exception; //TODO no idea if this works lel
+                    throw new Exception(answer.Exception);
                 }
                 return (T)answer.ReturnValue;
             }
