@@ -11,13 +11,13 @@ namespace Thorium.Client.Operations
 {
     public class Exe : ClientOperation
     {
-        Shared.DTOs.OperationData.Exe data;
+        Shared.DTOs.OperationData.ExeDTO data;
 
         private ProcessStartInfo processStartInfo;
 
         public Exe(JsonDocument operationData)
         {
-            var data = operationData.Deserialize<Shared.DTOs.OperationData.Exe>();
+            var data = operationData.Deserialize<Shared.DTOs.OperationData.ExeDTO>();
 
             processStartInfo = new ProcessStartInfo()
             {

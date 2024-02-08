@@ -57,7 +57,7 @@ namespace Thorium.Server
             LastHeartbeat = DateTime.Now;
         }
 
-        ThoriumTask GetNextTask()
+        TaskDTO GetNextTask()
         {
             var t = server.GetTask();
             if (t == null)
@@ -67,7 +67,7 @@ namespace Thorium.Server
             return t.ToThoriumTask();
         }
 
-        ThoriumJob GetJob(string id)
+        JobDTO GetJob(string id)
         {
             return server.GetJob(id)?.ThoriumJob;
         }

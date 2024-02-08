@@ -20,7 +20,7 @@ namespace Thorium.Client
 
         public readonly ClientOperation[] operations;
 
-        public OperationList(ThoriumJob job)
+        public OperationList(JobDTO job)
         {
             operations = new ClientOperation[job.Operations.Length];
             for (int i = 0; i < job.Operations.Length; i++)

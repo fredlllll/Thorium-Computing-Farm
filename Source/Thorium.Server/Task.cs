@@ -19,9 +19,9 @@ namespace Thorium.Server
             TaskNumber = taskNumber;
         }
 
-        public ThoriumTask ToThoriumTask()
+        public TaskDTO ToThoriumTask()
         {
-            return new ThoriumTask() { JobId = Job.ThoriumJob.Id, TaskNumber = TaskNumber };
+            return new TaskDTO() { JobId = Job.ThoriumJob.Id, TaskNumber = TaskNumber };
         }
     }
 }

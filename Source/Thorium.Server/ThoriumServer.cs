@@ -106,7 +106,7 @@ namespace Thorium.Server
             var content = sr.ReadToEnd();
 
             logger.Info(content);
-            var jobData = JsonSerializer.Deserialize<ThoriumJob>(content, JsonUtil.CaseInsensitive);
+            var jobData = JsonSerializer.Deserialize<JobDTO>(content, JsonUtil.CaseInsensitive);
             var job = new Job(jobData);
 
             jobs[job.ThoriumJob.Id] = job;

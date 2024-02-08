@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Thorium.Shared.DTOs
 {
-    public class ThoriumJob
+    public class JobDTO
     {
         public string Id { get; set; }
 
@@ -14,7 +14,7 @@ namespace Thorium.Shared.DTOs
 
         public int TaskCount { get; set; }
 
-        public ClientOperation[] Operations { get; set; }
+        public OperationDTO[] Operations { get; set; }
         //TODO: all the other things
     }
 }

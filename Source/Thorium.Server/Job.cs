@@ -9,14 +9,14 @@ namespace Thorium.Server
 {
     public class Job
     {
-        public ThoriumJob ThoriumJob { get; private set; }
+        public JobDTO ThoriumJob { get; private set; }
         private readonly Task[] tasks;
 
         private readonly LinkedList<Task> queuedTasks = new();
         private readonly List<Task> runningTasks = new();
         private readonly List<Task> finishedTasks = new();
 
-        public Job(ThoriumJob job)
+        public Job(JobDTO job)
         {
             ThoriumJob = job;
             tasks = new Task[job.TaskCount];

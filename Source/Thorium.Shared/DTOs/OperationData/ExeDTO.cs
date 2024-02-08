@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Thorium.Shared.DTOs.OperationData
 {
-    public class Exe
+    public class ExeDTO
     {
         public string FilePath {  get; set; }
         public string[] Arguments { get; set; }

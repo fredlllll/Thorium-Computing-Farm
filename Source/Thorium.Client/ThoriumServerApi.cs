@@ -34,14 +34,14 @@ namespace Thorium.Client
             client.RemoteFunctionCall<object>("Register", false, clientId);
         }
 
-        public ThoriumTask GetNextTask()
+        public TaskDTO GetNextTask()
         {
-            return client.RemoteFunctionCall<ThoriumTask>("GetNextTask", true);
+            return client.RemoteFunctionCall<TaskDTO>("GetNextTask", true);
         }
 
-        public ThoriumJob GetJob(string id)
+        public JobDTO GetJob(string id)
         {
-            return client.RemoteFunctionCall<ThoriumJob>("GetJob", true, id);
+            return client.RemoteFunctionCall<JobDTO>("GetJob", true, id);
         }
 
         public void TurnInTask(string jobId, int taskNumber, string state) //TODO: replace state with an enum

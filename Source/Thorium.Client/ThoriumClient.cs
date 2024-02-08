@@ -13,8 +13,8 @@ namespace Thorium.Client
 
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
-        private ThoriumTask currentTask = null;
-        private ThoriumJob currentJob = null;
+        private TaskDTO currentTask = null;
+        private JobDTO currentJob = null;
 
         private OperationList operations = null;
 

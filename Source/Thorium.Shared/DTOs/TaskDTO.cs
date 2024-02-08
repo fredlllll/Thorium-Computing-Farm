@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Thorium.Shared.DTOs
 {
-    public class ClientOperation
+    public class TaskDTO
     {
-        public string OperationType {  get; set; }
-        public JsonDocument OperationData { get; set; }
+        public string JobId {  get; set; }
+        public int TaskNumber {  get; set; }
+        //TODO: all the other things
     }
 }
