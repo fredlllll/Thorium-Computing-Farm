@@ -69,7 +69,7 @@ namespace Thorium.Server
 
         JobDTO GetJob(string id)
         {
-            return server.GetJob(id)?.ThoriumJob;
+            return server.GetJob(id)?.ToDTO();
         }
 
         void TurnInTask(string jobId, int taskNumber, string status)

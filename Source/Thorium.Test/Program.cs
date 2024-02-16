@@ -1,34 +1,42 @@
 ﻿using System;
 using System.Net;
+using System.Net.Http;
 using System.Net.Sockets;
+using System.Text.Json;
+using Thorium.Shared.DTOs;
+using Thorium.Shared.DTOs.OperationData;
 
 namespace Thorium.Test
 {
     public class Program
     {
-        static UdpClient recv;
+        static HttpClient http;
 
         public static void Main()
         {
-            recv = new UdpClient(8300);
-            UdpClient send = new UdpClient();
+            
+            http = new HttpClient();
+            HttpRequestMessage req = new HttpRequestMessage(HttpMethod.Post, "http://127.0.0.1:8080/addjob");
+            JobDTO job = new ()
+            {
+                Id = "1234abcd",
+                Name = "this is a test",
+                TaskCount = 10,
+                Operations =
+                [
+                    new OperationDTO()
+                    {
+                        OperationType = "exe",
+                        OperationData = new ExeDTO() { FilePath="notepad.exe"},
+                    }
+                ]
+            };
+            var content = JsonSerializer.Serialize(job);
+            req.Content = new StringContent(content);
 
-            recv.BeginReceive(Receive, null);
-
-            IPEndPoint ep = new IPEndPoint(new IPAddress(new byte[] { 127, 0, 0, 1 }), 8300);
-
-            //send.
-            send.Send(new byte[] { 42, 42, 42 }, 3, ep);
+            var res = http.Send(req);
 
             Console.ReadKey();
-        }
-
-        static void Receive(IAsyncResult result)
-        {
-            IPEndPoint ep = new IPEndPoint(IPAddress.Any, 8300);
-
-            var bytes = recv.EndReceive(result, ref ep);
-            byte b = bytes[0];
         }
     }
 }

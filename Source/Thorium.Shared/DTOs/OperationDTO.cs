@@ -10,6 +10,6 @@ namespace Thorium.Shared.DTOs
     public class OperationDTO
     {
         public string OperationType {  get; set; }
-        public JsonDocument OperationData { get; set; }
+        public object OperationData { get; set; }
     }
 }

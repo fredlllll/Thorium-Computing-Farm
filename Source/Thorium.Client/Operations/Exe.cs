@@ -6,19 +6,19 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Thorium.Shared;
+using Thorium.Shared.DTOs.OperationData;
 
 namespace Thorium.Client.Operations
 {
     public class Exe : ClientOperation
     {
-        Shared.DTOs.OperationData.ExeDTO data;
+        ExeDTO data;
 
         private ProcessStartInfo processStartInfo;
 
-        public Exe(JsonDocument operationData)
+        public Exe(ExeDTO data)
         {
-            var data = operationData.Deserialize<Shared.DTOs.OperationData.ExeDTO>();
-
+            this.data = data;
             processStartInfo = new ProcessStartInfo()
             {
                 FileName = data.FilePath,
@@ -34,9 +34,12 @@ namespace Thorium.Client.Operations
             };
 
             processStartInfo.ArgumentList.Clear();
-            foreach (var arg in data.Arguments)
+            if (data.Arguments != null)
             {
-                processStartInfo.ArgumentList.Add(arg.Replace("{taskNumber}", taskNumber.ToString()));
+                foreach (var arg in data.Arguments)
+                {
+                    processStartInfo.ArgumentList.Add(arg.Replace("{taskNumber}", taskNumber.ToString()));
+                }
             }
             process.Start();
             process.WaitForExit();

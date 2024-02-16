@@ -26,19 +26,12 @@ namespace Thorium.Shared.Aether
         Bytes = 14,
         Array = 15,
         Bool = 16,
-        AetherType = 255,
-    }
-
-    public interface IAetherType
-    {
-        public void WriteTo(AetherStream stream);
-        public void ReadFrom(AetherStream stream);
+        Object = 255,
     }
 
     public static class AetherTypes
     {
         public static readonly Dictionary<Type, AetherTypeId> typeToAetherType = new(){
-            {null, AetherTypeId.Null},
             {typeof(sbyte), AetherTypeId.Int8 },
             {typeof(short), AetherTypeId.Int16 },
             {typeof(int), AetherTypeId.Int32 },

@@ -28,7 +28,8 @@ namespace Thorium.Client
                 var opData = job.Operations[i];
                 if (operationTypes.TryGetValue(opData.OperationType, out var type))
                 {
-                    var op = Activator.CreateInstance(type);
+                    var shit = opData.OperationData.GetType();
+                    var op = Activator.CreateInstance(type, opData.OperationData);
                     operations[i] = (ClientOperation)op;
                 }
                 else

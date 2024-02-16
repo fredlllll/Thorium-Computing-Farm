@@ -9,7 +9,10 @@ namespace Thorium.Server
 {
     public class Job
     {
-        public JobDTO ThoriumJob { get; private set; }
+        public string Id { get; set; }
+        public string Name { get; set; }
+        public int TaskCount { get { return tasks.Length; } }
+        public OperationDTO[] Operations { get; set; }
         private readonly Task[] tasks;
 
         private readonly LinkedList<Task> queuedTasks = new();
@@ -18,7 +21,10 @@ namespace Thorium.Server
 
         public Job(JobDTO job)
         {
-            ThoriumJob = job;
+            Id = job.Id;
+            Name = job.Name;
+            Operations = job.Operations;
+
             tasks = new Task[job.TaskCount];
             for (int i = 0; i < tasks.Length; i++)
             {
@@ -66,6 +72,16 @@ namespace Thorium.Server
             }
             task.Status = status;
             finishedTasks.Add(task);
+        }
+
+        public JobDTO ToDTO()
+        {
+            return new JobDTO() { 
+                Id = Id,
+                Name = Name,
+                Operations = Operations,
+                TaskCount = TaskCount,
+            };
         }
     }
 }

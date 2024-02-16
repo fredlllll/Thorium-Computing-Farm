@@ -6,6 +6,8 @@ using System.Text;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using Thorium.Shared.Aether;
+using Thorium.Shared.Aether.AetherSerializers;
 using Thorium.Shared.Messages;
 
 namespace Thorium.Shared
@@ -13,19 +15,23 @@ namespace Thorium.Shared
     public class FunctionClient : IDisposable
     {
         private int idCounter = 0;
-        private TcpClient client;
-        private NetworkStream stream;
-        private Thread runThread;
-
+        private readonly TcpClient client;
+        private readonly NetworkStream stream;
+        private readonly AetherStream aether;
         private readonly Dictionary<int, AutoResetEvent> answerEvents = new();
         private readonly Dictionary<int, FunctionCallAnswer> answers = new();
         private readonly byte[] handshake;
 
+        private Thread runThread;
+
         public FunctionClient(TcpClient client, byte[] handshake)
         {
             this.client = client;
-            this.stream = client.GetStream();
+            stream = client.GetStream();
             this.handshake = handshake;
+            aether = new AetherStream(stream);
+            aether.Serializers[typeof(FunctionCall)] = new FunctionCallSerializer();
+            aether.Serializers[typeof(FunctionCallAnswer)] = new FunctionCallAnswerSerializer();
         }
 
         private int GetNextId()
@@ -71,7 +77,7 @@ namespace Thorium.Shared
 
         private void Run()
         {
-            List<byte> buffer = new();
+            /*List<byte> buffer = new();
             byte[] readBuffer = new byte[16 * 1024];
             while (true)
             {
@@ -91,6 +97,16 @@ namespace Thorium.Shared
                         buffer.Add(b);
                     }
                 }
+            }*/
+
+            while (true)
+            {
+                var callAnswer = (FunctionCallAnswer)aether.Read();
+                if (callAnswer != null)
+                {
+                    answers[callAnswer.Id] = callAnswer;
+                    answerEvents[callAnswer.Id].Set();
+                }
             }
         }
 
@@ -106,11 +122,13 @@ namespace Thorium.Shared
                 FunctionArguments = args
             };
 
-            byte[] bytes = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(call));
-
             var answerEvent = answerEvents[id] = new AutoResetEvent(false);
+
+            /*byte[] bytes = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(call));
             stream.Write(bytes, 0, bytes.Length);
-            stream.WriteByte(0);
+            stream.WriteByte(0);*/
+
+            aether.Write(call);
 
             if (needsAnswer)
             {

@@ -9,6 +9,7 @@ using System.Reflection;
 using System.IO;
 using System.Text.Json;
 using Thorium.Shared.DTOs;
+using Thorium.Shared.DTOs.OperationData;
 
 namespace Thorium.Server
 {
@@ -107,9 +108,18 @@ namespace Thorium.Server
 
             logger.Info(content);
             var jobData = JsonSerializer.Deserialize<JobDTO>(content, JsonUtil.CaseInsensitive);
+            foreach(var op in jobData.Operations)
+            {
+                switch(op.OperationType)
+                {
+                    case "exe":
+                        op.OperationData = JsonSerializer.Deserialize<ExeDTO>((JsonElement)op.OperationData, JsonUtil.CaseInsensitive);
+                        break;
+                }
+            }
             var job = new Job(jobData);
 
-            jobs[job.ThoriumJob.Id] = job;
+            jobs[job.Id] = job;
 
             context.Response.StatusCode = 200;
         }

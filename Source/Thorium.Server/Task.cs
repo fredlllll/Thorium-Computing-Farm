@@ -21,7 +21,7 @@ namespace Thorium.Server
 
         public TaskDTO ToThoriumTask()
         {
-            return new TaskDTO() { JobId = Job.ThoriumJob.Id, TaskNumber = TaskNumber };
+            return new TaskDTO() { JobId = Job.Id, TaskNumber = TaskNumber };
         }
     }
 }

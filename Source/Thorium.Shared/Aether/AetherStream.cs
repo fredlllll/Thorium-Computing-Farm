@@ -12,6 +12,9 @@ namespace Thorium.Shared.Aether
 {
     public class AetherStream : IDisposable
     {
+        readonly DefaultSerializer defaultSerializer = new();
+        public Dictionary<Type, IAetherSerializer> Serializers { get; } = [];
+
         public Stream BaseStream { get; }
 
         public readonly BinaryWriter writer;
@@ -38,17 +41,10 @@ namespace Thorium.Shared.Aether
             {
                 id = AetherTypeId.Array;
             }
-            else if (type.IsAssignableTo(typeof(IAetherType)))
+            else if (!AetherTypes.typeToAetherType.TryGetValue(type, out id))
             {
-                //complex type
-                id = AetherTypeId.AetherType;
-            }
-            else
-            {
-                if (!AetherTypes.typeToAetherType.TryGetValue(type, out id))
-                {
-                    throw new NotSupportedException("Cant Serialize type of " + type.AssemblyQualifiedName);
-                }
+                return AetherTypeId.Object;
+                //throw new NotSupportedException("Cant Serialize type of " + type.AssemblyQualifiedName);
             }
             return id;
         }
@@ -65,17 +61,10 @@ namespace Thorium.Shared.Aether
             {
                 id = AetherTypeId.Array;
             }
-            else if (type.IsAssignableTo(typeof(IAetherType)))
+            else if (!AetherTypes.typeToAetherType.TryGetValue(type, out id))
             {
-                //complex type
-                id = AetherTypeId.AetherType;
-            }
-            else
-            {
-                if (!AetherTypes.typeToAetherType.TryGetValue(type, out id))
-                {
-                    throw new NotSupportedException("Cant Serialize type of " + type.AssemblyQualifiedName);
-                }
+                return AetherTypeId.Object;
+                //throw new NotSupportedException("Cant Serialize type of " + type.AssemblyQualifiedName);
             }
             return id;
         }
@@ -136,15 +125,28 @@ namespace Thorium.Shared.Aether
                 case AetherTypeId.Array:
                     var array = (Array)value;
                     var elementType = type.GetElementType();
-                    writer.Write((byte)GetAetherTypeId(elementType));
-                    writer.Write7BitEncodedInt(array.Length);
-                    for (int i = 0; i < array.Length; i++)
+                    var elementTypeId = GetAetherTypeId(elementType);
+                    writer.Write((byte)elementTypeId);
+                    if (elementTypeId == AetherTypeId.Object)
                     {
-                        Write(array.GetValue(i));
+                        writer.Write(elementType.AssemblyQualifiedName);
+                        writer.Write7BitEncodedInt(array.Length);
+                        for (int i = 0; i < array.Length; i++)
+                        {
+                            WriteObject(array.GetValue(i),elementType); //TODO: has a lookup each time, get serializer here instead
+                        }
+                    }
+                    else
+                    {
+                        writer.Write7BitEncodedInt(array.Length);
+                        for (int i = 0; i < array.Length; i++)
+                        {
+                            Write(array.GetValue(i));
+                        }
                     }
                     break;
-                case AetherTypeId.AetherType:
-                    Write((IAetherType)value);
+                case AetherTypeId.Object:
+                    WriteObject(value);
                     break;
                 case AetherTypeId.True:
                 case AetherTypeId.False:
@@ -155,11 +157,23 @@ namespace Thorium.Shared.Aether
             }
         }
 
-        private void Write(IAetherType value)
+        private void WriteObject(object value)
         {
             Type type = value.GetType();
             writer.Write(type.AssemblyQualifiedName);
-            value.WriteTo(this);
+            WriteObject(value, type);
+        }
+
+        private void WriteObject(object value, Type type)
+        {
+            if (Serializers.TryGetValue(type, out IAetherSerializer serializer))
+            {
+                serializer.WriteTo(this, value);
+            }
+            else
+            {
+                defaultSerializer.WriteTo(this, value, type);
+            }
         }
 
         public object Read()
@@ -168,13 +182,23 @@ namespace Thorium.Shared.Aether
             return Read(id);
         }
 
-        private IAetherType ReadIAetherType()
+        private object ReadObject()
         {
             string assemblyQualifiedName = reader.ReadString();
             Type type = Type.GetType(assemblyQualifiedName);
-            IAetherType instance = (IAetherType)RuntimeHelpers.GetUninitializedObject(type);
-            instance.ReadFrom(this);
-            return instance;
+            return ReadObject(type);
+        }
+
+        private object ReadObject(Type type)
+        {
+            if (Serializers.TryGetValue(type, out IAetherSerializer serializer))
+            {
+                return serializer.ReadFrom(this);
+            }
+            else
+            {
+                return defaultSerializer.ReadFrom(this, type);
+            }
         }
 
         private object Read(AetherTypeId id)
@@ -214,16 +238,30 @@ namespace Thorium.Shared.Aether
                     return reader.ReadBytes(len);
                 case AetherTypeId.Array:
                     AetherTypeId elementTypeId = (AetherTypeId)reader.ReadByte();
-                    Type elementType = AetherTypes.aetherTypeToType[elementTypeId];
-                    len = reader.Read7BitEncodedInt();
-                    Array array = Array.CreateInstance(elementType, len);
-                    for (int i = 0; i < len; i++)
+                    if (elementTypeId == AetherTypeId.Object)
                     {
-                        array.SetValue(Read(), i);
+                        Type elementType = Type.GetType(reader.ReadString());
+                        len = reader.Read7BitEncodedInt();
+                        Array array = Array.CreateInstance(elementType, len);
+                        for (int i = 0; i < len; i++)
+                        {
+                            array.SetValue(ReadObject(elementType), i);
+                        }
+                        return array;
                     }
-                    return array;
-                case AetherTypeId.AetherType:
-                    return ReadIAetherType();
+                    else
+                    {
+                        Type elementType = AetherTypes.aetherTypeToType[elementTypeId];
+                        len = reader.Read7BitEncodedInt();
+                        Array array = Array.CreateInstance(elementType, len);
+                        for (int i = 0; i < len; i++)
+                        {
+                            array.SetValue(Read(), i);
+                        }
+                        return array;
+                    }
+                case AetherTypeId.Object:
+                    return ReadObject();
                 default:
                     throw new NotSupportedException("unsupported aether type: " + id);
             }
