@@ -18,7 +18,7 @@ namespace Thorium.Server
     {
         public string Id { get; private set; }
 
-        private readonly FunctionServer functionServer;
+        private readonly FunctionServerTcp functionServer;
 
         private readonly ThoriumServer server;
 
@@ -26,7 +26,7 @@ namespace Thorium.Server
 
         public ThoriumClient(TcpClient client, ThoriumServer server)
         {
-            this.functionServer = new FunctionServer(client, Encoding.ASCII.GetBytes("THOR"));
+            this.functionServer = new FunctionServerTcp(client, Encoding.ASCII.GetBytes("THOR"));
             this.server = server;
         }
 
@@ -64,12 +64,12 @@ namespace Thorium.Server
             {
                 return null;
             }
-            return t.ToThoriumTask();
+            return TaskUtil.ToDto(t);
         }
 
         JobDTO GetJob(string id)
         {
-            return server.GetJob(id)?.ToDTO();
+            return JobUtil.ToDto(server.GetJob(id));
         }
 
         void TurnInTask(string jobId, int taskNumber, string status)
@@ -77,7 +77,7 @@ namespace Thorium.Server
             var job = server.GetJob(jobId);
             if (job != null)
             {
-                job.TurnInTask(taskNumber, status);
+                JobUtil.TurnInTask(job,taskNumber, status);
             }
         }
 

@@ -6,9 +6,7 @@ using System.Threading.Tasks;
 
 namespace Thorium.Server
 {
-    public class Task
+    public class Operation
     {
-        public Job Job { get; set; }
-        public int Index { get; set; } 
     }
 }

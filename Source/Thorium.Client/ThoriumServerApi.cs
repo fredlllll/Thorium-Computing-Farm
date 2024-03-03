@@ -18,14 +18,14 @@ namespace Thorium.Client
 {
     public class ThoriumServerApi : IDisposable
     {
-        private FunctionClient client;
+        private FunctionClientTcp client;
 
         public void Start()
         {
             var tcpClient = new TcpClient();
             tcpClient.Connect(Settings.Get<string>("serverInterface"), Settings.Get<int>("serverPort"));
 
-            client = new FunctionClient(tcpClient, Encoding.ASCII.GetBytes("THOR"));
+            client = new FunctionClientTcp(tcpClient, Encoding.ASCII.GetBytes("THOR"));
             client.Start();
         }
 
