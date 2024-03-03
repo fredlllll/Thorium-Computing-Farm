@@ -16,7 +16,7 @@ namespace Thorium.Shared
         private readonly Dictionary<string, Tuple<MethodInfo, object>> functions = [];
         private readonly byte[] handshake;
 
-        private readonly List<FunctionServerTcpClient> clients = new();
+        private readonly List<FunctionServerTcpClient> clients = [];
 
         public FunctionServerTcp(TcpListener listener, byte[] handshake)
         {
@@ -83,17 +83,23 @@ namespace Thorium.Shared
                     {
                         new_args[i + 1] = args[i];
                     }
+                    args = new_args;
                 }
                 else
                 {
                     args = [client];
                 }
-                return func.Item1.Invoke(func.Item2, call.FunctionArguments);
+                return func.Item1.Invoke(func.Item2, args);
             }
             else
             {
                 throw new FunctionNotFoundException();
             }
+        }
+
+        internal void SelfRemoveClient(FunctionServerTcpClient client)
+        {
+            clients.Remove(client);
         }
     }
 }

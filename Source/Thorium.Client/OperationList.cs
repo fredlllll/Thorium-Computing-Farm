@@ -11,7 +11,7 @@ namespace Thorium.Client
 {
     public class OperationList
     {
-        static Dictionary<string, Type> operationTypes = new();
+        static readonly Dictionary<string, Type> operationTypes = new();
 
         static OperationList()
         {

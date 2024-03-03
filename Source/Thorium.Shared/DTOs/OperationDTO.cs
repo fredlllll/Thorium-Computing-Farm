@@ -9,7 +9,8 @@ namespace Thorium.Shared.DTOs
 {
     public class OperationDTO
     {
-        public string OperationType {  get; set; }
+        public string Id { get; set; }
+        public string OperationType { get; set; }
         public object OperationData { get; set; }
     }
 }

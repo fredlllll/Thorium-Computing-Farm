@@ -14,8 +14,8 @@ namespace Thorium.Shared
         private int callIdCounter = 0;
         private readonly TcpClient client;
         private readonly NetworkStream stream;
-        private readonly Dictionary<int, AutoResetEvent> answerEvents = new();
-        private readonly Dictionary<int, FunctionCallAnswer> answers = new();
+        private readonly Dictionary<int, AutoResetEvent> answerEvents = [];
+        private readonly Dictionary<int, FunctionCallAnswer> answers = [];
         private readonly byte[] handshake;
 
         private Thread runThread;
@@ -115,6 +115,7 @@ namespace Thorium.Shared
         public void Dispose()
         {
             client.Dispose();
+            GC.SuppressFinalize(this);
         }
     }
 }

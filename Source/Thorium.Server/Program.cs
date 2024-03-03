@@ -22,6 +22,7 @@ namespace Thorium.Server
             }
             
             server = new ThoriumServer();
+            server.Start();
             server.Run();
         }
     }

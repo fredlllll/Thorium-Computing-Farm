@@ -44,9 +44,10 @@ namespace Thorium.Client
             return client.RemoteFunctionCall<JobDTO>("GetJob", true, id);
         }
 
-        public void TurnInTask(string jobId, int taskNumber, string state) //TODO: replace state with an enum
+        public void TurnInTask(string taskId, string reason)
         {
-            client.RemoteFunctionCall<object>("TurnInTask", false, jobId, taskNumber, state);
+            //TODO: add reason
+            client.RemoteFunctionCall<object>("TurnInTask", false, taskId);
         }
 
         public void Heartbeat()

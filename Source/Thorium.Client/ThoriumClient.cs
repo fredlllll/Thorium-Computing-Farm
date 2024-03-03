@@ -52,12 +52,13 @@ namespace Thorium.Client
                             var op = operations.operations[i];
                             op.Execute(currentTask.TaskNumber);
                         }
+                        server.TurnInTask(currentTask.Id,"finished");
                         logger.Info("done task");
                     }
                     catch (Exception execEx) when (execEx is not ThreadInterruptedException)
                     {
                         logger.Info("task failed: " + execEx);
-                        server.TurnInTask(currentJob.Id, currentTask.TaskNumber, "error");
+                        server.TurnInTask(currentTask.Id,"error");
                     }
                     currentTask = null;
                 }

@@ -20,10 +20,8 @@ namespace Thorium.Shared
         private readonly TcpClient client;
         private readonly NetworkStream stream;
         private readonly AetherStream aether;
-        private readonly Dictionary<int, AutoResetEvent> answerEvents = new();
-        private readonly Dictionary<int, FunctionCallAnswer> answers = new();
 
-        private Thread runThread;
+        private readonly Thread runThread;
 
         public FunctionServerTcpClient(FunctionServerTcp server, TcpClient client)
         {
@@ -40,10 +38,12 @@ namespace Thorium.Shared
 
         private void SendAnswer(int id, object result, Exception exception)
         {
-            var answer = new FunctionCallAnswer();
-            answer.Id = id;
-            answer.ReturnValue = result;
-            answer.Exception = exception?.ToString();
+            var answer = new FunctionCallAnswer
+            {
+                Id = id,
+                ReturnValue = result,
+                Exception = exception?.ToString()
+            };
             aether.Write(answer);
         }
 
@@ -51,7 +51,15 @@ namespace Thorium.Shared
         {
             while (true)
             {
-                var call = (FunctionCall)aether.Read();
+                FunctionCall call;
+                try
+                {
+                    call = (FunctionCall)aether.Read();
+                }catch(System.IO.IOException)
+                {
+                    server.SelfRemoveClient(this);
+                    break;
+                }
                 object result = null;
                 Exception exception = null;
                 try

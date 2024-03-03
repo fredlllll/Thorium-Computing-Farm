@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -13,9 +14,77 @@ namespace Thorium.Server
 
         static Database()
         {
+            bool needsInit = !File.Exists("database.db");
             connection = new SQLiteConnection("Data Source=database.db");
             connection.Open();
+            if (needsInit)
+            {
+                InitDb();
+            }
         }
+
+        static void InitDb()
+        {
+            CreateTable("jobs", "id", "name", "description");
+            CreateTable("tasks", "id", "job_id", "index", "status");
+            CreateTable("operations", "id", "job_id", "index", "type");
+            CreateTable("op_exes", "op_id", "file_path", "arguments", "working_dir");
+        }
+
+        public static void CreateTable(string tableName, params string[] fieldNames)
+        {
+            var sql = $"CREATE TABLE IF NOT EXISTS `{tableName}`(";
+            sql += string.Join(',', fieldNames.Select(x=>"`"+x+"`"));
+            sql += ")";
+            ExecuteNonQuery(sql);
+        }
+
+        public static void ExecuteNonQuery(string sql)
+        {
+            using (var cmd = new SQLiteCommand(connection))
+            {
+                cmd.CommandText = sql;
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public static void ExecuteNonQuery(string sql, params object[] parameters)
+        {
+            using (var cmd = new SQLiteCommand(connection))
+            {
+                cmd.CommandText = sql;
+                foreach (var val in parameters)
+                {
+                    SQLiteParameter parameter = cmd.CreateParameter();
+                    parameter.Value = val;
+                    cmd.Parameters.Add(parameter);
+                }
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public static IEnumerable<SQLiteDataReader> ExecuteQuery(string sql, params object[] parameters)
+        {
+            using (var cmd = new SQLiteCommand(connection))
+            {
+                cmd.CommandText = sql;
+                foreach (var val in parameters)
+                {
+                    SQLiteParameter parameter = cmd.CreateParameter();
+                    parameter.Value = val;
+                    cmd.Parameters.Add(parameter);
+                }
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        yield return reader;
+                    }
+                }
+            }
+        }
+
+        #region old stuff
 
         private static string GetTableName(Type type)
         {
@@ -214,5 +283,7 @@ namespace Thorium.Server
             var sql = $"SELECT {GetPropertyNamesList(type)} FROM {tableName} {query}";
             return SqlToObjects(type, sql);
         }
+
+        #endregion
     }
 }

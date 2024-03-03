@@ -16,18 +16,25 @@ namespace Thorium.Test
     {
         static HttpClient http;
 
-       
+        static void AddJob(JobDTO job)
+        {
+            http = new HttpClient();
+            HttpRequestMessage req = new HttpRequestMessage(HttpMethod.Post, "http://127.0.0.1:8080/addjob");
+            var content = JsonSerializer.Serialize(job);
+            req.Content = new StringContent(content);
+            var res = http.Send(req);
+        }
+
 
         public static void Main()
         {
 
-            http = new HttpClient();
-            HttpRequestMessage req = new HttpRequestMessage(HttpMethod.Post, "http://127.0.0.1:8080/addjob");
             JobDTO job = new()
             {
                 Id = "1234abcd",
                 Name = "this is a test",
-                TaskCount = 10,
+                Description = "Description",
+                TaskCount = 3,
                 Operations =
                 [
                     new OperationDTO()
@@ -38,20 +45,7 @@ namespace Thorium.Test
                 ]
             };
 
-            //var content = JsonSerializer.Serialize(job);
-            //req.Content = new StringContent(content);
-            //var res = http.Send(req);
-
-
-
-            var ms = new MemoryStream();
-            var aether = new AetherStream(ms, true);
-            aether.Write(job);
-            ms.Position = 0;
-            var job2 = aether.Read();
-            
-
-            
+            AddJob(job);
 
             Console.ReadKey();
         }

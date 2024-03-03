@@ -12,6 +12,8 @@ namespace Thorium.Shared.DTOs
 
         public string Name { get; set; }
 
+        public string Description { get; set; }
+
         public int TaskCount { get; set; }
 
         public OperationDTO[] Operations { get; set; }

@@ -10,7 +10,6 @@ using Thorium.Shared;
 using Thorium.Shared.DTOs.OperationData;
 using Thorium.Shared.DTOs;
 using NLog;
-using Thorium.Server.Models;
 
 namespace Thorium.Server
 {
@@ -30,12 +29,12 @@ namespace Thorium.Server
             api = new FunctionServerHttp(apiListener);
 
             api.AddFunction("addjob", AddJob);
-            api.AddFunction("listjobs", ListJobs);
         }
 
         public void Start()
         {
             api.Start();
+            logger.Info("Http API listening on port " + Settings.Get<int>("httpApiPort"));
         }
 
         public void AddJob(HttpListenerContext context)
@@ -57,23 +56,33 @@ namespace Thorium.Server
                 var type = operationTypeToType[op.OperationType];
                 op.OperationData = JsonSerializer.Deserialize((JsonElement)op.OperationData, type, JsonUtil.CaseInsensitive);
             }
-            var job = JobUtil.CreateFromDTO(jobData);
 
-            context.Response.StatusCode = 200;
-        }
-
-        public void ListJobs(HttpListenerContext context)
-        {
-            if (context.Request.HttpMethod != "GET")
+            Database.ExecuteNonQuery("INSERT INTO jobs (id,name,description) VALUES (?,?,?)", jobData.Id, jobData.Name, jobData.Description);
+            var queued = Shared.DTOs.TaskStatus.Queued.ToString();
+            for (int i = 0; i < jobData.TaskCount; i++)
             {
-                context.Response.StatusCode = 400;
-                return;
+                var id = Guid.NewGuid().ToString();
+                Database.ExecuteNonQuery("INSERT INTO tasks (id,job_id,`index`,status) VALUES (?,?,?,?)", id, jobData.Id, i, queued);
+            }
+            for (int i = 0; i < jobData.Operations.Length; i++)
+            {
+                var op = jobData.Operations[i];
+                var id = Guid.NewGuid().ToString();
+                Database.ExecuteNonQuery("INSERT INTO operations (id,job_id,`index`,type) VALUES (?,?,?,?)", id, jobData.Id, i, op.OperationType);
+                switch (op.OperationType)
+                {
+                    case "exe":
+                        //"op_id", "file_path", "arguments", "working_dir"
+                        var exeData = op.OperationData as ExeDTO;
+                        Database.ExecuteNonQuery("INSERT INTO op_exes (op_id,file_path,arguments,working_dir) VALUES (?,?,?,?)", id, exeData.FilePath, exeData.Arguments, exeData.WorkingDir);
+                        break;
+                    default:
+                        throw new NotSupportedException();
+                }
             }
 
-            //var content = JsonSerializer.Serialize(database.jobs);
+
             context.Response.StatusCode = 200;
-            using var sw = new StreamWriter(context.Response.OutputStream);
-            //sw.Write(content);
         }
     }
 }
