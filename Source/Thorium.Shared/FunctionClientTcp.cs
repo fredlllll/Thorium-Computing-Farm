@@ -1,5 +1,7 @@
-﻿using System;
+﻿using NLog;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Sockets;
 using System.Threading;
@@ -11,25 +13,29 @@ namespace Thorium.Shared
 {
     public class FunctionClientTcp : IDisposable
     {
+        static readonly Logger logger = LogManager.GetCurrentClassLogger();
+
+        private readonly string host;
+        private readonly int port;
         private int callIdCounter = 0;
-        private readonly TcpClient client;
-        private readonly NetworkStream stream;
+        private TcpClient client;
+        private NetworkStream stream;
         private readonly Dictionary<int, AutoResetEvent> answerEvents = [];
         private readonly Dictionary<int, FunctionCallAnswer> answers = [];
         private readonly byte[] handshake;
 
         private Thread runThread;
+        private bool running = false;
 
-        public AetherStream Aether { get; }
+        public AetherStream Aether { get; private set; }
 
-        public FunctionClientTcp(TcpClient client, byte[] handshake)
+        public event EventHandler OnClose;
+
+        public FunctionClientTcp(string host, int port, byte[] handshake)
         {
-            this.client = client;
-            stream = client.GetStream();
+            this.host = host;
+            this.port = port;
             this.handshake = handshake;
-            Aether = new AetherStream(stream);
-            Aether.Serializers[typeof(FunctionCall)] = new FunctionCallSerializer();
-            Aether.Serializers[typeof(FunctionCallAnswer)] = new FunctionCallAnswerSerializer();
         }
 
         private int GetNextCallId()
@@ -51,32 +57,100 @@ namespace Thorium.Shared
 
         public void Start()
         {
-            if (!HandshakeSuccessful())
+            if (!running)
             {
-                client.Close();
-                throw new Exception("Handshake unsuccessful");
+                client = new TcpClient();
+                client.Connect(host, port);
+                stream = client.GetStream();
+                if (!HandshakeSuccessful())
+                {
+                    client.Close();
+                    throw new Exception("Handshake unsuccessful");
+                }
+                else
+                {
+                    Aether = new AetherStream(stream);
+                    Aether.Serializers[typeof(FunctionCall)] = new FunctionCallSerializer();
+                    Aether.Serializers[typeof(FunctionCallAnswer)] = new FunctionCallAnswerSerializer();
+
+                    runThread = new Thread(Run);
+                    running = true;
+                    runThread.Start();
+                }
             }
-            else
+        }
+
+        public void Stop()
+        {
+            if (running)
             {
-                runThread = new Thread(Run);
-                runThread.Start();
+                running = false;
+                runThread.Interrupt();
+                runThread.Join();
+                OnClose?.Invoke(this, null);
             }
         }
 
         private void Run()
         {
-            while (true)
+            while (running)
             {
-                var callAnswer = (FunctionCallAnswer)Aether.Read();
+                FunctionCallAnswer callAnswer;
+                try
+                {
+                    callAnswer = (FunctionCallAnswer)Aether.Read();
+                }
+                catch (IOException)
+                {
+                    lock (answers)
+                    {
+                        answers.Clear();
+                    }
+                    lock (answerEvents)
+                    {
+                        foreach (var kv in answerEvents)
+                        {
+                            kv.Value.Dispose();
+                        }
+                        answerEvents.Clear();
+                    }
+                    OnClose?.Invoke(this, null);
+                    break;
+                }
+                catch (ThreadInterruptedException)
+                {
+                    break;
+                }
                 if (callAnswer != null)
                 {
-                    answers[callAnswer.Id] = callAnswer;
-                    answerEvents[callAnswer.Id].Set();
+                    lock (answerEvents)
+                    {
+                        if (answerEvents.ContainsKey(callAnswer.Id))
+                        {
+                            lock (answers)
+                            {
+                                answers[callAnswer.Id] = callAnswer;
+                            }
+                            answerEvents[callAnswer.Id].Set();
+                        }
+                    }
                 }
+            }
+            lock (answers)
+            {
+                answers.Clear();
+            }
+            lock (answerEvents)
+            {
+                foreach (var kv in answerEvents)
+                {
+                    kv.Value.Dispose();
+                }
+                answerEvents.Clear();
             }
         }
 
-        public T RemoteFunctionCall<T>(string functionName, bool needsAnswer, params object[] args)
+        public T RemoteFunctionCall<T>(string functionName, bool needsAnswer, int timeoutMs = 5000, params object[] args)
         {
             int id = GetNextCallId();
 
@@ -90,15 +164,41 @@ namespace Thorium.Shared
 
             if (needsAnswer)
             {
-                var answerEvent = answerEvents[id] = new AutoResetEvent(false);
+                var answerEvent = new AutoResetEvent(false);
+                lock (answerEvents)
+                {
+                    answerEvents[id] = answerEvent;
+                }
 
                 Aether.Write(call);
 
-                answerEvent.WaitOne(); //wait for answer to arrive
-                answerEvents.Remove(id);
+                var start = DateTime.UtcNow;
+                try
+                {
+                    while (!answerEvent.WaitOne(100, true))
+                    {
+                        if ((DateTime.UtcNow - start).TotalMilliseconds > timeoutMs)
+                        {
+                            throw new TimeoutException();
+                        }
+                        //wait for answer to arrive
+                    }
+                }
+                catch (ObjectDisposedException)
+                {
+                    throw new TimeoutException(); //happens when connection is lost
+                }
+                lock (answerEvents)
+                {
+                    answerEvents.Remove(id);
+                }
                 answerEvent.Dispose();
-                var answer = answers[id];
-                answers.Remove(id);
+                FunctionCallAnswer answer;
+                lock (answers)
+                {
+                    answer = answers[id];
+                    answers.Remove(id);
+                }
                 if (answer.Exception != null)
                 {
                     throw new Exception(answer.Exception);

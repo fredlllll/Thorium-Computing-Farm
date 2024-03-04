@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NLog;
+using System;
 using System.Collections.Generic;
 using System.Data.SqlTypes;
 using System.IO;
@@ -18,46 +19,96 @@ namespace Thorium.Client
 {
     public class ThoriumServerApi : IDisposable
     {
+        static readonly Logger logger = LogManager.GetCurrentClassLogger();
+
+        private object clientLock = new();
         private FunctionClientTcp client;
 
         public void Start()
         {
-            var tcpClient = new TcpClient();
-            tcpClient.Connect(Settings.Get<string>("serverInterface"), Settings.Get<int>("serverPort"));
+            EstablishConnection();
+        }
 
-            client = new FunctionClientTcp(tcpClient, Encoding.ASCII.GetBytes("THOR"));
-            client.Start();
+        void EstablishConnection()
+        {
+            lock (clientLock)
+            {
+                while (true)
+                {
+                    client = new FunctionClientTcp(Settings.Get<string>("serverInterface"), Settings.Get<int>("serverPort"), Encoding.ASCII.GetBytes("THOR"));
+                    try
+                    {
+                        client.Start();
+                        client.OnClose += Client_OnClose;
+                        return;
+                    }
+                    catch (SocketException)
+                    {
+                        //connection failed
+                        logger.Warn("Connection failed, retrying");
+                        Thread.Sleep(1000);
+                    }
+                }
+            }
+        }
+
+        private void Client_OnClose(object sender, EventArgs e)
+        {
+            EstablishConnection();
+        }
+
+        private T CallWithRetry<T>(string functionName, bool needsAnswer, params object[] args)
+        {
+            while (true)
+            {
+                try
+                {
+                    lock (clientLock)
+                    {
+                        return client.RemoteFunctionCall<T>(functionName, needsAnswer, 5000, args);
+                    }
+                }
+                catch (TimeoutException)
+                {
+                    Thread.Sleep(100);
+                }
+            }
         }
 
         public void Register(string clientId)
         {
-            client.RemoteFunctionCall<object>("Register", false, clientId);
+            CallWithRetry<object>("Register", false, clientId);
         }
 
         public TaskDTO GetNextTask()
         {
-            return client.RemoteFunctionCall<TaskDTO>("GetNextTask", true);
+            return CallWithRetry<TaskDTO>("GetNextTask", true);
         }
 
         public JobDTO GetJob(string id)
         {
-            return client.RemoteFunctionCall<JobDTO>("GetJob", true, id);
+            return CallWithRetry<JobDTO>("GetJob", true, id);
         }
 
         public void TurnInTask(string taskId, string reason)
         {
             //TODO: add reason
-            client.RemoteFunctionCall<object>("TurnInTask", false, taskId);
+            CallWithRetry<object>("TurnInTask", false, taskId);
         }
 
         public void Heartbeat()
         {
-
+            lock (clientLock)
+            {
+            }
         }
 
         public void Dispose()
         {
-            //TODO: disconnect
+            lock (clientLock)
+            {
+                client.Stop();
+            }
         }
     }
 }

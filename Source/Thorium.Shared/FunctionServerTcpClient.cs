@@ -16,6 +16,7 @@ namespace Thorium.Shared
     {
         static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
+        private bool running = false;
         private readonly FunctionServerTcp server;
         private readonly TcpClient client;
         private readonly NetworkStream stream;
@@ -35,7 +36,15 @@ namespace Thorium.Shared
             aether.Serializers[typeof(FunctionCallAnswer)] = new FunctionCallAnswerSerializer();
 
             runThread = new Thread(Run);
+            running = true;
             runThread.Start();
+        }
+
+        private void CloseOnAway()
+        {
+            running = false;
+            logger.Info("Client " + Name + " has gone away");
+            server.SelfRemoveClient(this);
         }
 
         private void SendAnswer(int id, object result, Exception exception)
@@ -46,21 +55,28 @@ namespace Thorium.Shared
                 ReturnValue = result,
                 Exception = exception?.ToString()
             };
-            aether.Write(answer);
+            try
+            {
+                aether.Write(answer);
+            }
+            catch (IOException)
+            {
+                CloseOnAway();
+            }
         }
 
         private void Run()
         {
-            while (true)
+            while (running)
             {
                 FunctionCall call;
                 try
                 {
                     call = (FunctionCall)aether.Read();
-                }catch(System.IO.IOException)
+                }
+                catch (IOException)
                 {
-                    logger.Info("Client " + Name + " has gone away");
-                    server.SelfRemoveClient(this);
+                    CloseOnAway();
                     break;
                 }
                 object result = null;
