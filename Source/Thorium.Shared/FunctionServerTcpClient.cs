@@ -23,6 +23,8 @@ namespace Thorium.Shared
 
         private readonly Thread runThread;
 
+        public string Name { get; set; } = Guid.NewGuid().ToString();
+
         public FunctionServerTcpClient(FunctionServerTcp server, TcpClient client)
         {
             this.server = server;
@@ -57,6 +59,7 @@ namespace Thorium.Shared
                     call = (FunctionCall)aether.Read();
                 }catch(System.IO.IOException)
                 {
+                    logger.Info("Client " + Name + " has gone away");
                     server.SelfRemoveClient(this);
                     break;
                 }

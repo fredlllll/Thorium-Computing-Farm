@@ -59,7 +59,7 @@ namespace Thorium.Server
 
         void Register(FunctionServerTcpClient client, string id)
         {
-            //TODO: need a dictionary with client as key for this
+            client.Name = id;
         }
 
         void Heartbeat(FunctionServerTcpClient client)
