@@ -1,6 +1,7 @@
 ﻿using NLog;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Sockets;
 using System.Reflection;
@@ -18,6 +19,9 @@ namespace Thorium.Shared
 
         private readonly List<FunctionServerTcpClient> clients = [];
 
+        public event EventHandler<TcpClient> ClientHandshakeSucceeded;
+        public event EventHandler<TcpClient> ClientHandshakeFailed;
+
         public FunctionServerTcp(TcpListener listener, byte[] handshake)
         {
             this.listener = listener;
@@ -34,14 +38,29 @@ namespace Thorium.Shared
         {
             var stream = client.GetStream();
             byte[] buffer = new byte[handshake.Length];
-            //TODO: add timeout
-            stream.ReadExactly(buffer, 0, buffer.Length);
+            stream.ReadTimeout = 1000;
+            stream.WriteTimeout = 1000;
+            try
+            {
+                stream.ReadExactly(buffer, 0, buffer.Length);
+            }
+            catch (IOException)
+            {
+                return false;
+            }
 
             bool clientHandshake = buffer.SequenceEqual(handshake);
             if (clientHandshake)
             {
                 //write handshake back on success
-                stream.Write(handshake, 0, handshake.Length);
+                try
+                {
+                    stream.Write(handshake, 0, handshake.Length);
+                }
+                catch (IOException)
+                {
+                    return false;
+                }
                 return true;
             }
             return false;
@@ -53,7 +72,13 @@ namespace Thorium.Shared
 
             if (CheckHandshake(client))
             {
+                ClientHandshakeSucceeded?.Invoke(this, client);
                 clients.Add(new FunctionServerTcpClient(this, client));
+            }
+            else
+            {
+                ClientHandshakeFailed?.Invoke(this, client);
+                client.Close();
             }
 
             listener.BeginAcceptTcpClient(AcceptClient, this);
