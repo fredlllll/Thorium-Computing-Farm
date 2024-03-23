@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace Thorium.Shared
+namespace Thorium.Shared.FunctionServer.Tcp
 {
     [Serializable]
     internal class FunctionNotFoundException : Exception

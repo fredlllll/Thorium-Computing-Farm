@@ -1,5 +1,7 @@
 ﻿using System.Threading;
 using NLog;
+using Thorium.Server.HttpApi;
+using Thorium.Server.TcpApi;
 
 namespace Thorium.Server
 {
@@ -9,11 +11,6 @@ namespace Thorium.Server
 
         private readonly ThoriumServerTcpApi tcpApi = new();
         private readonly ThoriumServerHttpApi httpApi = new();
-
-        public ThoriumServer()
-        {
-
-        }
 
         public void Start()
         {

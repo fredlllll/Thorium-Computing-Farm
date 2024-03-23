@@ -13,6 +13,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Thorium.Shared;
 using Thorium.Shared.DTOs;
+using Thorium.Shared.FunctionServer.Tcp;
 using Thorium.Shared.Messages;
 
 namespace Thorium.Client

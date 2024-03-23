@@ -10,19 +10,19 @@ using Thorium.Shared.Messages;
 using System.Threading;
 using NLog;
 
-namespace Thorium.Shared
+namespace Thorium.Shared.FunctionServer.Tcp
 {
     public class FunctionServerTcpClient
     {
         static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
-        private bool running = false;
         private readonly FunctionServerTcp server;
         private readonly TcpClient client;
-        private readonly NetworkStream stream;
-        private readonly AetherStream aether;
+        private bool running = false;
+        private NetworkStream stream;
+        private AetherStream aether;
 
-        private readonly Thread runThread;
+        private Thread runThread;
 
         public string Name { get; set; } = Guid.NewGuid().ToString();
 
@@ -30,14 +30,21 @@ namespace Thorium.Shared
         {
             this.server = server;
             this.client = client;
-            stream = client.GetStream();
-            aether = new AetherStream(stream);
-            aether.Serializers[typeof(FunctionCall)] = new FunctionCallSerializer();
-            aether.Serializers[typeof(FunctionCallAnswer)] = new FunctionCallAnswerSerializer();
+        }
 
-            runThread = new Thread(Run);
-            running = true;
-            runThread.Start();
+        public void Start()
+        {
+            if (!running)
+            {
+                stream = client.GetStream();
+                aether = new AetherStream(stream);
+                aether.Serializers[typeof(FunctionCall)] = new FunctionCallSerializer();
+                aether.Serializers[typeof(FunctionCallAnswer)] = new FunctionCallAnswerSerializer();
+
+                runThread = new Thread(Run);
+                running = true;
+                runThread.Start();
+            }
         }
 
         private void CloseOnAway()
@@ -85,7 +92,7 @@ namespace Thorium.Shared
                 {
                     try
                     {
-                        result = server.HandleFunctionCall(call, this);
+                        result = server.FunctionCallHandler.HandleFunctionCall(call, this);
                     }
                     catch (Exception e) when (e is not FunctionNotFoundException)
                     {

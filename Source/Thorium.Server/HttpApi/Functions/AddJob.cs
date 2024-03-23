@@ -6,38 +6,24 @@ using System.Net;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
-using Thorium.Shared;
 using Thorium.Shared.DTOs.OperationData;
 using Thorium.Shared.DTOs;
+using Thorium.Shared;
 using NLog;
+using Thorium.Shared.FunctionServer.Http;
 
-namespace Thorium.Server
+namespace Thorium.Server.HttpApi.Functions
 {
-    public class ThoriumServerHttpApi
+    internal class AddJob : IHttpFunctionProvider
     {
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
         private static readonly Dictionary<string, Type> operationTypeToType = new(){
             { "exe", typeof(ExeDTO)}
         };
-        private readonly FunctionServerHttp api;
 
-        public ThoriumServerHttpApi()
-        {
-            var apiListener = new HttpListener();
-            apiListener.Prefixes.Add("http://*:" + Settings.Get<int>("httpApiPort") + "/");
+        public string FunctionName => "addjob";
 
-            api = new FunctionServerHttp(apiListener);
-
-            api.AddFunction("addjob", AddJob);
-        }
-
-        public void Start()
-        {
-            api.Start();
-            logger.Info("Http API listening on port " + Settings.Get<int>("httpApiPort"));
-        }
-
-        public void AddJob(HttpListenerContext context)
+        public void Execute(HttpListenerContext context)
         {
             if (context.Request.HttpMethod != "POST" || !context.Request.HasEntityBody)
             {
@@ -54,7 +40,7 @@ namespace Thorium.Server
             foreach (var op in jobData.Operations)
             {
                 var type = operationTypeToType[op.OperationType];
-                op.OperationData = JsonSerializer.Deserialize((JsonElement)op.OperationData, type, JsonUtil.CaseInsensitive);
+                op.OperationData = ((JsonElement)op.OperationData).Deserialize(type, JsonUtil.CaseInsensitive);
             }
 
             Database.ExecuteNonQuery("INSERT INTO jobs (id,name,description) VALUES (?,?,?)", jobData.Id, jobData.Name, jobData.Description);

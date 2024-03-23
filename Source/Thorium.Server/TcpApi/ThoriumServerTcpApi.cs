@@ -9,8 +9,11 @@ using System.Net;
 using System.Net.Sockets;
 using Thorium.Shared.DTOs;
 using System.Reflection;
+using System.Threading;
+using Thorium.Shared.FunctionServer.Tcp;
+using Thorium.Server.TcpApi.Functions;
 
-namespace Thorium.Server
+namespace Thorium.Server.TcpApi
 {
     public class ThoriumServerTcpApi
     {
@@ -23,15 +26,17 @@ namespace Thorium.Server
 
             api = new FunctionServerTcp(apiListener, Encoding.ASCII.GetBytes("THOR"));
 
+            api.FunctionCallHandler.AddFunctionProvider(new Register());
+            api.FunctionCallHandler.AddFunctionProvider(new Heartbeat());
+            api.FunctionCallHandler.AddFunctionProvider(new Log());
+
+            /*
             var type = GetType();
             var flags = BindingFlags.NonPublic | BindingFlags.Instance;
-
-            api.AddFunction(type.GetMethod(nameof(Register), flags), this);
-            api.AddFunction(type.GetMethod(nameof(Heartbeat), flags), this);
             api.AddFunction(type.GetMethod(nameof(GetNextTask), flags), this);
             api.AddFunction(type.GetMethod(nameof(GetJob), flags), this);
             api.AddFunction(type.GetMethod(nameof(TurnInTask), flags), this);
-            api.AddFunction(type.GetMethod(nameof(Log), flags), this);
+            */
         }
 
         public void Start()
@@ -42,7 +47,7 @@ namespace Thorium.Server
 
         TaskDTO GetNextTask(FunctionServerTcpClient client)
         {
-
+            Thread.Sleep(5000);
             //TODO: this is a race condition waiting to happen
             foreach (var reader in Database.ExecuteQuery("SELECT id, job_id, `index`, status FROM tasks WHERE status = ? LIMIT 1", TaskStatus.Queued.ToString()))
             {
@@ -57,15 +62,6 @@ namespace Thorium.Server
             return null;
         }
 
-        void Register(FunctionServerTcpClient client, string id)
-        {
-            client.Name = id;
-        }
-
-        void Heartbeat(FunctionServerTcpClient client)
-        {
-
-        }
 
         JobDTO GetJob(FunctionServerTcpClient client, string id)
         {
@@ -114,11 +110,6 @@ namespace Thorium.Server
         void TurnInTask(FunctionServerTcpClient client, string taskId)
         {
             Database.ExecuteNonQuery("UPDATE tasks SET status = ? WHERE id = ?", TaskStatus.Finished.ToString(), taskId);
-        }
-
-        void Log(FunctionServerTcpClient client, string msg)
-        {
-
         }
     }
 }
