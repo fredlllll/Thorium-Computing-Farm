@@ -9,7 +9,7 @@ namespace Thorium.Server.TcpApi.Functions
 {
     public class Heartbeat : ITcpFunctionProvider
     {
-        public string FunctionName => "heartbeat";
+        public string FunctionName => "Heartbeat";
 
         public object Execute(FunctionServerTcpClient client, object[] args)
         {

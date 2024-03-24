@@ -13,7 +13,7 @@ namespace Thorium.Shared.FunctionServer.Tcp
 {
     public class FunctionClientTcp : IDisposable
     {
-        FunctionCallerTcp functionCaller;
+        public FunctionCallerTcp FunctionCaller { get; private set; }
 
         static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
@@ -63,7 +63,7 @@ namespace Thorium.Shared.FunctionServer.Tcp
                     Aether.Serializers[typeof(FunctionCall)] = new FunctionCallSerializer();
                     Aether.Serializers[typeof(FunctionCallAnswer)] = new FunctionCallAnswerSerializer();
 
-                    functionCaller = new FunctionCallerTcp(Aether);
+                    FunctionCaller = new FunctionCallerTcp(Aether);
 
                     runThread = new Thread(Run);
                     running = true;
@@ -79,7 +79,7 @@ namespace Thorium.Shared.FunctionServer.Tcp
                 running = false;
                 runThread.Interrupt();
                 runThread.Join();
-                functionCaller.Stop();
+                FunctionCaller.Stop();
                 OnClose?.Invoke(this, null);
             }
         }
@@ -93,7 +93,7 @@ namespace Thorium.Shared.FunctionServer.Tcp
                     object obj = Aether.Read();
                     if (obj is FunctionCallAnswer answer)
                     {
-                        functionCaller.HandleFunctionCallAnswer(answer);
+                        FunctionCaller.HandleFunctionCallAnswer(answer);
                     }
                 }
                 catch (IOException)
@@ -110,7 +110,7 @@ namespace Thorium.Shared.FunctionServer.Tcp
                     logger.Error(ex, "Error in read loop");
                 }
             }
-            functionCaller.Stop();
+            FunctionCaller.Stop();
         }
 
         public void Dispose()

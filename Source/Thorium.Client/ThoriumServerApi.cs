@@ -66,7 +66,7 @@ namespace Thorium.Client
                 {
                     lock (clientLock)
                     {
-                        return client.RemoteFunctionCall<T>(functionName, needsAnswer, 5000, args);
+                        return client.FunctionCaller.RemoteFunctionCall<T>(functionName, needsAnswer, 5000, args);
                     }
                 }
                 catch (TimeoutException)

@@ -9,7 +9,7 @@ namespace Thorium.Server.TcpApi.Functions
 {
     public class Register : ITcpFunctionProvider
     {
-        public string FunctionName => "register";
+        public string FunctionName => "Register";
 
         public object Execute(FunctionServerTcpClient client, object[] args)
         {

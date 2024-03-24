@@ -9,7 +9,7 @@ namespace Thorium.Server.TcpApi.Functions
 {
     public class Log : ITcpFunctionProvider
     {
-        public string FunctionName => "log";
+        public string FunctionName => "Log";
 
         public object Execute(FunctionServerTcpClient client, object[] args)
         {
