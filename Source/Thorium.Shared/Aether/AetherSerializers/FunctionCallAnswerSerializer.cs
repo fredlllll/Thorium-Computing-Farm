@@ -1,9 +1,11 @@
-﻿using Thorium.Shared.Messages;
+﻿using System;
+using Thorium.Shared.Messages;
 
 namespace Thorium.Shared.Aether.AetherSerializers
 {
     public class FunctionCallAnswerSerializer : IAetherSerializer
     {
+        public Type SerializedType => typeof(FunctionCallAnswer);
         public object ReadFrom(AetherStream stream)
         {
             var answer = new FunctionCallAnswer();

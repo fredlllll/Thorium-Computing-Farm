@@ -8,6 +8,7 @@ namespace Thorium.Shared.Aether
 {
     public interface IAetherSerializer
     {
+        public Type SerializedType { get; }
         public void WriteTo(AetherStream stream, object value);
         public object ReadFrom(AetherStream stream);
     }

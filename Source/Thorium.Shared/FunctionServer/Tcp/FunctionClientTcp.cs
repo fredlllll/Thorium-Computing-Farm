@@ -60,8 +60,8 @@ namespace Thorium.Shared.FunctionServer.Tcp
                 else
                 {
                     Aether = new AetherStream(stream);
-                    Aether.Serializers[typeof(FunctionCall)] = new FunctionCallSerializer();
-                    Aether.Serializers[typeof(FunctionCallAnswer)] = new FunctionCallAnswerSerializer();
+                    Aether.SerializerLibrary.Add(new FunctionCallSerializer());
+                    Aether.SerializerLibrary.Add(new FunctionCallAnswerSerializer());
 
                     FunctionCaller = new FunctionCallerTcp(Aether);
 

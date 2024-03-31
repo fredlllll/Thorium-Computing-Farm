@@ -13,7 +13,7 @@ namespace Thorium.Shared.Aether
     public class AetherStream : IDisposable
     {
         readonly DefaultSerializer defaultSerializer = new();
-        public Dictionary<Type, IAetherSerializer> Serializers { get; } = [];
+        public AetherSerializerLibrary SerializerLibrary { get; set; } = new();
 
         public Stream BaseStream { get; }
 
@@ -133,7 +133,7 @@ namespace Thorium.Shared.Aether
                         writer.Write7BitEncodedInt(array.Length);
                         for (int i = 0; i < array.Length; i++)
                         {
-                            WriteObject(array.GetValue(i),elementType); //TODO: has a lookup each time, get serializer here instead
+                            WriteObject(array.GetValue(i), elementType); //TODO: has a lookup each time, get serializer here instead
                         }
                     }
                     else
@@ -166,7 +166,8 @@ namespace Thorium.Shared.Aether
 
         private void WriteObject(object value, Type type)
         {
-            if (Serializers.TryGetValue(type, out IAetherSerializer serializer))
+            var serializer = SerializerLibrary.GetSerializer(type);
+            if (serializer != null)
             {
                 serializer.WriteTo(this, value);
             }
@@ -191,7 +192,8 @@ namespace Thorium.Shared.Aether
 
         private object ReadObject(Type type)
         {
-            if (Serializers.TryGetValue(type, out IAetherSerializer serializer))
+            var serializer = SerializerLibrary.GetSerializer(type);
+            if (serializer != null)
             {
                 return serializer.ReadFrom(this);
             }
@@ -266,7 +268,6 @@ namespace Thorium.Shared.Aether
                     throw new NotSupportedException("unsupported aether type: " + id);
             }
         }
-
 
         public void Dispose()
         {
