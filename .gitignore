@@ -291,3 +291,5 @@ __pycache__/
 
 # Mongo Explorer plugin:
 .idea/mongoSettings.xml
+
+local_settings.json
