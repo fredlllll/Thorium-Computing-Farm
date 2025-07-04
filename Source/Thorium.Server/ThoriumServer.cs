@@ -26,6 +26,8 @@ namespace Thorium.Server
             var options = new DbContextOptionsBuilder<DatabaseContext>().UseNpgsql(conn.GetConnectionString()).Options;
             DatabaseContext db = new DatabaseContext(options);
             DI.Services.AddSingleton(db);
+            db.Database.Migrate();
+
 
             logger.Info("Database connection established");
 

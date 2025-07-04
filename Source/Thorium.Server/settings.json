@@ -1,5 +1,7 @@
 ﻿{
   "httpApiPort": 8080,
+  "tcpApiInterface": "127.0.0.1",
+  "tcpApiPort": 8000,
   "postgresHost": "127.0.0.1",
   "postgresPort": 5432,
   "postgresDatabase": "thorium",

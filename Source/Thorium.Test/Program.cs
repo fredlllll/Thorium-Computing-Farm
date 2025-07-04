@@ -35,8 +35,8 @@ namespace Thorium.Test
                         OperationType = "exe",
                         OperationData = new Dictionary<string, string>() {
                             { "fileName" , "notepad.exe" },
-                            { "workingDir",""},
-                            {"arguments", "[\"aaa\",\"bbb\"]" }
+                            { "workingDir","C:\\Users\\Freddy\\Desktop"},
+                            {"arguments", "[\"message.txt\"]" }
                         },
                     }
                 ]
