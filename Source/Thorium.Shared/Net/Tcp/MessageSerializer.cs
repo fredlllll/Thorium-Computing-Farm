@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Thorium.Shared.Aether;
-using Thorium.Shared.Messages;
 
 namespace Thorium.Shared.Net.Tcp
 {

@@ -1,15 +1,9 @@
 ﻿using NLog;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using Thorium.Shared.DTOs.OperationData;
 using Thorium.Shared;
 using System.Net;
 using System.Net.Sockets;
-using Thorium.Shared.DTOs;
-using System.Reflection;
-using System.Threading;
 using Thorium.Shared.FunctionServer.Tcp;
 using Thorium.Server.TcpApi.Functions;
 
@@ -22,21 +16,16 @@ namespace Thorium.Server.TcpApi
 
         public ThoriumServerTcpApi()
         {
-            var apiListener = new TcpListener(IPAddress.Parse(Settings.Get<string>("tcpApiInterface")), Settings.Get<int>("tcpApiPort"));
+            var apiInterface = Settings.Get<string>("tcpApiInterface");
+            if(apiInterface == null)
+            {
+                throw new Exception("tcpApiInterface is null");
+            }
+            var apiListener = new TcpListener(IPAddress.Parse(apiInterface), Settings.Get<int>("tcpApiPort"));
 
             api = new FunctionServerTcp(apiListener, Encoding.ASCII.GetBytes("THOR"));
 
             api.FunctionCallHandler.AddFunctionProvider(new Register());
-            api.FunctionCallHandler.AddFunctionProvider(new Heartbeat());
-            api.FunctionCallHandler.AddFunctionProvider(new Log());
-
-            /*
-            var type = GetType();
-            var flags = BindingFlags.NonPublic | BindingFlags.Instance;
-            api.AddFunction(type.GetMethod(nameof(GetNextTask), flags), this);
-            api.AddFunction(type.GetMethod(nameof(GetJob), flags), this);
-            api.AddFunction(type.GetMethod(nameof(TurnInTask), flags), this);
-            */
         }
 
         public void Start()
@@ -45,7 +34,7 @@ namespace Thorium.Server.TcpApi
             logger.Info("TCP API listening on port " + Settings.Get<int>("tcpApiPort"));
         }
 
-        TaskDTO GetNextTask(FunctionServerTcpClient client)
+        /*TaskDTO GetNextTask(FunctionServerTcpClient client)
         {
             Thread.Sleep(5000);
             //TODO: this is a race condition waiting to happen
@@ -110,6 +99,6 @@ namespace Thorium.Server.TcpApi
         void TurnInTask(FunctionServerTcpClient client, string taskId)
         {
             Database.ExecuteNonQuery("UPDATE tasks SET status = ? WHERE id = ?", TaskStatus.Finished.ToString(), taskId);
-        }
+        }*/
     }
 }

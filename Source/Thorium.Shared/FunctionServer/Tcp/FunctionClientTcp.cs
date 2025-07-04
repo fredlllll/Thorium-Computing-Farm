@@ -1,6 +1,5 @@
 ﻿using NLog;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Sockets;
@@ -27,6 +26,8 @@ namespace Thorium.Shared.FunctionServer.Tcp
         private bool running = false;
 
         public AetherStream Aether { get; private set; }
+
+        public bool Connected { get { return client.Connected; } }
 
         public event EventHandler OnClose;
 
@@ -115,6 +116,7 @@ namespace Thorium.Shared.FunctionServer.Tcp
 
         public void Dispose()
         {
+            Stop();
             client.Dispose();
             GC.SuppressFinalize(this);
         }

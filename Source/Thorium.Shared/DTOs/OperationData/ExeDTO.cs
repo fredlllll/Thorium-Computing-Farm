@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Thorium.Shared.DTOs.OperationData
+﻿namespace Thorium.Shared.DTOs.OperationData
 {
     public class ExeDTO
     {

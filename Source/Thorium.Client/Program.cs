@@ -1,9 +1,9 @@
 ﻿using System.IO;
-using System.Linq;
 using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
 using NLog;
 using Thorium.Shared;
+using Thorium.Shared.Util;
 
 namespace Thorium.Client
 {
@@ -16,22 +16,38 @@ namespace Thorium.Client
             Logging.SetupLogging();
             logger.Info("Thorium Client v" + Assembly.GetEntryAssembly()?.GetName().Version);
 
+            Init();
+
+            var client = new ThoriumClient();
+            logger.Info("Starting");
+            client.Run();
+        }
+
+        static void InitSettings()
+        {
             Settings.LoadJson("settings.json");
             if (File.Exists("local_settings.json"))
             {
                 Settings.LoadJson("local_settings.json");
             }
+            logger.Info("Loaded Settings");
+        }
 
-            //dependency injection
-            DI.Services.AddSingleton<ThoriumServerApi>((x) =>
-            {
-                var api = new ThoriumServerApi();
-                api.Start();
-                return api;
-            });
+        static void InitConnections()
+        {
+            DI.Services.AddSingleton<ThoriumServerApi>();
 
-            var client = new ThoriumClient();
-            client.Run();
+            var tsa = DI.ServiceProvider.GetRequiredService<ThoriumServerApi>();
+            tsa.ServerHost = Settings.Get<string>("serverHost");
+            tsa.ServerPort = Settings.Get<int>("serverPort");
+
+            logger.Info("Initialized Connection");
+        }
+
+        static void Init()
+        {
+            InitSettings();
+            InitConnections();
         }
     }
 }

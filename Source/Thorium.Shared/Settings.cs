@@ -15,7 +15,7 @@ namespace Thorium.Shared
             documents.Insert(0, document);
         }
 
-        public static T Get<T>(string key)
+        public static T? Get<T>(string key)
         {
             foreach (var doc in documents)
             {
@@ -27,7 +27,7 @@ namespace Thorium.Shared
             throw new Exception("Could not find " + key + " in settings");
         }
 
-        public static T Get<T>(string key, T defaultValue)
+        public static T? Get<T>(string key, T? defaultValue)
         {
             foreach (var doc in documents)
             {
@@ -37,6 +37,14 @@ namespace Thorium.Shared
                 }
             }
             return defaultValue;
+        }
+
+        static Settings()
+        {
+            if (File.Exists("settings.json"))
+            {
+                LoadJson("settings.json");
+            }
         }
     }
 }

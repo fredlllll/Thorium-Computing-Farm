@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Thorium.Shared.Util
 {
+    /// <summary>
+    /// Queue that throws away from the end of the list once it grows too large
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public class LimitedQueue<T> : Queue<T>
     {
         public int Limit { get; set; }

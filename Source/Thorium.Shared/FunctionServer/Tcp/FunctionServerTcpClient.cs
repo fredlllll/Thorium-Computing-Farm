@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.Metrics;
 using System.IO;
-using System.Linq;
 using System.Net.Sockets;
 using Thorium.Shared.Aether.AetherSerializers;
 using Thorium.Shared.Aether;
@@ -38,8 +35,8 @@ namespace Thorium.Shared.FunctionServer.Tcp
             {
                 stream = client.GetStream();
                 aether = new AetherStream(stream);
-                aether.Serializers[typeof(FunctionCall)] = new FunctionCallSerializer();
-                aether.Serializers[typeof(FunctionCallAnswer)] = new FunctionCallAnswerSerializer();
+                aether.SerializerLibrary.Add(new FunctionCallSerializer());
+                aether.SerializerLibrary.Add(new FunctionCallAnswerSerializer());
 
                 runThread = new Thread(Run);
                 running = true;

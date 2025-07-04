@@ -1,14 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net;
 using System.Net.Http;
-using System.Net.Sockets;
 using System.Text.Json;
-using Thorium.Shared.Aether;
 using Thorium.Shared.DTOs;
-using Thorium.Shared.DTOs.OperationData;
 
 namespace Thorium.Test
 {
@@ -31,7 +25,6 @@ namespace Thorium.Test
 
             JobDTO job = new()
             {
-                Id = "1234abcd",
                 Name = "this is a test",
                 Description = "Description",
                 TaskCount = 3,
@@ -40,7 +33,11 @@ namespace Thorium.Test
                     new OperationDTO()
                     {
                         OperationType = "exe",
-                        OperationData = new ExeDTO() { FilePath = "notepad.exe" },
+                        OperationData = new Dictionary<string, string>() {
+                            { "fileName" , "notepad.exe" },
+                            { "workingDir",""},
+                            {"arguments", "[\"aaa\",\"bbb\"]" }
+                        },
                     }
                 ]
             };

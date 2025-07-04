@@ -1,25 +1,58 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Thorium.Shared.Database;
+using Thorium.Shared.Database.Models;
+using Thorium.Shared.DTOs;
 using Thorium.Shared.FunctionServer.Tcp;
+using Thorium.Shared.Util;
 
 namespace Thorium.Server.TcpApi.Functions
 {
     public class Register : ITcpFunctionProvider
     {
-        public string FunctionName => "Register";
+        public string FunctionName => nameof(Register);
 
         public object Execute(FunctionServerTcpClient client, object[] args)
         {
-            Register_(client, (string)args[0]);
-            return null;
+            return Register_(client, (string)args[0], (string)args[1]);
         }
 
-        void Register_(FunctionServerTcpClient client, string id)
+        static RegisterAnswer Register_(FunctionServerTcpClient client, string id, string name)
         {
-            client.Name = id;
+            //TODO: authentication
+
+            var dbConn = DI.ServiceProvider.GetRequiredService<DatabaseConnection>();
+            var db = DI.ServiceProvider.GetRequiredService<DatabaseContext>();
+
+            Node? node = null;
+            if(id != "unknown")
+            {
+                node = db.Nodes.FirstOrDefault(x => x.Id == id);
+            }
+            if (node == null)
+            {
+                node = new Node()
+                {
+                    Id = DatabaseContext.GetNewId<Node>(),
+                    Created = DateTime.Now,
+                    Updated = DateTime.Now,
+                    Identifier = name
+                };
+                id = node.Id;
+                db.Nodes.Add(node);
+            }
+            
+            var answer = new RegisterAnswer()
+            {
+                NodeId = id,
+                DatabaseHost = dbConn.Host,
+                DatabasePort = dbConn.Port,
+                DatabaseName = dbConn.Database,
+                DatabaseUser = dbConn.User,
+                DatabasePassword = dbConn.Password
+            };
+            return answer;
         }
     }
 }

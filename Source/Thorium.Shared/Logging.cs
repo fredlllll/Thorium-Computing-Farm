@@ -1,7 +1,6 @@
 ﻿using NLog;
 using NLog.Config;
 using NLog.Targets;
-using System;
 using System.Collections.Generic;
 
 namespace Thorium.Shared
@@ -27,7 +26,7 @@ namespace Thorium.Shared
 
         public static void AddTarget(Target target, LogLevel logLevel)
         {
-            if (!loggingRules.TryGetValue(logLevel, out LoggingRule lr))
+            if (!loggingRules.TryGetValue(logLevel, out LoggingRule? lr))
             {
                 lr = new LoggingRule();
                 foreach (var ll in LogLevel.AllLoggingLevels)

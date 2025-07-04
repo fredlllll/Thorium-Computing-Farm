@@ -5,10 +5,11 @@
     <TargetFramework>net8.0</TargetFramework>
     <AssemblyName>Thorium.Client</AssemblyName>
     <RootNamespace>Thorium.Client</RootNamespace>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="NLog" Version="5.2.8" />
+    <PackageReference Include="NLog" Version="6.0.1" />
   </ItemGroup>
 
   <ItemGroup>

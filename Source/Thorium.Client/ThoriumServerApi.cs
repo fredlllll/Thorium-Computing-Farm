@@ -1,20 +1,8 @@
 ﻿using NLog;
 using System;
-using System.Collections.Generic;
-using System.Data.SqlTypes;
-using System.IO;
-using System.Linq;
-using System.Net.Sockets;
-using System.Runtime.InteropServices.Marshalling;
 using System.Text;
-using System.Text.Json;
-using System.Text.Unicode;
-using System.Threading;
-using System.Threading.Tasks;
-using Thorium.Shared;
 using Thorium.Shared.DTOs;
 using Thorium.Shared.FunctionServer.Tcp;
-using Thorium.Shared.Messages;
 
 namespace Thorium.Client
 {
@@ -25,90 +13,37 @@ namespace Thorium.Client
         private object clientLock = new();
         private FunctionClientTcp client;
 
-        public void Start()
-        {
-            EstablishConnection();
-        }
+        public string ServerHost { get; set; }
+        public int ServerPort { get; set; }
 
-        void EstablishConnection()
+        void EnsureConnection()
         {
             lock (clientLock)
             {
-                while (true)
+                if (client == null || !client.Connected)
                 {
-                    client = new FunctionClientTcp(Settings.Get<string>("serverInterface"), Settings.Get<int>("serverPort"), Encoding.ASCII.GetBytes("THOR"));
-                    try
-                    {
-                        client.Start();
-                        client.OnClose += Client_OnClose;
-                        return;
-                    }
-                    catch (SocketException)
-                    {
-                        //connection failed
-                        logger.Warn("Connection failed, retrying");
-                        Thread.Sleep(1000);
-                    }
+                    client = new FunctionClientTcp(ServerHost, ServerPort, Encoding.ASCII.GetBytes("THOR"));
+                    client.Start();
                 }
             }
         }
 
-        private void Client_OnClose(object sender, EventArgs e)
+        private T Call<T>(string functionName, bool needsAnswer, params object[] args)
         {
-            EstablishConnection();
+            EnsureConnection();
+            return client.FunctionCaller.RemoteFunctionCall<T>(functionName, needsAnswer, 5000, args);
         }
 
-        private T CallWithRetry<T>(string functionName, bool needsAnswer, params object[] args)
+        public RegisterAnswer Register(string clientId, string clientName)
         {
-            while (true)
-            {
-                try
-                {
-                    lock (clientLock)
-                    {
-                        return client.FunctionCaller.RemoteFunctionCall<T>(functionName, needsAnswer, 5000, args);
-                    }
-                }
-                catch (TimeoutException)
-                {
-                    Thread.Sleep(100);
-                }
-            }
-        }
-
-        public void Register(string clientId)
-        {
-            CallWithRetry<object>("Register", false, clientId);
-        }
-
-        public TaskDTO GetNextTask()
-        {
-            return CallWithRetry<TaskDTO>("GetNextTask", true);
-        }
-
-        public JobDTO GetJob(string id)
-        {
-            return CallWithRetry<JobDTO>("GetJob", true, id);
-        }
-
-        public void TurnInTask(string taskId, string reason)
-        {
-            //TODO: add reason
-            CallWithRetry<object>("TurnInTask", false, taskId);
-        }
-
-        public void Heartbeat()
-        {
-            lock (clientLock)
-            {
-            }
+            return Call<RegisterAnswer>("Register", true, clientId, clientName);
         }
 
         public void Dispose()
         {
             lock (clientLock)
             {
-                client.Stop();
+                client.Dispose();
             }
         }
     }

@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.SQLite;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.CompilerServices;
-
+﻿//using System.Data.SQLite;
 namespace Thorium.Server
 {
+    /*
     public class Database
     {
         static SQLiteConnection connection;
@@ -286,4 +280,5 @@ namespace Thorium.Server
 
         #endregion
     }
+    */
 }

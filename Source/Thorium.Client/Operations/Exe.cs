@@ -1,29 +1,39 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
-using Thorium.Shared;
-using Thorium.Shared.DTOs.OperationData;
+using System.Text.Json.Nodes;
 
 namespace Thorium.Client.Operations
 {
     public class Exe : ClientOperation
     {
-        ExeDTO data;
+        private readonly Dictionary<string, string> data;
+        private readonly List<string> rawArgs = new();
 
         private ProcessStartInfo processStartInfo;
 
-        public Exe(ExeDTO data)
+        public Exe(Dictionary<string, string> data)
         {
             this.data = data;
             processStartInfo = new ProcessStartInfo()
             {
-                FileName = data.FilePath,
-                WorkingDirectory = data.WorkingDir,
+                FileName = data["fileName"],
+                WorkingDirectory = data["workingDir"],
             };
+            if (data.TryGetValue("arguments", out string? argumentsData))
+            {
+                var parsed = JsonNode.Parse(argumentsData);
+                if (parsed == null)
+                {
+                    throw new Exception("argumentsData evaluates to null");
+                }
+                var arguments = parsed.AsArray();
+                foreach (var argument in arguments)
+                {
+                    //honestly, screw the nullchecks here
+                    rawArgs.Add((string)argument);
+                }
+            }
         }
 
         public override void Execute(int taskNumber)
@@ -34,12 +44,9 @@ namespace Thorium.Client.Operations
             };
 
             processStartInfo.ArgumentList.Clear();
-            if (data.Arguments != null)
+            foreach (var rawArg in rawArgs)
             {
-                foreach (var arg in data.Arguments)
-                {
-                    processStartInfo.ArgumentList.Add(arg.Replace("{taskNumber}", taskNumber.ToString()));
-                }
+                processStartInfo.ArgumentList.Add(rawArg.Replace("{taskNumber}", taskNumber.ToString()));
             }
             process.Start();
             process.WaitForExit();

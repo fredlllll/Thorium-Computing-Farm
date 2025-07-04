@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Thorium.Shared.DTOs
 {
     public class OperationDTO
     {
-        public string Id { get; set; }
-        public string OperationType { get; set; }
-        public object OperationData { get; set; }
+        public required string OperationType { get; set; }
+        public required Dictionary<string,string> OperationData { get; set; }
     }
 }

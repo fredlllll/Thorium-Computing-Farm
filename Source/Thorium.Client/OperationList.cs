@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using Thorium.Client.Operations;
-using Thorium.Shared.DTOs;
+using Thorium.Shared.Database.Models;
 
 namespace Thorium.Client
 {
@@ -18,19 +14,15 @@ namespace Thorium.Client
             operationTypes["exe"] = typeof(Exe);
         }
 
-        public readonly ClientOperation[] operations;
+        public readonly List<ClientOperation> operations = new();
 
-        public OperationList(JobDTO job)
+        public OperationList(Job job)
         {
-            operations = new ClientOperation[job.Operations.Length];
-            for (int i = 0; i < job.Operations.Length; i++)
+            foreach (var operation in job.Operations)
             {
-                var opData = job.Operations[i];
-                if (operationTypes.TryGetValue(opData.OperationType, out var type))
+                if (operationTypes.TryGetValue(operation.Type, out var type))
                 {
-                    var shit = opData.OperationData.GetType();
-                    var op = Activator.CreateInstance(type, opData.OperationData);
-                    operations[i] = (ClientOperation)op;
+                    operations.Add((ClientOperation)Activator.CreateInstance(type, operation.Data));
                 }
                 else
                 {

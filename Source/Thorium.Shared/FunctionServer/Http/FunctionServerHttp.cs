@@ -1,17 +1,8 @@
 ﻿using NLog;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
 using System.Net;
-using System.Net.Sockets;
-using System.Reflection;
 using System.Text;
-using System.Text.Json;
-using System.Threading;
-using System.Threading.Tasks;
-using Thorium.Shared.DTOs;
-using Thorium.Shared.Messages;
 
 namespace Thorium.Shared.FunctionServer.Http
 {

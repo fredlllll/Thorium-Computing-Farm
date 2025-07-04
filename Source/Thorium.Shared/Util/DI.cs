@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Hosting;
 using System;
 
-namespace Thorium.Shared
+namespace Thorium.Shared.Util
 {
     public static class DI
     {
