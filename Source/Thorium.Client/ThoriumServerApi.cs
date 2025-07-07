@@ -11,7 +11,7 @@ namespace Thorium.Client
         static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         private object clientLock = new();
-        private FunctionClientTcp client;
+        private FunctionClientTcp? client;
 
         public string ServerHost { get; set; }
         public int ServerPort { get; set; }

@@ -44,30 +44,24 @@ namespace Thorium.Server.HttpApi.Functions
             Job newJob = new Job()
             {
                 Id = DatabaseContext.GetNewId<Job>(),
-                Created = DateTime.Now,
-                Updated = DateTime.Now,
                 Name = jobData.Name,
                 Description = jobData.Description
             };
 
-            var db = DI.ServiceProvider.GetRequiredService<DatabaseContext>();
+            using var db = ThoriumServer.GetNewDb();
             db.Jobs.Add(newJob);
-            List<Task> newTasks = new();
             for (int i = 0; i < jobData.TaskCount; i++)
             {
                 var t = new Task()
                 {
                     Id = DatabaseContext.GetNewId<Task>(),
-                    Created = DateTime.Now,
-                    Updated = DateTime.Now,
-                    Job = newJob,
+                    JobId = newJob.Id,
                     Status = TaskStatus.Queued,
                     TaskNumber = i,
                     WasSuccessful = false,
                 };
-                newTasks.Add(t);
+                db.Tasks.Add(t);
             }
-            db.Tasks.AddRange(newTasks);
 
             for (int i = 0; i < jobData.Operations.Length; i++)
             {
@@ -75,14 +69,14 @@ namespace Thorium.Server.HttpApi.Functions
                 var op = new Operation()
                 {
                     Id = DatabaseContext.GetNewId<Operation>(),
-                    Created = DateTime.Now,
-                    Updated = DateTime.Now,
-                    Job = newJob,
+                    JobId = newJob.Id,
                     OperationIndex = i,
                     Type = opData.OperationType,
                     Data = opData.OperationData
                 };
+                db.Operations.Add(op);
             }
+            db.SaveChanges();
 
             context.Response.StatusCode = 200;
         }

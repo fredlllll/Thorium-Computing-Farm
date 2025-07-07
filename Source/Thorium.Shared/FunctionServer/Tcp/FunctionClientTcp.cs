@@ -51,6 +51,7 @@ namespace Thorium.Shared.FunctionServer.Tcp
             if (!running)
             {
                 client = new TcpClient();
+                //System.Net.Sockets.SocketException when cant connect
                 client.Connect(host, port);
                 stream = client.GetStream();
                 if (!HandshakeSuccessful())

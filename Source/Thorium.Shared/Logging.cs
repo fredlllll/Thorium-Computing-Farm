@@ -58,7 +58,7 @@ namespace Thorium.Shared
         {
             var consoleTarget = new ColoredConsoleTarget
             {
-                Layout = @"[${date}][${logger}]: ${message}"
+                Layout = @"[${date}][${logger}]: ${message:withexception=true}"
             };
 
             AddTarget(consoleTarget);

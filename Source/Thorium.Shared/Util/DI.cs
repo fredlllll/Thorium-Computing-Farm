@@ -13,7 +13,7 @@ namespace Thorium.Shared.Util
             get { return builder.Services; }
         }
 
-        static IServiceProvider serviceProvider = null;
+        static IServiceProvider? serviceProvider = null;
         public static IServiceProvider ServiceProvider
         {
             get
@@ -26,6 +26,11 @@ namespace Thorium.Shared.Util
                 }
                 return serviceProvider;
             }
+        }
+
+        public static void ResetServiceProvider()
+        {
+            serviceProvider = null;
         }
     }
 }

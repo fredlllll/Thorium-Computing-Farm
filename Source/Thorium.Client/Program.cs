@@ -36,6 +36,7 @@ namespace Thorium.Client
         static void InitConnections()
         {
             DI.Services.AddSingleton<ThoriumServerApi>();
+            DI.ResetServiceProvider();
 
             var tsa = DI.ServiceProvider.GetRequiredService<ThoriumServerApi>();
             tsa.ServerHost = Settings.Get<string>("serverHost");

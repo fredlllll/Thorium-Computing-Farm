@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
+using System.Collections.Generic;
+using System.Text.Json;
 using Thorium.Shared.Database.Models;
 using UUIDNext;
 
@@ -23,10 +25,18 @@ namespace Thorium.Shared.Database
             modelBuilder.Entity<Task>().ToTable(nameof(Tasks));
             modelBuilder.Entity<Node>().ToTable(nameof(Nodes));
 
-            modelBuilder.Entity<Node>().HasOne<Task>(x => x.Task).WithMany().HasForeignKey("TaskId");
-            modelBuilder.Entity<Task>().HasOne<Node>(x => x.CurrentMachine).WithMany().HasForeignKey("CurrentMachineId");
+            modelBuilder.Entity<Node>().HasOne<Task>().WithOne().HasForeignKey<Node>(x => x.CurrentTaskId).IsRequired(false).OnDelete(DeleteBehavior.SetNull);
+            modelBuilder.Entity<Task>().HasOne<Node>().WithMany().HasForeignKey(x => x.LinedUpOnNodeId).IsRequired(false).OnDelete(DeleteBehavior.SetNull);
 
-            modelBuilder.Entity<Operation>().Property(x => x.Data).HasColumnType("jsonb");
+            modelBuilder.Entity<Task>().HasOne<Job>().WithMany().HasForeignKey(x=>x.JobId).OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Operation>().HasOne<Job>().WithMany().HasForeignKey(x => x.JobId).OnDelete(DeleteBehavior.Cascade);
+
+            JsonSerializerOptions options = new JsonSerializerOptions { WriteIndented = false };
+#pragma warning disable CS8603 //as the field isnt nullable, we should never be able to receive null on deserialization
+            modelBuilder.Entity<Operation>().Property(x => x.Data).HasColumnType("jsonb").HasConversion(y => JsonSerializer.Serialize(y, options), z => JsonSerializer.Deserialize<Dictionary<string, string>>(z, options));
+#pragma warning restore CS8603
+
+
         }
 
         public static string GetNewId<T>()
@@ -35,6 +45,16 @@ namespace Thorium.Shared.Database
             var typeId = t.Name.ToLower();
             var id = Uuid.NewDatabaseFriendly(UUIDNext.Database.PostgreSql);
             return $"{typeId}_{id}";
+        }
+
+        public static DbContextOptionsBuilder<DatabaseContext> GetOptionsBuilder(string connectionString)
+        {
+            var optionsBuilder = new DbContextOptionsBuilder<DatabaseContext>();
+            var t = optionsBuilder.UseNpgsql(connectionString, o =>
+            {
+                o.MapEnum<TaskStatus>("task_status");
+            });
+            return optionsBuilder;
         }
 
         /*protected override void OnConfiguring(DbContextOptionsBuilder options)
@@ -46,8 +66,7 @@ namespace Thorium.Shared.Database
         {
             public DatabaseContext CreateDbContext(string[] args)
             {
-                var optionsBuilder = new DbContextOptionsBuilder<DatabaseContext>();
-                optionsBuilder.UseNpgsql(DatabaseConnection.LoadFromSettings().GetConnectionString());
+                var optionsBuilder = GetOptionsBuilder(DatabaseConnection.LoadFromSettings().GetConnectionString());
 
                 return new DatabaseContext(optionsBuilder.Options);
             }

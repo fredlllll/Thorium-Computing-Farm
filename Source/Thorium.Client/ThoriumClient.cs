@@ -6,6 +6,7 @@ using Thorium.Shared.Util;
 using Thorium.Shared.Database;
 using Microsoft.EntityFrameworkCore;
 using Thorium.Shared.Database.Models;
+using System.Linq;
 
 namespace Thorium.Client
 {
@@ -20,6 +21,20 @@ namespace Thorium.Client
         private Job? currentJob = null;
 
         private OperationList? operations = null;
+
+        public static DatabaseContext GetNewDb()
+        {
+            var conn = DI.ServiceProvider.GetRequiredService<DatabaseConnection>();
+            var options = DatabaseContext.GetOptionsBuilder(conn.GetConnectionString()).Options;
+            return new DatabaseContext(options);
+        }
+
+        private void FetchCurrentJob(string jobId)
+        {
+            using var db = GetNewDb();
+            currentJob = db.Jobs.Where(x => x.Id == jobId).First();
+            operations = new OperationList(currentJob);
+        }
 
         public void Run()
         {
@@ -37,12 +52,11 @@ namespace Thorium.Client
                 Password = registerInfo.DatabasePassword,
                 Database = registerInfo.DatabaseName
             };
+            DI.Services.AddSingleton<DatabaseConnection>(_=>conn);
+            DI.ResetServiceProvider();
 
-            var options = new DbContextOptionsBuilder<DatabaseContext>().UseNpgsql(conn.GetConnectionString()).Options;
-            DatabaseContext db = new DatabaseContext(options);
-            DI.Services.AddSingleton(db);
+            var shit = DI.ServiceProvider.GetRequiredService<DatabaseConnection>();
             
-
             try
             {
                 while (true)
@@ -57,13 +71,12 @@ namespace Thorium.Client
                         continue;
                     }
                     //TODO: put these into a single call
-                    if (currentJob == null || currentJob.Id != currentTask.Job.Id)
+                    if (currentJob == null || currentJob.Id != currentTask.JobId)
                     {
-                        currentJob = currentTask.Job;
-                        operations = new OperationList(currentJob);
+                        FetchCurrentJob(currentTask.JobId);
                     }
 
-                    logger.Info("got task: " + currentTask.Job.Id + ": " + currentTask.TaskNumber);
+                    logger.Info("got task: " + currentTask.JobId + ": " + currentTask.TaskNumber);
 
                     try
                     {
@@ -90,20 +103,31 @@ namespace Thorium.Client
             }
             catch (Exception ex)
             {
-                logger.Info("exception");
-                logger.Info(ex);
+                logger.Error(ex);
             }
             logger.Info("leaving worker thread");
         }
 
-        private Task GetNextTask()
+        private Task? GetNextTask()
         {
+            using var db = GetNewDb();
+            var node = db.Nodes.Where(x => x.Id == id).First();
+
+            var firstLinedUpTask = db.Tasks.Where(x => x.LinedUpOnNodeId == id).FirstOrDefault();
+            if(firstLinedUpTask != null)
+            {
+                node.CurrentTaskId = firstLinedUpTask.Id;
+                firstLinedUpTask.LinedUpOnNodeId = null;
+                firstLinedUpTask.Status = TaskStatus.Running;
+                db.SaveChanges();
+                return firstLinedUpTask;
+            }
             return null;
         }
 
         private void TurnInTask(Task task, string status)
         {
-
+            using var db = GetNewDb();
         }
     }
 }

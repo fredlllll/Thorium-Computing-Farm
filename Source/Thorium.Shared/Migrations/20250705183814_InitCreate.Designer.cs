@@ -7,14 +7,15 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Thorium.Shared.Database;
+using Thorium.Shared.Database.Models;
 
 #nullable disable
 
 namespace Thorium.Shared.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20250704214519_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20250705183814_InitCreate")]
+    partial class InitCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +25,7 @@ namespace Thorium.Shared.Migrations
                 .HasAnnotation("ProductVersion", "9.0.6")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
+            NpgsqlModelBuilderExtensions.HasPostgresEnum(modelBuilder, "task_status", new[] { "finished", "queued", "running" });
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("Thorium.Shared.Database.Models.Job", b =>
@@ -37,6 +39,9 @@ namespace Thorium.Shared.Migrations
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -58,19 +63,23 @@ namespace Thorium.Shared.Migrations
                     b.Property<DateTime>("Created")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<string>("CurrentTaskId")
+                        .HasColumnType("text");
+
                     b.Property<string>("Identifier")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("TaskId")
-                        .HasColumnType("text");
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
 
                     b.Property<DateTime>("Updated")
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("TaskId");
+                    b.HasIndex("CurrentTaskId")
+                        .IsUnique();
 
                     b.ToTable("Nodes", (string)null);
                 });
@@ -86,6 +95,9 @@ namespace Thorium.Shared.Migrations
                     b.Property<Dictionary<string, string>>("Data")
                         .IsRequired()
                         .HasColumnType("jsonb");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
 
                     b.Property<string>("JobId")
                         .IsRequired()
@@ -103,8 +115,6 @@ namespace Thorium.Shared.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("JobId");
-
                     b.ToTable("Operations", (string)null);
                 });
 
@@ -116,15 +126,18 @@ namespace Thorium.Shared.Migrations
                     b.Property<DateTime>("Created")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("CurrentMachineId")
-                        .HasColumnType("text");
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
 
                     b.Property<string>("JobId")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("integer");
+                    b.Property<string>("LinedUpOnNodeId")
+                        .HasColumnType("text");
+
+                    b.Property<TaskStatus>("Status")
+                        .HasColumnType("task_status");
 
                     b.Property<int>("TaskNumber")
                         .HasColumnType("integer");
@@ -137,55 +150,23 @@ namespace Thorium.Shared.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CurrentMachineId");
-
-                    b.HasIndex("JobId");
+                    b.HasIndex("LinedUpOnNodeId");
 
                     b.ToTable("Tasks", (string)null);
                 });
 
             modelBuilder.Entity("Thorium.Shared.Database.Models.Node", b =>
                 {
-                    b.HasOne("Thorium.Shared.Database.Models.Task", "Task")
-                        .WithMany()
-                        .HasForeignKey("TaskId");
-
-                    b.Navigation("Task");
-                });
-
-            modelBuilder.Entity("Thorium.Shared.Database.Models.Operation", b =>
-                {
-                    b.HasOne("Thorium.Shared.Database.Models.Job", "Job")
-                        .WithMany("Operations")
-                        .HasForeignKey("JobId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Job");
+                    b.HasOne("Thorium.Shared.Database.Models.Task", null)
+                        .WithOne()
+                        .HasForeignKey("Thorium.Shared.Database.Models.Node", "CurrentTaskId");
                 });
 
             modelBuilder.Entity("Thorium.Shared.Database.Models.Task", b =>
                 {
-                    b.HasOne("Thorium.Shared.Database.Models.Node", "CurrentMachine")
+                    b.HasOne("Thorium.Shared.Database.Models.Node", null)
                         .WithMany()
-                        .HasForeignKey("CurrentMachineId");
-
-                    b.HasOne("Thorium.Shared.Database.Models.Job", "Job")
-                        .WithMany("Tasks")
-                        .HasForeignKey("JobId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("CurrentMachine");
-
-                    b.Navigation("Job");
-                });
-
-            modelBuilder.Entity("Thorium.Shared.Database.Models.Job", b =>
-                {
-                    b.Navigation("Operations");
-
-                    b.Navigation("Tasks");
+                        .HasForeignKey("LinedUpOnNodeId");
                 });
 #pragma warning restore 612, 618
         }

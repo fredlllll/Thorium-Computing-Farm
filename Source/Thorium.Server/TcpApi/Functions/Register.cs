@@ -23,7 +23,7 @@ namespace Thorium.Server.TcpApi.Functions
             //TODO: authentication
 
             var dbConn = DI.ServiceProvider.GetRequiredService<DatabaseConnection>();
-            var db = DI.ServiceProvider.GetRequiredService<DatabaseContext>();
+            using var db = ThoriumServer.GetNewDb();
 
             Node? node = null;
             if(id != "unknown")
@@ -35,13 +35,12 @@ namespace Thorium.Server.TcpApi.Functions
                 node = new Node()
                 {
                     Id = DatabaseContext.GetNewId<Node>(),
-                    Created = DateTime.Now,
-                    Updated = DateTime.Now,
                     Identifier = name
                 };
                 id = node.Id;
                 db.Nodes.Add(node);
             }
+            db.SaveChanges();
             
             var answer = new RegisterAnswer()
             {

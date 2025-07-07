@@ -17,9 +17,5 @@ namespace Thorium.Shared.FunctionServer.Tcp
         public FunctionNotFoundException(string message, Exception innerException) : base(message, innerException)
         {
         }
-
-        protected FunctionNotFoundException(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
-        }
     }
 }

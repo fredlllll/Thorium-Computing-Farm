@@ -1,7 +1,12 @@
-﻿using System;
+﻿using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
 using Thorium.Client.Operations;
+using Thorium.Shared.Database;
 using Thorium.Shared.Database.Models;
+using Thorium.Shared.Util;
 
 namespace Thorium.Client
 {
@@ -18,15 +23,21 @@ namespace Thorium.Client
 
         public OperationList(Job job)
         {
-            foreach (var operation in job.Operations)
+            using var db = ThoriumClient.GetNewDb();
+            foreach (var operation in db.Operations.Where(x => x.JobId == job.Id).OrderBy(x => x.OperationIndex).ToList())
             {
                 if (operationTypes.TryGetValue(operation.Type, out var type))
                 {
-                    operations.Add((ClientOperation)Activator.CreateInstance(type, operation.Data));
+                    var op = Activator.CreateInstance(type, operation.Data) as ClientOperation;
+                    if (op == null)
+                    {
+                        throw new Exception("operation could not be instantiated");
+                    }
+                    operations.Add(op);
                 }
                 else
                 {
-                    //TODO: error or dummy operation?
+                    throw new Exception("operation type " + operation.Type + " does not exist");
                 }
             }
         }

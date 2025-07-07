@@ -44,7 +44,7 @@ namespace Thorium.Test
 
             AddJob(job);
 
-            Console.ReadKey();
+            //Console.ReadKey();
         }
     }
 }
